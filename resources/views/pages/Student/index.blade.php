@@ -1,5 +1,4 @@
 {{-- Start Page: Student Index --}}
-
 <x-layout.admin>
 
     <!-- Administrator Profile Section -->

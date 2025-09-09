@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\ClassroomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
@@ -46,11 +47,12 @@ Route::group(
         Route::get('/', 'index')->name('index');
 
         // Profile Routes
-        Route::group([
-            'prefix' => 'profile',
-            'as' => 'profile.',
-            'controller' => ProfileController::class
-        ],
+        Route::group(
+            [
+                'prefix' => 'profile',
+                'as' => 'profile.',
+                'controller' => ProfileController::class
+            ],
 
             function () {
                 // Route::get('/', 'index')->name('index');
@@ -58,13 +60,16 @@ Route::group(
                 // Route::post('/store', 'store')->name('store');
                 Route::put('/{id}', 'update')->name('update');
                 // Route::delete('/{id}', 'destroy')->name('destroy');
-        });
+            }
+        );
 
         // Classroom Routes
-        Route::group([
-            'prefix' => 'classroom/',
-            'as' => 'classroom.',
-            'controller' => ClassroomController::class],
+        Route::group(
+            [
+                'prefix' => 'classroom/',
+                'as' => 'classroom.',
+                'controller' => ClassroomController::class
+            ],
 
             function () {
                 Route::get('/', 'index')->name('index');
@@ -72,7 +77,8 @@ Route::group(
                 Route::post('/store', 'store')->name('store');
                 Route::delete('/{id}', 'destroy')->name('destroy');
                 Route::post('/import', 'import')->name('import');
-        });
+            }
+        );
 
         // Teacher Routes
         Route::group(
@@ -95,10 +101,12 @@ Route::group(
 
 
         // Student Routes
-        Route::group([
-            'prefix' => 'students/',
-            'as' => 'students.',
-            'controller' => StudentController::class],
+        Route::group(
+            [
+                'prefix' => 'students/',
+                'as' => 'students.',
+                'controller' => StudentController::class
+            ],
             function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
@@ -108,14 +116,17 @@ Route::group(
                 Route::get('/{student}', 'show')->name('show');
                 Route::delete('/{id}', 'destroy')->name('destroy');
                 Route::post('/import', 'import')->name('import');
-        });
+            }
+        );
 
 
         // Subject Routes
-        Route::group([
-            'prefix' => 'subjects',
-            'as' => 'subjects.',
-            'controller' => SubjectController::class],
+        Route::group(
+            [
+                'prefix' => 'subjects',
+                'as' => 'subjects.',
+                'controller' => SubjectController::class
+            ],
             function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
@@ -125,8 +136,8 @@ Route::group(
                 Route::get('/{id}', 'show')->name('show');
                 Route::delete('/{id}', 'destroy')->name('destroy');
                 Route::post('/import', 'import')->name('import');
-        });
-
+            }
+        );
     }
 );
 
@@ -137,6 +148,15 @@ Route::group([
     'controller' => DashboardController::class
 ], function () {
     Route::get('/', 'teacherDashboard')->name('index');
+
+    Route::group(['prefix' => 'assignments/', 'as' => 'assignments.', 'controller' => AssignmentController::class], function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        // Route::get('/{id}/edit', 'edit')->name('edit');
+        // Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+    });
 });
 
 Route::group([

@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 
 Route::get('/', function () {
@@ -109,21 +110,21 @@ Route::group(
         });
 
 
-        // // Subject Routes
-        // Route::group([
-        //     'prefix' => 'subjects',
-        //     'as' => 'subjects.',
-        //     'controller' => SubjectController::class],
-        //     function () {
-        //         Route::get('/', 'index')->name('index');
-        //         Route::get('/create', 'create')->name('create');
-        //         Route::post('/store', 'store')->name('store');
-        //         Route::get('/{id}/edit', 'edit')->name('edit');
-        //         Route::put('/{id}', 'update')->name('update');
-        //         Route::get('/{id}', 'show')->name('show');
-        //         Route::delete('/{id}', 'destroy')->name('destroy');
-        //         Route::post('/import', 'import')->name('import');
-        // });
+        // Subject Routes
+        Route::group([
+            'prefix' => 'subjects',
+            'as' => 'subjects.',
+            'controller' => SubjectController::class],
+            function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/store', 'store')->name('store');
+                Route::get('/{id}/edit', 'edit')->name('edit');
+                Route::put('/{id}', 'update')->name('update');
+                Route::get('/{id}', 'show')->name('show');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+                Route::post('/import', 'import')->name('import');
+        });
 
     }
 );

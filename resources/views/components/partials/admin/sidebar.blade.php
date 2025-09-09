@@ -84,8 +84,7 @@
                 <div class="collapse" id="subjectDataDropdown">
                     <ul class="nav flex-column ms-4">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                            {{-- <a class="nav-link" href="{{ route('operator.subjects.index') }}"> --}}
+                            <a class="nav-link" href="{{ route('operator.subjects.index') }}">
                                 <span class="nav-link-text">Tambah Data Mapel</span>
                             </a>
                         </li>

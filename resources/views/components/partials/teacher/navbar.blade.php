@@ -1,3 +1,4 @@
+@props(['title'])
 <!-- Navbar -->
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
     data-scroll="false">
@@ -9,8 +10,9 @@
                 <li class="breadcrumb-item text-sm text-white active" aria-current="page">Kelola
                 </li>
             </ol>
-            <h6 class="font-weight-bolder text-white mb-0">#</h6>
-            {{-- <h6 class="font-weight-bolder text-white mb-0">{{ $title }}</h6> --}}
+            <h6 class="font-weight-bolder text-white mb-0">{{ $title}}
+            </h6>
+
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
             <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -24,8 +26,7 @@
                 <li class="nav-item d-flex align-items-center">
                     <a class="nav-link text-white font-weight-bold px-0">
                         <i class="fa fa-user me-sm-1" aria-hidden="true"></i>
-                        <span class="d-sm-inline d-none">#</span>
-                        {{-- <span class="d-sm-inline d-none">{{ Auth::guard('teacher')->user()->first_name }}</span> --}}
+                        <span class="d-sm-inline d-none">{{ Auth::guard('teacher')->user()->first_name }}</span>
                     </a>
                 </li>
                 <li class="nav-item d-xl-none ps-3 d-flex align-items-center">

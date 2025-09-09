@@ -1,6 +1,5 @@
 <x-layout.teacher>
-    <x-partials.teacher.navbar />
-    {{-- <x-partials.teacher.navbar :title="$title" /> --}}
+    <x-partials.teacher.navbar :title="$title" />
 
 
     {{-- Modal: Force Change Password --}}
@@ -369,7 +368,8 @@
                                     <td class="w-30">
                                         <div class="d-flex px-2 py-1 align-items-center">
                                             <div>
-                                                <img src="../assets/dashboard/img/icons/flags/BR.png" alt="Country flag">
+                                                <img src="../assets/dashboard/img/icons/flags/BR.png"
+                                                    alt="Country flag">
                                             </div>
                                             <div class="ms-4">
                                                 <p class="text-xs font-weight-bold mb-0">Country:</p>

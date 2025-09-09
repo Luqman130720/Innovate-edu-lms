@@ -28,4 +28,11 @@ class Assignment extends Model
     {
         return $this->belongsTo(Classroom::class);
     }
+
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+
 }

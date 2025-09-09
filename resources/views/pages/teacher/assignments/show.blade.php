@@ -1,0 +1,154 @@
+{{-- Start Page: Teacher Show Assigments --}}
+<x-layout.teacher>
+    <x-partials.teacher.navbar :title="$title" />
+    <!-- Administrator Profile Section -->
+    <div class="card shadow-lg mx-4" style="margin-top: 10rem">
+        <div class="card-body p-3">
+            <div class="row gx-4">
+                <div class="col-auto">
+                    <div class="avatar avatar-xl position-relative"> <img
+                            src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/dashboard/img/team-1.jpg') }}"
+                            alt="profile_image" class="w-100 border-radius-lg shadow-sm"> </div>
+                </div>
+                <div class="col-auto my-auto">
+                    <div class="h-100">
+                        <h5 class="mb-1"> {{ $user->first_name }} {{ $user->last_name }} </h5>
+                        <p class="mb-0 font-weight-bold text-sm"> {{ $user->email }} </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1 bg-gray-300" role="tablist">
+                            <li class="nav-item"> <a
+                                    class="btn bg-gradient-warning mb-0 px-0 py-1 d-flex align-items-center justify-content-center"
+                                    href="{{ route('teacher.assignments.index') }}"> <i class="ni ni-bold-left"></i>
+                                    <span class="ms-2">Kembali</span> </a> </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Administrator Profile Section -->
+
+    <div class="card shadow-lg mx-4" style="margin-top: 1rem">
+        <!-- Header -->
+        <div class="card-header bg-gradient-info text-white py-3">
+            <h5 class="mb-0 fw-bold">
+                <i class="bi bi-journal-text me-2"></i> {{ $assignment->title }}
+            </h5>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+            <!-- Detail Info -->
+            <div class="mb-4">
+                <div class="row mb-2">
+                    <div class="col-4 col-md-3 fw-bold">Mata Pelajaran</div>
+                    <div class="col-8 col-md-9 text-secondary">: {{ $assignment->subject->subject_name }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4 col-md-3 fw-bold">Kelas</div>
+                    <div class="col-8 col-md-9 text-secondary">: {{ $assignment->classroom->grade_level }} -
+                        {{ $assignment->classroom->class_name }}</div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4 col-md-3 fw-bold">Tanggal Pengerjaan</div>
+                    <div class="col-8 col-md-9 text-secondary">:
+                        {{ \Carbon\Carbon::parse($assignment->task_date)->translatedFormat('d F Y') }}
+                        {{ $assignment->task_time }}
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4 col-md-3 fw-bold text-danger">Deadline</div>
+                    <div class="col-8 col-md-9">
+                        : <span class="badge bg-danger">
+                            {{ \Carbon\Carbon::parse($assignment->deadline_date)->translatedFormat('d F Y') }}
+                            {{ $assignment->deadline_time }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Deskripsi -->
+            @if ($assignment->description)
+                <div class="mb-4">
+                    <h6 class="fw-bold text-dark">Deskripsi</h6>
+                    <p class="text-muted">{{ $assignment->description }}</p>
+                </div>
+            @endif
+
+            <!-- Berkas -->
+            <div class="mb-4">
+                <h6 class="fw-bold text-dark">Berkas Soal</h6>
+                @if ($assignment->file)
+                    <a href="{{ asset('storage/' . $assignment->file) }}" target="_blank"
+                        class="btn btn-sm btn-outline-primary me-2">
+                        <i class="bi bi-file-earmark-arrow-down"></i> Unduh File
+                    </a>
+                @endif
+                @if ($assignment->file_link)
+                    <a href="{{ $assignment->file_link }}" target="_blank" class="btn btn-sm btn-outline-info">
+                        <i class="bi bi-link-45deg"></i> Lihat Link
+                    </a>
+                @endif
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div class="text-end">
+                <form action="{{ route('teacher.assignments.destroy', $assignment->id) }}" method="POST"
+                    onsubmit="return confirm('Yakin ingin menghapus tugas ini?');" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger text-white">
+                        <i class="bi bi-trash3-fill me-1"></i> Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Alert Notification for Add Class Success -->
+    <script>
+        window.onload = function() {
+            @if (session('success'))
+                var virtualClassSuccessModal = new bootstrap.Modal(document.getElementById('virtualClassSuccess'));
+                virtualClassSuccessModal.show();
+            @endif
+        };
+    </script>
+
+    <div class="modal fade" id="virtualClassSuccess" tabindex="-1" role="dialog"
+        aria-labelledby="virtualClassSuccessLabel" aria-hidden="true">
+        <div class="modal-dialog modal-success modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="virtualClassSuccessLabel">Sukses</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="py-3 text-center">
+                        <i class="ni ni-check-bold text-success ni-3x"></i>
+                        <h4 class="text-gradient text-success mt-4">Berhasil!</h4>
+                        <p>{{ session('success') }}</p> <!-- Menampilkan pesan sukses dari session -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-round bg-gradient-info" data-bs-dismiss="modal">Ok,
+                        Mengerti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal Notification for Adding Class Success -->
+
+</x-layout.teacher>
+{{-- End Page: Teacher Show Assigments --}}

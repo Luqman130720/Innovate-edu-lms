@@ -1,6 +1,6 @@
 {{-- Start Page: Teacher Index Assigments --}}
 <x-layout.teacher>
-    <x-partials.teacher.navbar :title="$title" />
+        <x-partials.teacher.navbar :title="$title" />
     <!-- Administrator Profile Section -->
     <div class="card shadow-lg mx-4" style="margin-top: 10rem">
         <div class="card-body p-3">
@@ -110,7 +110,7 @@
                                                 </p>
                                             </td>
                                             <td class="align-middle text-center">
-                                                <a href="" {{-- <a href="{{ route('teacher.assignments.show', $assignment->id) }}" --}}
+                                                <a href="{{ route('teacher.assignments.show', $assignment->id) }}"
                                                     class="btn bg-gradient-primary btn-round text-light font-weight-bold text-xs ms-2"
                                                     data-toggle="tooltip" title="Detail Tugas">
                                                     Detail

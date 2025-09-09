@@ -17,9 +17,9 @@ class AssignmentController extends Controller
     {
         $user = Auth::guard('teacher')->user();
         $assignments = Assignment::with(['classroom', 'subject.teacher', 'classroom'])
-            ->whereHas('subject', function ($query) use ($user) {
-                $query->where('teacher_id', $user->id);
-            })->get();
+        ->whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        })->get();
         $title = 'Tugas Siswa';
         return view(
             'teacher::assignments.index',
@@ -94,10 +94,25 @@ class AssignmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Assignment $assignment)
+    public function show($id)
     {
-        //
+        $user = Auth::guard('teacher')->user();
+        $assignment = Assignment::with([
+            'classroom',
+            'subject',
+            'teacher',
+        ])->findOrFail($id);
+
+        $title = 'Detail Tugas Siswa';
+
+        return view('teacher::assignments.show',
+            compact(
+                'user',
+                'assignment',
+                'title',
+            ));
     }
+
 
     /**
      * Show the form for editing the specified resource.

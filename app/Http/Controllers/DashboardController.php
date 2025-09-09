@@ -34,10 +34,14 @@ class DashboardController extends Controller
 
     public function teacherDashboard()
     {
-        $title = 'Halaman Dashboard';
         $user = Auth::guard('teacher')->user();
         $mustChangePassword = (bool) optional($user)->must_change_password;
+        $title = 'Halaman Dashboard';
 
-        return view('teacher::index', compact('title', 'mustChangePassword'));
+        return view('teacher::index',
+        compact(
+            'mustChangePassword',
+            'title',
+        ));
     }
 }

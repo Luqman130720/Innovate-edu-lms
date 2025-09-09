@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -45,19 +46,19 @@ Route::group(
         Route::get('/', 'index')->name('index');
 
         // Profile Routes
-        // Route::group([
-        //     'prefix' => 'profile',
-        //     'as' => 'profile.',
-        //     'controller' => ProfileController::class
-        // ],
+        Route::group([
+            'prefix' => 'profile',
+            'as' => 'profile.',
+            'controller' => ProfileController::class
+        ],
 
-        //     function () {
-        //         // Route::get('/', 'index')->name('index');
-        //         Route::get('/edit', 'edit')->name('edit');
-        //         // Route::post('/store', 'store')->name('store');
-        //         Route::put('/{id}', 'update')->name('update');
-        //         // Route::delete('/{id}', 'destroy')->name('destroy');
-        // });
+            function () {
+                // Route::get('/', 'index')->name('index');
+                Route::get('/edit', 'edit')->name('edit');
+                // Route::post('/store', 'store')->name('store');
+                Route::put('/{id}', 'update')->name('update');
+                // Route::delete('/{id}', 'destroy')->name('destroy');
+        });
 
         // Classroom Routes
         Route::group([

@@ -2,12 +2,9 @@
 
 namespace App\Imports;
 
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
-use Illuminate\Support\Facades\Log;
 use App\Models\Subject;
 use App\Models\Classroom;
 use App\Models\User;

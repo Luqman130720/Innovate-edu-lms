@@ -4,8 +4,6 @@ namespace App\Imports;
 
 use App\Models\Student;
 use App\Models\Classroom;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Illuminate\Support\Facades\Hash;

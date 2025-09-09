@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Classroom;
 use App\Models\User;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SubjectsImport;
 
 class SubjectController extends Controller
 {
@@ -63,16 +65,16 @@ class SubjectController extends Controller
         return redirect()->route('operator.subjects.index')->with('success', 'Subject created successfully!');
     }
 
-    // public function import(Request $request)
-    // {
-    //     $request->validate([
-    //         'file' => 'required|mimes:xlsx,xls,csv',
-    //     ]);
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
 
-    //     Excel::import(new SubjectsImport, $request->file('file'));
+        Excel::import(new SubjectsImport, $request->file('file'));
 
-    //     return redirect()->back()->with('success', 'Data mata pelajaran berhasil diimpor!');
-    // }
+        return redirect()->back()->with('success', 'Data mata pelajaran berhasil diimpor!');
+    }
 
     /**
      * Display the specified resource.

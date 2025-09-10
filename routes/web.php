@@ -193,6 +193,20 @@ Route::group([
         Route::delete('/{id}', 'destroy')->name('destroy');
         // Route::get('/{id}/download', 'download')->name('download');
     });
+
+    // Profile Teacher Routes
+    Route::group(
+        [
+            'prefix' => 'profile',
+            'as' => 'profile.',
+            'controller' => ProfileController::class
+        ],
+
+        function () {
+            Route::get('/edit', 'edit_teacher')->name('edit');
+            Route::put('/{id}', 'update_teacher')->name('update');
+        }
+    );
 });
 
 Route::group([

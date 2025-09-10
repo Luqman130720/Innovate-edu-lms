@@ -5,6 +5,7 @@ use App\Http\Controllers\ClassroomController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IcebreakingController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
@@ -168,6 +169,16 @@ Route::group([
         Route::post('/store', 'store')->name('store');
         Route::get('/{id}/edit', 'edit')->name('edit');
         Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+    });
+
+    // Ice Breaking Routes
+    Route::group(['prefix' => 'icebreaking/', 'as' => 'icebreaking.', 'controller' => IcebreakingController::class], function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        // Route::get('/{id}/edit', 'edit')->name('edit');
+        // Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'destroy')->name('destroy');
     });
 });

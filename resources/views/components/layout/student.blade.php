@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Favicon dan Ikon Apple -->
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}">
-    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/dashboard/img/apple-icon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/dashboard/img/favicon.png') }}">
 
     <!-- Judul Halaman -->
     <title>DiscovalLMS</title>
@@ -18,14 +18,14 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 
     <!-- Nucleo Icons (Untuk ikon khusus di tema) -->
-    <link href="{{ asset('assets/css/nucleo-icons.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/css/nucleo-svg.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/dashboard/css/nucleo-icons.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/dashboard/css/nucleo-svg.css') }}" rel="stylesheet" />
 
     <!-- Font Awesome Icons (Versi 6.5.1) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- CSS Utama: Argon Dashboard -->
-    <link id="pagestyle" href="{{ asset('assets/css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
+    <link id="pagestyle" href="{{ asset('assets/dashboard/css/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
 
     <!-- Bootstrap Icons (Jika diperlukan, dari CDN) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -38,7 +38,7 @@
         <span class="mask bg-primary opacity-6"></span>
     </div>
 
-    <x-partials.student.side-nav></x-partials.student.side-nav>
+    <x-partials.student.sidebar></x-partials.student.sidebar>
     <div class="main-content position-relative max-height-vh-100 h-100">
         <div>
             {{ $slot }}
@@ -51,15 +51,15 @@
 
 
     <!--   Core JS Files   -->
-    <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <!-- Hapus asset untuk GitHub Buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="{{ asset('assets/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
-    <script src="{{ asset('assets/js/previewImage.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/chartjs.min.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/previewImage.js') }}"></script>
+    <script src="{{ asset('assets/dashboard/js/plugins/chartjs.min.js') }}"></script>
 
     <!-- Script Chart.js -->
     <script>

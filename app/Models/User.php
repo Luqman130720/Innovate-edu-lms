@@ -37,6 +37,7 @@ class User extends Authenticatable
         'profile_picture',
         'password',
         'role',
+        'must_change_password',
     ];
 
     /**

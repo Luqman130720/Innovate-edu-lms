@@ -6,7 +6,7 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html "
             target="_blank">
-            <img src="{{ asset('../assets/img/logo-ct-dark.png') }}" class="navbar-brand-img h-100" alt="main_logo">
+            <img src="{{ asset('../assets/dashboard/img/logo-ct-dark.png') }}" class="navbar-brand-img h-100" alt="main_logo">
             <span class="ms-1 font-weight-bold">Discoval - LMS</span>
         </a>
     </div>
@@ -102,7 +102,7 @@
     </div>
     <div class="sidenav-footer mx-3 ">
         <div class="card card-plain shadow-none" id="sidenavCard">
-            <img class="w-50 mx-auto" src="{{ asset('../assets/img/illustrations/icon-documentation.svg') }}"
+            <img class="w-50 mx-auto" src="{{ asset('../assets/dashboard/img/illustrations/icon-documentation.svg') }}"
                 alt="sidebar_illustration">
             <div class="card-body text-center p-3 w-100 pt-0">
                 <div class="docs-info">

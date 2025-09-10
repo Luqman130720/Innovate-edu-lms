@@ -1,9 +1,10 @@
-<x-layout.teacher>
-    <x-partials.teacher.navbar :title="$title" />
+<x-layout.student>
+    <x-partials.student.navbar :title="$title" />
 
-    @if (session('forcePasswordModal') === 'teacher')
+    @if (session('forcePasswordModal') === 'student')
         <script>
             document.addEventListener("DOMContentLoaded", function() {
+                console.log("Trigger modal student"); // Debug
                 var modal = new bootstrap.Modal(document.getElementById('forceChangePasswordModal'));
                 modal.show();
             });
@@ -30,7 +31,6 @@
                                 class="form-control @error('password') is-invalid @enderror" required minlength="8"
                                 autocomplete="new-password" autofocus>
                             @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -55,39 +55,8 @@
         </div>
     </div>
 
-    <form id="logout-form" action="{{ url('/logout') }}" method="POST" class="d-none">
-        @csrf
-    </form>
 
-    <div class="container-fluid py-4" style="margin-top: 1rem">
-        {{-- isi card dashboard --}}
-    </div>
-
-
-    @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const flags = {
-                    mustChange: @json($mustChangePassword),
-                    forceByFlash: @json((bool) session('forcePasswordModal')),
-                    hasErrors: @json($errors->any())
-                };
-
-                const modalEl = document.getElementById('forceChangePasswordModal');
-                if (!modalEl) return;
-
-                if (flags.mustChange || flags.forceByFlash || flags.hasErrors) {
-                    const instance = new bootstrap.Modal(modalEl, {
-                        backdrop: 'static',
-                        keyboard: false
-                    });
-                    instance.show();
-                }
-            });
-        </script>
-    @endpush
-
-    <div class="container-fluid py-4" style="margin-top: 1rem">
+    <div class="container-fluid py-4">
         <div class="row">
             <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                 <div class="card">
@@ -95,9 +64,9 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Pengguna</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Pelajaran</p>
                                     <h5 class="font-weight-bolder">
-                                        {{-- {{ number_format($totalUsers) }} --}}
+                                        {{ number_format($totalUsers) }}
                                     </h5>
                                     <p class="mb-0">
                                         <span class="text-success text-sm font-weight-bolder">+10%</span>
@@ -121,9 +90,10 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Kelas Aktif</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Daftar Tugas Terselesaikan
+                                    </p>
                                     <h5 class="font-weight-bolder">
-                                        {{-- {{ number_format($countClassroom) }} --}}
+                                        {{ number_format($countClassroom) }}
                                     </h5>
                                     <p class="mb-0">
                                         <span class="text-success text-sm font-weight-bolder">+5%</span>
@@ -147,9 +117,10 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Guru</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Daftar Tugas Belum
+                                        Terselesaikan</p>
                                     <h5 class="font-weight-bolder">
-                                        {{-- {{ number_format($countTeacher) }} --}}
+                                        {{ number_format($countTeacher) }}
                                     </h5>
                                     <p class="mb-0">
                                         <span class="text-danger text-sm font-weight-bolder">-3%</span>
@@ -173,9 +144,9 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="numbers">
-                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Siswa</p>
+                                    <p class="text-sm mb-0 text-uppercase font-weight-bold">Daftar Ujian</p>
                                     <h5 class="font-weight-bolder">
-                                        {{-- {{ number_format($countStudent) }} --}}
+                                        {{ number_format($countStudent) }}
                                     </h5>
                                     <p class="mb-0">
                                         <span class="text-success text-sm font-weight-bolder">+4%</span>semester genap
@@ -493,4 +464,4 @@
             </div>
         </div>
     </div>
-</x-layout.teacher>
+</x-layout.student>

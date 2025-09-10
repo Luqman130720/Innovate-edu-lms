@@ -11,9 +11,18 @@ class PasswordController extends Controller
 {
     public function showChangeForm()
     {
-        // Kalau user buka /password/change secara manual,
-        // kita balikkan ke dashboard mereka dan paksa buka modal via flash session.
-        return redirect()->route('teacher.index')->with('forcePasswordModal', true);
+        // Tentukan guard mana yang sedang login
+        if (Auth::guard('teacher')->check()) {
+            return redirect()->route('teacher.index')
+                ->with('forcePasswordModal', 'teacher');
+        }
+
+        if (Auth::guard('student')->check()) {
+            return redirect()->route('student.index')
+                ->with('forcePasswordModal', 'student');
+        }
+
+        return redirect('/')->withErrors('Unauthorized access. Please log in.');
     }
 
     public function changePassword(Request $request)
@@ -22,19 +31,26 @@ class PasswordController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        /** @var User $user */
-        $user = Auth::guard('teacher')->user()
-            ?? Auth::guard('student')->user();
+        // Ambil user yang login (teacher atau student)
+        $user = Auth::guard('teacher')->user() ?? Auth::guard('student')->user();
 
         if (!$user) {
             return redirect('/')->withErrors('Unauthorized access. Please log in.');
         }
 
+        // Update password dan tandai sudah ganti
         $user->password = Hash::make($request->password);
         $user->must_change_password = false;
         $user->save();
 
-        return redirect('/')
-            ->with('success', 'Password berhasil diperbarui. Silakan login kembali.');
+        // Hapus session modal
+        session()->forget('forcePasswordModal');
+
+        // Logout user dari semua guard yang mungkin aktif
+        Auth::guard('teacher')->logout();
+        Auth::guard('student')->logout();
+
+        // Redirect ke login page
+        return redirect('/')->with('success', 'Password berhasil diperbarui. Silakan login dengan password baru.');
     }
 }

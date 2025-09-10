@@ -12,20 +12,18 @@ class MustChangePassword
 {
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::guard('teacher')->user()
-            ?? Auth::guard('student')->user()
+        // Ambil user dari semua guard
+        $user = Auth::guard('student')->user()
+            ?? Auth::guard('teacher')->user()
             ?? Auth::guard('operator')->user();
-;
 
+
+        // Jika belum login
         if (!$user) {
             return redirect('/')->withErrors('Unauthorized access. Please log in.');
         }
 
-        // kalau user tidak wajib ganti password, blokir akses ke /password/*
-        if (!$user->must_change_password) {
-            return abort(403, 'Anda tidak diwajibkan mengganti password.');
-        }
-
+        // Lanjutkan request
         return $next($request);
     }
 }

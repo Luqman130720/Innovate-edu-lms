@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Student extends Model
+class Student extends Authenticatable
 {
     use Notifiable;
     protected $fillable = [
@@ -28,7 +28,17 @@ class Student extends Model
         'profile_picture',
         'password',
         'role',
+        'must_change_password',
     ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    public function getAuthIdentifierName()
+    {
+        return 'nisn';
+    }
 
     public function classroom()
     {

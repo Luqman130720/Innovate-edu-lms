@@ -1,3 +1,4 @@
+@props(['title'])
 {{-- Start - Partial Student Navbar --}}
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
     data-scroll="false">

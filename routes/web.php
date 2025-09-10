@@ -27,9 +27,9 @@ Route::group(['prefix' => 'login', 'as' => 'login.', 'controller' => LoginContro
     Route::get('/portal', 'portal')->name('portal');
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/contact', 'contact')->name('contact');
-    Route::get('/student', 'studentLoginForm')->name('student');
-    Route::get('/operator', 'operatorLoginForm')->name('operator');
-    Route::get('/teacher', 'teacherLoginForm')->name('teacher');
+    // Route::get('/student', 'studentLoginForm')->name('student');
+    // Route::get('/operator', 'operatorLoginForm')->name('operator');
+    // Route::get('/teacher', 'teacherLoginForm')->name('teacher');
     Route::post('/operator', 'loginOperator')->name('operator.post');
     Route::post('/teacher', 'loginTeacher')->name('teacher.post');
     Route::post('/student', 'loginStudent')->name('student.post');
@@ -144,10 +144,11 @@ Route::group(
     }
 );
 
+// Teacher Dashboard Routes
 Route::group([
     'prefix' => 'teacher',
     'as' => 'teacher.',
-    'middleware' => ['role:teacher'],
+    'middleware' => ['must.change.password', 'role:teacher'],
     'controller' => DashboardController::class
 ], function () {
     Route::get('/', 'teacherDashboard')->name('index');
@@ -209,12 +210,31 @@ Route::group([
     );
 });
 
+// Student Dashboard Routes
+Route::group([
+    'prefix' => 'student',
+    'as' => 'student.',
+    'middleware' => ['must.change.password', 'role:student'],
+    'controller' => DashboardController::class
+], function () {
+    Route::get('/', 'studentDashboard')->name('index');
+
+    Route::group(['prefix' => 'materials/', 'as' => 'materials.', 'controller' => MaterialController::class], function () {
+        Route::get('/', 'indexForStudent')->name('indexForStudent');
+        // Route::get('/create', 'create')->name('create');
+        // Route::post('/store', 'store')->name('store');
+        // Route::get('/{id}/edit', 'edit')->name('edit');
+        // Route::put('/{id}', 'update')->name('update');
+        // Route::delete('/{id}', 'destroy')->name('destroy');
+        // Route::get('/{id}/download', 'download')->name('download');
+    });
+});
+
+// Password Change Routes
 Route::group([
     'prefix' => 'password',
     'as' => 'password.',
-    'middleware' => ['role:student,teacher', 'mustChangePassword'],
     'controller' => PasswordController::class
 ], function () {
-    Route::get('/change', 'showChangeForm')->name('change.form');
     Route::post('/change', 'changePassword')->name('change');
 });

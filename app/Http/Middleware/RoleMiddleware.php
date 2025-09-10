@@ -9,27 +9,48 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
+
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        // Periksa apakah pengguna terautentikasi di salah satu guard
-        if (!Auth::guard('student')->check() && !Auth::guard('teacher')->check() && !Auth::guard('operator')->check()) {
+
+        $guards = ['student', 'teacher', 'operator'];
+        $user = null;
+
+        // Cari user dari guard yang login
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+                $user = Auth::guard($guard)->user();
+                break;
+            }
+        }
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+                $user = Auth::guard($guard)->user();
+                break;
+            }
+        }
+
+        // dd(
+        //     'Guards:',
+        //     [
+        //         'teacher' => Auth::guard('teacher')->check(),
+        //         'student' => Auth::guard('student')->check(),
+        //         'operator' => Auth::guard('operator')->check(),
+        //     ],
+        //     'User class:',
+        //     get_class($user),
+        //     'User role:',
+        //     $user->role
+        // );
+
+
+        if (!$user) {
             return redirect('/')->withErrors('Unauthorized access. Please log in.');
         }
 
-        // Ambil role pengguna sesuai dengan guard yang terautentikasi
-        $userRole = null;
-
-        if (Auth::guard('student')->check()) {
-            $userRole = Auth::guard('student')->user()->role; // Ambil role student
-        } elseif (Auth::guard('teacher')->check()) {
-            $userRole = Auth::guard('teacher')->user()->role; // Ambil role teacher
-        } elseif (Auth::guard('operator')->check()) {
-            $userRole = Auth::guard('operator')->user()->role; // Ambil role operator
-        }
-
-        // Cek apakah role pengguna ada dalam list role yang diizinkan
-        if (!in_array($userRole, $roles)) {
-            return abort(403, 'Unauthorized access.'); // Respon Forbidden
+        // Cek role
+        if (!in_array($user->role, $roles)) {
+            return abort(403, 'Unauthorized access.');
         }
 
         return $next($request);

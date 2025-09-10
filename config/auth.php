@@ -68,7 +68,11 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'operators' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+        'teachers' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
@@ -76,15 +80,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Student::class,
         ],
-        'operators' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Operator::class,
-    ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

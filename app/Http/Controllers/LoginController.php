@@ -68,13 +68,20 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        // Gunakan guard 'teacher' untuk autentikasi
         if (Auth::guard('teacher')->attempt($credentials, $request->filled('remember'))) {
+            $user = Auth::guard('teacher')->user();
+
+            // Cek apakah wajib ganti password
+            if ($user->must_change_password) {
+                session(['forcePasswordModal' => 'teacher']);
+            }
+
             return redirect()->intended('/teacher');
         }
 
         return back()->withErrors(['email' => 'Email atau password salah.']);
     }
+
 
     public function loginOperator(Request $request)
     {
@@ -87,6 +94,32 @@ class LoginController extends Controller
 
         return back()->withErrors(['email' => 'Email atau password salah.']);
     }
+
+
+    public function loginStudent(Request $request)
+    {
+        $request->validate([
+            'nisn' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $credentials = $request->only('nisn', 'password');
+
+        if (Auth::guard('student')->attempt($credentials, $request->filled('remember'))) {
+            $user = Auth::guard('student')->user();
+
+            // Cek apakah wajib ganti password
+            if ($user->must_change_password) {
+                // Set session untuk modal
+                session(['forcePasswordModal' => 'student']);
+            }
+
+            return redirect()->intended('/student');
+        }
+
+        return back()->withErrors(['nisn' => 'NISN atau password salah.']);
+    }
+
 
     public function logout(Request $request)
     {

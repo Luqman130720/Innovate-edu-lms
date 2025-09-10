@@ -44,22 +44,25 @@
                             <div class="tab-content" data-aos="fade-up" data-aos-delay="200">
 
                                 <!-- Login Siswa -->
-                                <div class="tab-pane fade active show" id="login-siswa">
-                                    <form>
+                                <div class="tab-pane show active" id="login-siswa">
+                                    <form method="POST" action="{{ route('login.student.post') }}">
+                                        @csrf
                                         <div class="mb-3">
-                                            <label for="siswaEmail" class="form-label">Email Siswa</label>
-                                            <input type="email" class="form-control rounded-pill" id="siswaEmail"
-                                                placeholder="nama@siswa.com">
+                                            <label for="nisnSiswa" class="form-label">Nisn Siswa</label>
+                                            <input type="text" name="nisn" class="form-control rounded-pill"
+                                                id="nisnSiswa" placeholder="Nisn Siswa">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="siswaPassword" class="form-label">Password</label>
-                                            <input type="password" class="form-control rounded-pill" id="siswaPassword"
-                                                placeholder="Masukkan password">
+                                            <label for="password" class="form-label">Password</label>
+                                            <input type="password" name="password" class="form-control rounded-pill"
+                                                id="password" placeholder="Masukkan password" required
+                                                autocomplete="current-password">
                                         </div>
-                                        <button type="submit" class="btn btn-primary w-100 rounded-pill">Login
-                                            Siswa</button>
+                                        <button type="submit" class="btn btn-primary w-100 rounded-pill">Login Siswa</button>
                                     </form>
-                                </div><!-- End tab content item -->
+                                </div>
+
+                                <!-- End tab content item -->
 
                                 <!-- Login Guru -->
                                 <div class="tab-pane fade" id="login-guru">
@@ -93,8 +96,8 @@
                                         <div class="mb-3">
                                             <label for="adminPassword" class="form-label">Password</label>
                                             <input type="password" name="password" class="form-control rounded-pill"
-                                                id="adminPassword" placeholder="Masukkan password" aria-label="password"
-                                                autocomplete="current-password" required>
+                                                id="adminPassword" placeholder="Masukkan password"
+                                                aria-label="password" autocomplete="current-password" required>
                                         </div>
                                         <button type="submit" class="btn btn-danger w-100 rounded-pill">Login
                                             Admin</button>

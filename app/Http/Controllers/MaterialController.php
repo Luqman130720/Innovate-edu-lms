@@ -60,6 +60,7 @@ class MaterialController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::guard('teacher')->user();
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -79,7 +80,6 @@ class MaterialController extends Controller
         if ($request->hasFile('cover_image')) {
             $coverImagePath = $request->file('cover_image')->store('cover_images', 'public');
         }
-
         Material::create([
             'title' => $request->title,
             'author' => $request->author,
@@ -87,6 +87,7 @@ class MaterialController extends Controller
             'description' => $request->description,
             'classroom_id' => $request->classroom_id,
             'subject_id' => $request->subject_id,
+            'teacher_id' => $user->id,
             'file' => $fileKontenPath,
             'link' => $request->link,
             'cover_image' => $coverImagePath,
@@ -141,5 +142,40 @@ class MaterialController extends Controller
         $content->delete();
 
         return redirect()->route('teacher.materials.index')->with('success_delete', 'Konten berhasil dihapus.');
+    }
+
+
+    // Student Pages
+    //Materials
+    public function studentMaterialsIndex()
+    {
+        $user = Auth::guard('student')->user();
+        $materials = Material::with(['classroom', 'subject', 'teacher'])->get();
+        $title = 'Materi Pelajaran';
+        // $materials = Material::with(['classroom', 'subject'])->get();
+        return view(
+            'student::materials.index',
+
+            compact(
+                'user',
+                'materials',
+                'title',
+            )
+        );
+    }
+
+    public function studentMaterialsShow($id)
+    {
+        $user = Auth::guard('student')->user();
+        $title = 'Materi Pelajaran';
+        $material = Material::with(['subject', 'classroom', 'teacher'])->findOrFail($id);
+        return view(
+            'student::materials.show',
+            compact(
+                'user',
+                'material',
+                'title'
+            )
+        );
     }
 }

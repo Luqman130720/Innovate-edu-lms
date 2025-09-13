@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignId('classroom_id')->constrained()->onDelete('cascade');
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
+            $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
             $table->string('file')->nullable();
             $table->string('link')->nullable();
             $table->string('cover_image')->nullable();

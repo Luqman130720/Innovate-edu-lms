@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-
     public function handle(Request $request, Closure $next, ...$roles)
     {
-
         $guards = ['student', 'teacher', 'operator'];
         $user = null;
 
@@ -23,26 +21,6 @@ class RoleMiddleware
                 break;
             }
         }
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                $user = Auth::guard($guard)->user();
-                break;
-            }
-        }
-
-        // dd(
-        //     'Guards:',
-        //     [
-        //         'teacher' => Auth::guard('teacher')->check(),
-        //         'student' => Auth::guard('student')->check(),
-        //         'operator' => Auth::guard('operator')->check(),
-        //     ],
-        //     'User class:',
-        //     get_class($user),
-        //     'User role:',
-        //     $user->role
-        // );
-
 
         if (!$user) {
             return redirect('/')->withErrors('Unauthorized access. Please log in.');

@@ -219,8 +219,9 @@ Route::group([
 ], function () {
     Route::get('/', 'studentDashboard')->name('index');
 
-    Route::group(['prefix' => 'materials/', 'as' => 'materials.', 'controller' => MaterialController::class], function () {
-        Route::get('/', 'indexForStudent')->name('indexForStudent');
+    Route::group(['prefix' => 'materials', 'as' => 'materials.', 'controller' => MaterialController::class], function () {
+        Route::get('/', 'studentMaterialsIndex')->name('studentMaterialsIndex');
+        Route::get('/{id}', 'studentMaterialsShow')->name('studentMaterialsShow');
         // Route::get('/create', 'create')->name('create');
         // Route::post('/store', 'store')->name('store');
         // Route::get('/{id}/edit', 'edit')->name('edit');

@@ -39,7 +39,7 @@
                 <div class="collapse" id="userManagementDropdown">
                     <ul class="nav flex-column ms-4">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('student.materials.indexForStudent') }}">
+                            <a class="nav-link" href="{{ route('student.materials.studentMaterialsIndex') }}">
                                 <span class="nav-link-text">Materi Belajar</span>
                             </a>
                         </li>

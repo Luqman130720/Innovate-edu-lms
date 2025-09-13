@@ -13,6 +13,7 @@ class Material extends Model
         'description',
         'classroom_id',
         'subject_id',
+        'teacher_id',
         'file',
         'link',
         'cover_image',
@@ -26,5 +27,10 @@ class Material extends Model
     public function subject()
     {
         return $this->belongsTo(Subject::class);
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, 'teacher_id');
     }
 }

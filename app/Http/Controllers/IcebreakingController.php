@@ -121,4 +121,24 @@ class IcebreakingController extends Controller
 
         return redirect()->route('teacher.icebreaking.index')->with('success', 'Data Icebreaking berhasil dihapus');
     }
+
+    public function studentIcebreakingIndex()
+    {
+        $title = 'Ice Breaking';
+        $user = Auth::guard('student')->user();
+        $icebreakings = Icebreaking::with(['classroom', 'subject.teacher'])
+            ->whereHas('subject', function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            })
+            ->get();
+        // dd($icebreakings);
+        return view(
+            'student::icebreaker.index',
+            compact(
+                'user',
+                'title',
+                'icebreakings',
+            )
+        );
+    }
 }

@@ -179,8 +179,6 @@ Route::group([
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
-        // Route::get('/{id}/edit', 'edit')->name('edit');
-        // Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'destroy')->name('destroy');
     });
 
@@ -232,6 +230,14 @@ Route::group([
     // Virtual Class Routes
     Route::group(['prefix' => 'virtual-class', 'as' => 'virtual-class.', 'controller' => VirtualClassController::class], function () {
         Route::get('/', 'studentVirtualClassIndex')->name('studentVirtualClassIndex');
+    });
+
+    // Ice Breaking Routes
+    Route::group(['prefix' => 'icebreaking', 'as' => 'icebreaking.', 'controller' => IcebreakingController::class], function () {
+        Route::get('/', 'studentIcebreakingIndex')->name('index');
+        // Route::get('/create', 'create')->name('create');
+        // Route::post('/store', 'store')->name('store');
+        // Route::delete('/{id}', 'destroy')->name('destroy');
     });
 });
 

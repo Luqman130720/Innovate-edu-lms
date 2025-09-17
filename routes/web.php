@@ -239,6 +239,20 @@ Route::group([
         // Route::post('/store', 'store')->name('store');
         // Route::delete('/{id}', 'destroy')->name('destroy');
     });
+
+    // Profile Routes
+    Route::group(
+        [
+            'prefix' => 'profile',
+            'as' => 'profile.',
+            'controller' => ProfileController::class
+        ],
+
+        function () {
+            Route::get('/edit', 'edit_student')->name('edit');
+            Route::put('/{id}', 'update_student')->name('update');
+        }
+    );
 });
 
 // Password Change Routes

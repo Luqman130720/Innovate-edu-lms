@@ -154,7 +154,7 @@ Route::group([
     Route::get('/', 'teacherDashboard')->name('index');
 
     // Assignment Routes
-    Route::group(['prefix' => 'assignments/', 'as' => 'assignments.', 'controller' => AssignmentController::class], function () {
+    Route::group(['prefix' => 'assignments', 'as' => 'assignments.', 'controller' => AssignmentController::class], function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
@@ -165,7 +165,7 @@ Route::group([
     });
 
     // Virtual Class Routes
-    Route::group(['prefix' => 'virtual-class/', 'as' => 'virtual-class.', 'controller' => VirtualClassController::class], function () {
+    Route::group(['prefix' => 'virtual-class', 'as' => 'virtual-class.', 'controller' => VirtualClassController::class], function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
@@ -227,6 +227,11 @@ Route::group([
     Route::group(['prefix' => 'assignments', 'as' => 'assignments.', 'controller' => AssignmentController::class], function () {
         Route::get('/', 'studentAssignmentsIndex')->name('studentAssignmentsIndex');
         Route::get('/{id}', 'studentAssignmentsShow')->name('studentAssignmentsShow');
+    });
+
+    // Virtual Class Routes
+    Route::group(['prefix' => 'virtual-class', 'as' => 'virtual-class.', 'controller' => VirtualClassController::class], function () {
+        Route::get('/', 'studentVirtualClassIndex')->name('studentVirtualClassIndex');
     });
 });
 

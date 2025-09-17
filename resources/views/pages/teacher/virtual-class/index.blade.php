@@ -42,7 +42,7 @@
     </div>
     <!-- Administrator Profile Section -->
 
-    <!-- Teacher Data Overview -->
+    <!-- Teacher Virtual-class list -->
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
@@ -141,7 +141,7 @@
             </div>
         </div>
     </div>
-    <!-- Teacher Data Overview -->
+    <!-- Teacher Virtual-class list -->
 
     <!-- Alert Notification for Add Class Success -->
     <script>

@@ -117,4 +117,25 @@ class VirtualClassController extends Controller
         $virtualClass->delete();
         return redirect()->route('teacher.virtual-class.index')->with('success', 'Kelas virtual berhasil dihapus.');
     }
+
+
+    public function studentVirtualClassIndex()
+    {
+        $user = Auth::guard('student')->user();
+        $virtualClasses = VirtualClass::with(['classroom', 'subject.teacher', 'classroom'])
+            ->whereHas('subject', function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            })->get();
+        $title = 'Kelas Virtual - Online';
+
+        return view(
+            'student::virtual-class.index',
+
+            compact(
+                'user',
+                'virtualClasses',
+                'title',
+            )
+        );
+    }
 }

@@ -49,7 +49,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('student.profile.update', $student->id) }}" method="POST"
+                        <form id="studentProfileForm" action="{{ route('student.profile.update', $student->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -255,33 +255,50 @@
                                             foto.</small>
                                     </div>
                                 </div>
-
-                                <!-- Password -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="password" class="form-control-label">Password Baru</label>
-                                        <input class="form-control" type="password" id="password" name="password"
-                                            placeholder="Masukkan password baru">
-                                    </div>
-                                </div>
-
-                                <!-- Konfirmasi Password -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="password_confirmation" class="form-control-label">Konfirmasi
-                                            Password</label>
-                                        <input class="form-control" type="password" id="password_confirmation"
-                                            name="password_confirmation" placeholder="Ulangi password baru">
-                                    </div>
-                                </div>
                             </div>
 
+
+                            <!-- Hidden confirm password -->
+                            <input type="hidden" name="confirm_password" id="confirm_password_hidden">
+
                             <div class="text-end mt-3">
-                                <button type="submit" class="btn btn-round bg-gradient-info">Perbarui Data</button>
+                                <button type="button" class="btn btn-round bg-gradient-info"
+                                    id="btnShowConfirmModal">
+                                    Perbarui Data
+                                </button>
                                 <a href="{{ route('student.profile.edit') }}"
                                     class="btn btn-round bg-gradient-danger">Batal</a>
                             </div>
+
                         </form>
+
+                        <!-- Modal Konfirmasi Password -->
+                        <div class="modal fade" id="confirmPasswordModal" tabindex="-1"
+                            aria-labelledby="confirmPasswordModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmPasswordModalLabel">Konfirmasi Password
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Tutup"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Masukkan password Anda untuk konfirmasi pembaruan profil.</p>
+                                        <input type="password" id="confirmPasswordInput" class="form-control"
+                                            placeholder="Masukkan password Anda">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Batal</button>
+                                        <button type="button" class="btn btn-primary"
+                                            id="btnConfirmSubmit">Konfirmasi</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

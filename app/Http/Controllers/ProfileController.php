@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -172,9 +173,10 @@ class ProfileController extends Controller
 
     public function update_student(Request $request, $id)
     {
+        $student = Student::findOrFail($id);
         $request->validate([
-            'nis' => 'nullable|string|max:50|unique:students,nis,' . $id,
-            'nisn' => 'nullable|string|max:50|unique:students,nisn,' . $id,
+            'nis' => 'nullable|string|max:50|unique:students,nis,' . $student->id,
+            'nisn' => 'nullable|string|max:50|unique:students,nisn,' . $student->id,
             'full_name' => 'required|string|max:255',
             'classroom_id' => 'nullable|exists:classrooms,id',
             'gender' => 'nullable|in:L,P',
@@ -190,42 +192,32 @@ class ProfileController extends Controller
             'email' => 'nullable|email|max:255',
             'religion' => 'nullable|string|max:50',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'password' => 'nullable|string|min:8|confirmed',
+            'confirm_password' => 'required|string', // hanya untuk konfirmasi
         ]);
 
-        $student = Student::findOrFail($id);
-        $student->nis = $request->input('nis');
-        $student->nisn = $request->input('nisn');
-        $student->full_name = $request->input('full_name');
-        $student->classroom_id = $request->input('classroom_id');
-        $student->gender = $request->input('gender');
-        $student->date_of_birth = $request->input('date_of_birth');
-        $student->place_of_birth = $request->input('place_of_birth');
-        $student->address = $request->input('address');
-        $student->city = $request->input('city');
-        $student->province = $request->input('province');
-        $student->postal_code = $request->input('postal_code');
-        $student->country = $request->input('country');
-        $student->phone_number = $request->input('phone_number');
-        $student->emergency_contact = $request->input('emergency_contact');
-        $student->email = $request->input('email');
-        $student->religion = $request->input('religion');
+        // pastikan yang update adalah siswa yang sedang login
+        $authStudent = Auth::guard('student')->user();
 
-        if ($request->filled('password')) {
-            $student->password = bcrypt($request->input('password'));
-            $student->must_change_password = false; // jika password diubah
+        if (!Hash::check($request->confirm_password, $authStudent->password)) {
+            return back()->withErrors([
+                'confirm_password' => 'Password tidak sesuai, update dibatalkan.'
+            ]);
         }
+
+        // update profil (tanpa ubah password)
+        $student->fill($request->except(['confirm_password', 'profile_picture']));
 
         if ($request->hasFile('profile_picture')) {
             if ($student->profile_picture) {
                 Storage::disk('public')->delete($student->profile_picture);
             }
-
-            $student->profile_picture = $request->file('profile_picture')->store('students/profile_pictures', 'public');
+            $student->profile_picture = $request->file('profile_picture')
+                ->store('students/profile_pictures', 'public');
         }
 
         $student->save();
 
-        return redirect()->route('student.profile.edit')->with('success', 'Profil siswa berhasil diperbarui.');
+        return redirect()->route('student.index')
+            ->with('success', 'Profil siswa berhasil diperbarui.');
     }
 }

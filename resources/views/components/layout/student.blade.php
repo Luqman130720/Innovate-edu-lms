@@ -21,6 +21,7 @@
     <link href="{{ asset('assets/dashboard/css/nucleo-icons.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dashboard/css/nucleo-svg.css') }}" rel="stylesheet" />
 
+    <!-- Nucleo Icons (Untuk ikon khusus di tema) -->
     <!-- Font Awesome Icons (Versi 6.5.1) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -56,6 +57,10 @@
     <script src="{{ asset('assets/dashboard/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <!-- Hapus asset untuk GitHub Buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Profile Confirm -->
+    <script src="{{ asset('assets/dashboard/js/profile-confirm.js') }}"></script>
+
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('assets/dashboard/js/argon-dashboard.min.js?v=2.0.4') }}"></script>
     <script src="{{ asset('assets/dashboard/js/previewImage.js') }}"></script>

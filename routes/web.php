@@ -222,12 +222,11 @@ Route::group([
     Route::group(['prefix' => 'materials', 'as' => 'materials.', 'controller' => MaterialController::class], function () {
         Route::get('/', 'studentMaterialsIndex')->name('studentMaterialsIndex');
         Route::get('/{id}', 'studentMaterialsShow')->name('studentMaterialsShow');
-        // Route::get('/create', 'create')->name('create');
-        // Route::post('/store', 'store')->name('store');
-        // Route::get('/{id}/edit', 'edit')->name('edit');
-        // Route::put('/{id}', 'update')->name('update');
-        // Route::delete('/{id}', 'destroy')->name('destroy');
-        // Route::get('/{id}/download', 'download')->name('download');
+    });
+
+    Route::group(['prefix' => 'assignments', 'as' => 'assignments.', 'controller' => AssignmentController::class], function () {
+        Route::get('/', 'studentAssignmentsIndex')->name('studentAssignmentsIndex');
+        Route::get('/{id}', 'studentAssignmentsShow')->name('studentAssignmentsShow');
     });
 });
 

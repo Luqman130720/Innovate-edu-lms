@@ -59,7 +59,7 @@
                 <div class="collapse" id="classDataDropdown">
                     <ul class="nav flex-column ms-4">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('operator.classroom.index') }}">
+                            <a class="nav-link" href="{{ route('student.assignments.studentAssignmentsIndex') }}">
                                 <span class="nav-link-text">Tugas Sekolah</span>
                             </a>
                         </li>

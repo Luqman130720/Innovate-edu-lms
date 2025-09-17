@@ -17,9 +17,9 @@ class AssignmentController extends Controller
     {
         $user = Auth::guard('teacher')->user();
         $assignments = Assignment::with(['classroom', 'subject.teacher', 'classroom'])
-        ->whereHas('subject', function ($query) use ($user) {
-            $query->where('teacher_id', $user->id);
-        })->get();
+            ->whereHas('subject', function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            })->get();
         $title = 'Tugas Siswa';
         return view(
             'teacher::assignments.index',
@@ -105,12 +105,14 @@ class AssignmentController extends Controller
 
         $title = 'Detail Tugas Siswa';
 
-        return view('teacher::assignments.show',
+        return view(
+            'teacher::assignments.show',
             compact(
                 'user',
                 'assignment',
                 'title',
-            ));
+            )
+        );
     }
 
 
@@ -148,5 +150,38 @@ class AssignmentController extends Controller
         $content->delete();
 
         return redirect()->route('teacher.assignments.index')->with('success', 'Tugas berhasil dihapus.');
+    }
+
+
+    // Student Pages
+    //Materials
+    public function studentAssignmentsIndex()
+    {
+        $user = Auth::guard('student')->user();
+        $assignments = Assignment::with(['classroom', 'subject', 'teacher'])->get();
+        $title = 'Daftar Tugas';
+        return view(
+            'student::assignments.index',
+
+            compact(
+                'user',
+                'assignments',
+                'title',
+            )
+        );
+    }
+    public function studentAssignmentsShow($id)
+    {
+        $user = Auth::guard('student')->user();
+        $title = 'Detail Tugas';
+        $assignment = Assignment::with(['subject', 'classroom', 'teacher'])->findOrFail($id);
+        return view(
+            'student::assignments.show',
+            compact(
+                'user',
+                'assignment',
+                'title'
+            )
+        );
     }
 }

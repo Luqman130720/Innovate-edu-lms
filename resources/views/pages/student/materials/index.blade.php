@@ -1,3 +1,4 @@
+{{-- Start Page: Student Materials / e-book --}}
 <x-layout.student>
 
     <x-partials.student.navbar :title="$title" />
@@ -137,3 +138,4 @@
     <!-- End of Modal Notification for Adding Class Success -->
 
 </x-layout.student>
+{{-- End Page: Student Materials / e-book --}}

@@ -1,36 +1,48 @@
-{{-- Start Page: Teacher Show Assigments --}}
-<x-layout.teacher>
-    <x-partials.teacher.navbar :title="$title" />
+{{-- Start Page: Student Assignment --}}
+<x-layout.student>
+
+    <x-partials.student.navbar :title="$title" />
+
     <!-- Administrator Profile Section -->
-    <div class="card shadow-lg mx-4" style="margin-top: 10rem">
+    <div class="card shadow-lg mx-4 card-profile-bottom" style="margin-top: 180px">
         <div class="card-body p-3">
             <div class="row gx-4">
                 <div class="col-auto">
-                    <div class="avatar avatar-xl position-relative"> <img
-                            src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/dashboard/img/team-1.jpg') }}"
-                            alt="profile_image" class="w-100 border-radius-lg shadow-sm"> </div>
+                    <div class="avatar avatar-xl position-relative">
+                        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/img/team-1.jpg') }}"
+                            alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                    </div>
                 </div>
                 <div class="col-auto my-auto">
                     <div class="h-100">
-                        <h5 class="mb-1"> {{ $user->first_name }} {{ $user->last_name }} </h5>
-                        <p class="mb-0 font-weight-bold text-sm"> {{ $user->email }} </p>
+                        <h5 class="mb-1">
+                            {{ $user->full_name }}
+                        </h5>
+                        <p class="mb-0 font-weight-bold text-sm">
+                            {{ $user->email }}
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-4 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                     <div class="nav-wrapper position-relative end-0">
                         <ul class="nav nav-pills nav-fill p-1 bg-gray-300" role="tablist">
-                            <li class="nav-item"> <a
-                                    class="btn bg-gradient-warning mb-0 px-0 py-1 d-flex align-items-center justify-content-center"
-                                    href="{{ route('teacher.assignments.index') }}"> <i class="ni ni-bold-left"></i>
-                                    <span class="ms-2">Kembali</span> </a> </li>
+                            <li class="nav-item">
+                                <a class="btn bg-gradient-warning mb-0 px-0 py-1 d-flex align-items-center justify-content-center"
+                                    href="{{ route('student.index') }}">
+                                    <i class="ni ni-bold-left"></i>
+                                    <span class="ms-2">Kembali</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
+
+
             </div>
         </div>
-    </div>
-    <!-- Administrator Profile Section -->
-    <!-- Teacher Assignment List -->
+    </div><!-- Administrator Profile Section -->
+
+    <!-- Student Assignment List -->
     <div class="card shadow-lg mx-4" style="margin-top: 1rem">
         <!-- Header -->
         <div class="card-header bg-gradient-info text-white py-3">
@@ -60,9 +72,9 @@
                     </div>
                 </div>
                 <div class="row mb-2">
-                    <div class="col-4 col-md-3 fw-bold text-danger">Deadline</div>
+                    <div class="col-4 col-md-3 fw-bold text-warning">Deadline</div>
                     <div class="col-8 col-md-9">
-                        : <span class="badge bg-danger">
+                        : <span class="badge bg-warning">
                             {{ \Carbon\Carbon::parse($assignment->deadline_date)->translatedFormat('d F Y') }}
                             {{ $assignment->deadline_time }}
                         </span>
@@ -97,21 +109,19 @@
 
             <!-- Tombol Aksi -->
             <div class="text-end">
-                <form action="{{ route('teacher.assignments.destroy', $assignment->id) }}" method="POST"
+                <form action="#" method="POST"
+                {{-- <form action="{{ route('teacher.assignments.destroy', $assignment->id) }}" method="POST" --}}
                     onsubmit="return confirm('Yakin ingin menghapus tugas ini?');" class="d-inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger text-white">
-                        <i class="bi bi-trash3-fill me-1"></i> Hapus
+                    <button type="submit" class="btn btn-warning rounded-pill text-white">
+                        <i class="bi bi-trash3-fill me-1"></i> Kiriim Tugas
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Teacher Assignment List -->
-
-
-
+    <!-- Student Assignment List -->
 
 
     <!-- Alert Notification for Add Class Success -->
@@ -150,5 +160,5 @@
     </div>
     <!-- End of Modal Notification for Adding Class Success -->
 
-</x-layout.teacher>
-{{-- End Page: Teacher Show Assigments --}}
+    </x-layout.nstudent>
+    {{-- Ed Page: Student Assignment --}}

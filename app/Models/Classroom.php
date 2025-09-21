@@ -17,7 +17,7 @@ class Classroom extends Model
 
     public function students(): HasMany
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class, 'classroom_id');
     }
 
     public function homeroomTeacher(): BelongsTo

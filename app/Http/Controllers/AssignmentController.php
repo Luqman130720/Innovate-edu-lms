@@ -116,6 +116,30 @@ class AssignmentController extends Controller
         );
     }
 
+    public function showSubmissions(Assignment $assignment)
+    {
+        $user = Auth::guard('teacher')->user();
+        $students = $assignment->classroom->students;
+        $title = 'Detail Tugas Siswa';
+        $submissions = Submission::where('assignment_id', $assignment->id)
+            ->with('student')
+            ->get()
+            ->keyBy('student_id');
+
+        return view(
+            'teacher::submissions.show',
+
+            compact(
+                'assignment',
+                'students',
+                'submissions',
+                'title',
+                'user',
+            )
+        );
+    }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -175,16 +199,30 @@ class AssignmentController extends Controller
     {
         $user = Auth::guard('student')->user();
         $title = 'Detail Tugas';
-        $assignment = Assignment::with(['subject', 'classroom', 'teacher'])->findOrFail($id);
+
+        $assignment = Assignment::with(['subject', 'classroom', 'classroom.students'])->findOrFail($id);
+
+        $students = $assignment->classroom->students; // collection of Student
+
+        $submissions = Submission::where('assignment_id', $assignment->id)
+            ->with('student')
+            ->get()
+            ->keyBy('student_id'); // key by student_id
+
         return view(
             'student::assignments.show',
+
             compact(
                 'user',
                 'assignment',
-                'title'
+                'title',
+                'students',
+                'submissions',
             )
         );
     }
+
+
 
     public function studentAssignmentsSubmit(Request $request, Assignment $assignment)
     {

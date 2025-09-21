@@ -11,6 +11,7 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SubmissionsController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\VirtualClassController;
 
@@ -159,6 +160,7 @@ Route::group([
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::get('/{id}', 'show')->name('show');
+        Route::get('/{assignment}/submissions', 'showSubmissions')->name('showSubmissions');
         // Route::get('/{id}/edit', 'edit')->name('edit');
         // Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'destroy')->name('destroy');
@@ -175,7 +177,7 @@ Route::group([
     });
 
     // Ice Breaking Routes
-    Route::group(['prefix' => 'icebreaking/', 'as' => 'icebreaking.', 'controller' => IcebreakingController::class], function () {
+    Route::group(['prefix' => 'icebreaking', 'as' => 'icebreaking.', 'controller' => IcebreakingController::class], function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
@@ -183,14 +185,20 @@ Route::group([
     });
 
     // Material Routes
-    Route::group(['prefix' => 'materials/', 'as' => 'materials.', 'controller' => MaterialController::class], function () {
+    Route::group(['prefix' => 'materials', 'as' => 'materials.', 'controller' => MaterialController::class], function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
-        // Route::get('/{id}/edit', 'edit')->name('edit');
-        // Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'destroy')->name('destroy');
-        // Route::get('/{id}/download', 'download')->name('download');
+    });
+
+    // Submission Routes
+    Route::group(['prefix' => 'submissions', 'as' => 'submissions.', 'controller' => SubmissionsController::class], function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        // Route::get('/show/{assignment}', 'show')->name('show');
+        // Route::post('/store', 'store')->name('store');
+        // Route::delete('/{id}', 'destroy')->name('destroy');
     });
 
     // Profile Teacher Routes

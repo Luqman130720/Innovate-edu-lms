@@ -47,7 +47,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="">
+                            <a class="nav-link" href="{{ route('teacher.submissions.index') }}">
                                 <span class="nav-link-text">Penilaian Tugas</span>
                             </a>
                         </li>

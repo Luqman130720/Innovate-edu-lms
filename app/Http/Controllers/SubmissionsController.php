@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Assignment;
 use App\Models\Submission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SubmissionsController extends Controller
 {
@@ -13,7 +14,19 @@ class SubmissionsController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::guard('teacher')->user();
+        $submissions = Submission::with(['assignment.subject', 'student'])->latest()->get();
+        $title = 'Penilaian Tugas';
+
+        return view(
+            'teacher::submissions.index',
+
+            compact(
+                'user',
+                'submissions',
+                'title',
+            )
+        );
     }
 
     /**

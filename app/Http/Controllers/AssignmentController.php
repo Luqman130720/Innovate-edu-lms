@@ -6,6 +6,7 @@ use App\Models\Assignment;
 use Illuminate\Http\Request;
 use App\Models\Classroom;
 use App\Models\Subject;
+use App\Models\Submission;
 use Illuminate\Support\Facades\Auth;
 
 class AssignmentController extends Controller
@@ -183,5 +184,32 @@ class AssignmentController extends Controller
                 'title'
             )
         );
+    }
+
+    public function studentAssignmentsSubmit(Request $request, Assignment $assignment)
+    {
+        $request->validate([
+            'assignment_file' => 'required|file|max:10240|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png',
+        ]);
+
+        // Simpan file ke storage/app/public/submissions
+        $path = $request->file('assignment_file')->store('submissions', 'public');
+
+        // Ambil ID student dari guard 'student'
+        $studentId = Auth::guard('student')->user()->id;
+
+        // Update kalau sudah pernah submit, kalau belum create baru
+        Submission::updateOrCreate(
+            [
+                'assignment_id' => $assignment->id,
+                'student_id'    => $studentId,
+            ],
+            [
+                'file'         => $path,
+                'submitted_at' => now(),
+            ]
+        );
+
+        return back()->with('success', 'Tugas berhasil dikirim.');
     }
 }

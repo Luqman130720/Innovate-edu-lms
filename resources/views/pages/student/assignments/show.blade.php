@@ -109,19 +109,16 @@
 
             <!-- Tombol Aksi -->
             <div class="text-end">
-                <form action="#" method="POST"
-                {{-- <form action="{{ route('teacher.assignments.destroy', $assignment->id) }}" method="POST" --}}
-                    onsubmit="return confirm('Yakin ingin menghapus tugas ini?');" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-warning rounded-pill text-white">
-                        <i class="bi bi-trash3-fill me-1"></i> Kiriim Tugas
-                    </button>
-                </form>
+                <button type="button" class="btn btn-warning rounded-pill text-white" data-bs-toggle="modal"
+                    data-bs-target="#submitAssignmentModal">
+                    <i class="bi bi-send-fill me-1"></i> Kirim Tugas
+                </button>
             </div>
+
         </div>
     </div>
     <!-- Student Assignment List -->
+
 
 
     <!-- Alert Notification for Add Class Success -->
@@ -159,6 +156,76 @@
         </div>
     </div>
     <!-- End of Modal Notification for Adding Class Success -->
+
+    <!-- Start Modal: Student Add Assignment -->
+    <div class="modal fade" id="submitAssignmentModal" tabindex="-1" aria-labelledby="submitAssignmentLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="submitAssignmentLabel">Kirim Tugas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+
+                <form action="{{ route('student.assignments.submit', $assignment->id) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <!-- Body -->
+                    <div class="modal-body">
+
+                        <!-- Informasi Detail Tugas -->
+                        <div class="mb-4 p-3 rounded bg-light">
+                            <h6 class="fw-bold text-dark mb-3">
+                                <i class="bi bi-info-circle me-1"></i> Detail Tugas
+                            </h6>
+                            <div class="row mb-2">
+                                <div class="col-4 col-md-3 fw-bold">Mata Pelajaran</div>
+                                <div class="col-8 col-md-9 text-secondary">: {{ $assignment->subject->subject_name }}
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 col-md-3 fw-bold">Tema Tugas</div>
+                                <div class="col-8 col-md-9 text-secondary">: {{ $assignment->title }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 col-md-3 fw-bold">Kelas</div>
+                                <div class="col-8 col-md-9 text-secondary">: {{ $assignment->classroom->grade_level }}
+                                    -
+                                    {{ $assignment->classroom->class_name }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-4 col-md-3 fw-bold text-warning">Deadline</div>
+                                <div class="col-8 col-md-9">
+                                    : <span class="badge bg-warning text-dark">
+                                        {{ \Carbon\Carbon::parse($assignment->deadline_date)->translatedFormat('d F Y') }}
+                                        {{ $assignment->deadline_time }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Upload File -->
+                        <div class="mb-3">
+                            <label for="assignment_file" class="form-label">Upload File Tugas</label>
+                            <input class="form-control" type="file" id="assignment_file" name="assignment_file"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png" required>
+                            <small class="text-muted">Format: PDF, DOC, XLS, PPT, JPG, PNG. Maks 10MB</small>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-warning text-white">
+                            <i class="bi bi-upload me-1"></i> Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal: Student Add Assignment -->
 
     </x-layout.nstudent>
     {{-- Ed Page: Student Assignment --}}

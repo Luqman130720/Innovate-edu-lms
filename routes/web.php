@@ -224,7 +224,8 @@ Route::group([
 
     Route::group(['prefix' => 'assignments', 'as' => 'assignments.', 'controller' => AssignmentController::class], function () {
         Route::get('/', 'studentAssignmentsIndex')->name('studentAssignmentsIndex');
-        Route::get('/{id}', 'studentAssignmentsShow')->name('studentAssignmentsShow');
+        Route::get('/{assignment}', 'studentAssignmentsShow')->name('Show');
+        Route::post('/{assignment}/submit', 'studentAssignmentsSubmit')->name('submit');
     });
 
     // Virtual Class Routes

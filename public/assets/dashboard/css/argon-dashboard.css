@@ -26933,4 +26933,25 @@ pre[class*="language-"] {
   }
 }
 
+.modal {
+  z-index: 9999 !important;
+  position: fixed !important;
+}
+.modal-backdrop {
+  z-index: 9998 !important;
+}
+.modal-dialog {
+  margin: auto !important;       /* Biar benar-benar ke tengah */
+  max-width: 600px;              /* Biar nggak terlalu lebar */
+}
+
+@media (min-width: 992px) {
+  .modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+  }
+}
+
+
 /*# sourceMappingURL=dashboard-free.css.map */

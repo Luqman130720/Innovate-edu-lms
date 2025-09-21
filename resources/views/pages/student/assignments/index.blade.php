@@ -9,7 +9,7 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/img/team-1.jpg') }}"
+                        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/dashboard/img/team-1.jpg') }}"
                             alt="profile_image" class="w-100 border-radius-lg shadow-sm">
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                                                 </p>
                                             </td>
                                             <td class="align-middle text-center">
-                                                <a href="{{ route('student.assignments.studentAssignmentsShow', $assignment->id) }}"
+                                                <a href="{{ route('student.assignments.Show', $assignment->id) }}"
                                                     class="btn bg-gradient-primary btn-round text-light font-weight-bold text-xs ms-2"
                                                     data-toggle="tooltip" title="Detail Tugas">
                                                     Detail

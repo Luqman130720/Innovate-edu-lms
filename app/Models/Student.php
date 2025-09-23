@@ -44,4 +44,9 @@ class Student extends Authenticatable
     {
         return $this->belongsTo(Classroom::class);
     }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class, 'student_id');
+    }
 }

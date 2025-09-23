@@ -77,7 +77,7 @@ class SubmissionsController extends Controller
         //
     }
 
-    public function updateScore (Request $request, Submission $submission)
+    public function updateScore(Request $request, Submission $submission)
     {
         $request->validate([
             'score' => 'nullable|integer|min:0|max:100',
@@ -90,5 +90,22 @@ class SubmissionsController extends Controller
         ]);
 
         return back()->with('success', 'Penilaian berhasil disimpan.');
+    }
+
+
+
+    // Student Methods
+    // Untuk siswa melihat semua nilai
+
+    public function evaluations()
+    {
+        $user = Auth::guard('student')->user(); // langsung student
+        $submissions = $user->submissions()
+            ->with('assignment.subject', 'assignment.classroom')
+            ->get();
+
+        $title = 'Daftar Penilaian';
+
+        return view('student::assignments.evaluations', compact('user', 'submissions', 'title'));
     }
 }

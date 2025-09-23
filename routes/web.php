@@ -237,6 +237,13 @@ Route::group([
         Route::post('/{assignment}/submit', 'studentAssignmentsSubmit')->name('submit');
     });
 
+    Route::group([
+        'prefix' => 'evaluations', 'as' => 'evaluations.', 'controller' => SubmissionsController::class], function () {
+        Route::get('/', 'evaluations')->name('index');
+        Route::get('/{id}', 'evaluationDetail')->name('show');
+    });
+
+
     // Virtual Class Routes
     Route::group(['prefix' => 'virtual-class', 'as' => 'virtual-class.', 'controller' => VirtualClassController::class], function () {
         Route::get('/', 'studentVirtualClassIndex')->name('studentVirtualClassIndex');

@@ -64,6 +64,11 @@
                                 <span class="nav-link-text">Tugas Sekolah</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('student.evaluations.index') }}">
+                                <span class="nav-link-text">Lihat Nilai</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>

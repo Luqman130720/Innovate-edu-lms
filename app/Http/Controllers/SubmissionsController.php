@@ -76,4 +76,19 @@ class SubmissionsController extends Controller
     {
         //
     }
+
+    public function updateScore (Request $request, Submission $submission)
+    {
+        $request->validate([
+            'score' => 'nullable|integer|min:0|max:100',
+            'feedback' => 'nullable|string',
+        ]);
+
+        $submission->update([
+            'score' => $request->score,
+            'feedback' => $request->feedback,
+        ]);
+
+        return back()->with('success', 'Penilaian berhasil disimpan.');
+    }
 }

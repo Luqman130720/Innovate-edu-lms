@@ -58,10 +58,9 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama Siswa</th>
-                                        <th>Status</th>
-                                        <th>File</th>
-                                        <th>Nilai</th>
-                                        <th>Feedback</th>
+                                        <th>Status Tugas</th>
+                                        <th>Status Penilaian</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -72,22 +71,28 @@
                                             <td>{{ $student->full_name }}</td>
                                             <td>
                                                 @if ($submission)
-                                                    <span class="badge bg-success">Sudah</span>
+                                                    <span class="badge bg-success">Sudah Mengumpulkan</span>
                                                 @else
-                                                    <span class="badge bg-danger">Belum</span>
+                                                    <span class="badge bg-danger">Belum Mengumpulkan</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($submission && $submission->score !== null)
+                                                    <span class="badge bg-primary">Sudah Dinilai</span>
+                                                @else
+                                                    <span class="badge bg-warning">Belum Dinilai</span>
                                                 @endif
                                             </td>
                                             <td>
                                                 @if ($submission)
-                                                    <a href="{{ asset('storage/' . $submission->file) }}"
-                                                        target="_blank">Lihat File</a>
+                                                    <button class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#submissionModal{{ $submission->id }}">
+                                                        Info
+                                                    </button>
                                                 @endif
                                             </td>
-                                            <td>{{ $submission->score ?? '-' }}</td>
-                                            <td>{{ $submission->feedback ?? '-' }}</td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
                         </div>
@@ -97,6 +102,105 @@
         </div>
     </div>
     <!-- Teacher Data Overview -->
+
+    @foreach ($students as $student)
+        @php $submission = $submissions->get($student->id); @endphp
+        @if ($submission)
+            <div class="modal fade" id="submissionModal{{ $submission->id }}" tabindex="-1"
+                aria-labelledby="submissionModalLabel{{ $submission->id }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content rounded-4 shadow-lg border-0 overflow-hidden">
+
+                        {{-- Header --}}
+                        <div class="modal-header text-white"
+                            style="background: linear-gradient(135deg, #dfc04e, #f20000);">
+                            <h5 class="modal-title d-flex align-items-center">
+                                <i class="fas fa-user-graduate me-2"></i>
+                                Detail Tugas - {{ $student->full_name }}
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        {{-- Body --}}
+                        <div class="modal-body bg-light">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-white rounded shadow-sm">
+                                        <i class="fas fa-user text-primary me-2"></i>
+                                        <strong>Nama:</strong> {{ $student->full_name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-white rounded shadow-sm">
+                                        <i class="fas fa-file-alt text-success me-2"></i>
+                                        <strong>File Tugas:</strong>
+                                        <a href="{{ asset('storage/' . $submission->file) }}" target="_blank"
+                                            class="ms-2">
+                                            @php
+                                                $ext = pathinfo($submission->file, PATHINFO_EXTENSION);
+                                                $icons = [
+                                                    'pdf' => 'fas fa-file-pdf text-danger',
+                                                    'doc' => 'fas fa-file-word text-primary',
+                                                    'docx' => 'fas fa-file-word text-primary',
+                                                    'xls' => 'fas fa-file-excel text-success',
+                                                    'xlsx' => 'fas fa-file-excel text-success',
+                                                    'png' => 'fas fa-file-image text-info',
+                                                    'jpg' => 'fas fa-file-image text-info',
+                                                    'jpeg' => 'fas fa-file-image text-info',
+                                                ];
+                                            @endphp
+                                            <i class="{{ $icons[$ext] ?? 'fas fa-file text-secondary' }}"></i>
+                                            Lihat File
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form action="{{ route('teacher.submissions.updateScore', $submission->id) }}"
+                                method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="mb-3">
+                                    <label for="score{{ $submission->id }}" class="form-label">
+                                        <i class="fas fa-star text-warning me-1"></i> Nilai
+                                    </label>
+                                    <input type="number" name="score" id="score{{ $submission->id }}"
+                                        class="form-control rounded-3 shadow-sm" value="{{ $submission->score }}">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="feedback{{ $submission->id }}" class="form-label">
+                                        <i class="fas fa-comment-dots text-info me-1"></i> Feedback
+                                    </label>
+                                    <textarea name="feedback" id="feedback{{ $submission->id }}" class="form-control rounded-3 shadow-sm" rows="3">{{ $submission->feedback }}</textarea>
+                                </div>
+
+                                {{-- Footer --}}
+                                <div class="modal-footer d-flex justify-content-between align-items-center"
+                                    style="background: linear-gradient(135deg, #f39c12, #d35400);
+                                       border-top: 1px solid rgba(255,255,255,0.2);
+                                       border-bottom-left-radius: 1rem;
+                                       border-bottom-right-radius: 1rem;">
+                                    <button type="button" class="btn btn-light shadow-sm" data-bs-dismiss="modal">
+                                        <i class="fas fa-times me-1"></i> Tutup
+                                    </button>
+                                    <button type="submit" class="btn text-white px-4 py-2 shadow-sm"
+                                        style="background: linear-gradient(135deg, #1cc88a, #20c997); border-radius: .75rem;">
+                                        <i class="fas fa-save me-1"></i> Simpan Penilaian
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endforeach
+
+
 
     <!-- Alert Notification for Add Class Success -->
     <script>

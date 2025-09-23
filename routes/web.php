@@ -196,6 +196,7 @@ Route::group([
     Route::group(['prefix' => 'submissions', 'as' => 'submissions.', 'controller' => SubmissionsController::class], function () {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
+        Route::put('/submissions/{submission}', 'updateScore')->name('updateScore');
         // Route::get('/show/{assignment}', 'show')->name('show');
         // Route::post('/store', 'store')->name('store');
         // Route::delete('/{id}', 'destroy')->name('destroy');

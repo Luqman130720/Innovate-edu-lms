@@ -1,6 +1,6 @@
 {{-- Start Page: Teacher Index Assigments --}}
 <x-layout.teacher>
-        <x-partials.teacher.navbar :title="$title" />
+    <x-partials.teacher.navbar :title="$title" />
     <!-- Administrator Profile Section -->
     <div class="card shadow-lg mx-4" style="margin-top: 10rem">
         <div class="card-body p-3">
@@ -40,6 +40,97 @@
         </div>
     </div>
     <!-- Administrator Profile Section -->
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div
+                        class="card-header bg-transparent border-0 pt-4 pb-2 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-dark fw-bold"><i class="bi bi-funnel-fill me-2"></i>Filter Tugas</h5>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('teacher.assignments.index') }}"
+                                class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm fw-bold">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Reset
+                            </a>
+                            <button type="submit" form="filterForm"
+                                class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm fw-bold">
+                                <i class="bi bi-search me-1"></i> Cari
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card-body px-4 py-3">
+                        <form id="filterForm" method="GET" action="{{ route('teacher.assignments.index') }}">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-lg-2 col-md-4 col-12">
+                                    <label for="classroomSelect" class="form-label text-muted fw-semibold">Kelas</label>
+                                    <select name="classroom_id" id="classroomSelect"
+                                        class="form-select border-0 shadow-sm rounded-3">
+                                        <option value="">Semua Kelas</option>
+                                        @foreach ($classrooms as $classroom)
+                                            <option value="{{ $classroom->id }}"
+                                                {{ request('classroom_id') == $classroom->id ? 'selected' : '' }}>
+                                                {{ $classroom->grade_level }} - {{ $classroom->class_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-2 col-md-4 col-12">
+                                    <label for="subjectSelect" class="form-label text-muted fw-semibold">Mata
+                                        Pelajaran</label>
+                                    <select name="subject_id" id="subjectSelect"
+                                        class="form-select border-0 shadow-sm rounded-3">
+                                        <option value="">Semua Mapel</option>
+                                        @foreach ($subjects as $subject)
+                                            <option value="{{ $subject->id }}"
+                                                {{ request('subject_id') == $subject->id ? 'selected' : '' }}>
+                                                {{ $subject->subject_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <label for="titleInput" class="form-label text-muted fw-semibold">Judul
+                                        Tugas</label>
+                                    <input type="text" name="title" id="titleInput"
+                                        class="form-control border-0 shadow-sm rounded-3" placeholder="Cari judul..."
+                                        value="{{ request('title') }}">
+                                </div>
+
+                                <div class="col-lg-2 col-md-6 col-12">
+                                    <label for="deadlineStartInput" class="form-label text-muted fw-semibold">Deadline
+                                        Dari</label>
+                                    <input type="date" name="deadline_start" id="deadlineStartInput"
+                                        class="form-control border-0 shadow-sm rounded-3"
+                                        value="{{ request('deadline_start') }}">
+                                </div>
+
+                                <div class="col-lg-2 col-md-6 col-12">
+                                    <label for="deadlineEndInput" class="form-label text-muted fw-semibold">Deadline
+                                        Sampai</label>
+                                    <input type="date" name="deadline_end" id="deadlineEndInput"
+                                        class="form-control border-0 shadow-sm rounded-3"
+                                        value="{{ request('deadline_end') }}">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function resetForm() {
+            if (document.getElementById('resetToggle').checked) {
+                window.location.href = "{{ route('teacher.assignments.index') }}";
+            }
+        }
+    </script>
+
+
 
     <!-- Teacher Data Overview -->
     <div class="container-fluid py-4">

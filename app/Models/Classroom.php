@@ -24,4 +24,14 @@ class Classroom extends Model
     {
         return $this->belongsTo(User::class, 'homeroom_teacher_id');
     }
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
+
+    public function subjects()
+    {
+        return $this->hasMany(Subject::class);
+    }
 }

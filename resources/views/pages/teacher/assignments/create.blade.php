@@ -54,19 +54,19 @@
                         <form action="{{ route('teacher.assignments.store') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
+                            <!-- Mata Pelajaran -->
                             <div class="form-group">
-                                <label for="subject" class="form-control-label">Mapel <span
-                                        class="text-danger">*</span></label>
-                                <select class="form-control" id="subject" name="subject" required>
-                                    <option value="" disabled selected>Pilih Mapel</option>
+                                <label for="subject_id">Mata Pelajaran <span class="text-danger">*</span></label>
+                                <select class="form-control" id="subject_id" name="subject_id" required>
+                                    <option value="" disabled selected>Pilih Mata Pelajaran</option>
                                     @foreach ($subjects as $subject)
                                         <option value="{{ $subject->id }}"
-                                            {{ old('subject') == $subject->id ? 'selected' : '' }}>
+                                            {{ old('subject_id') == $subject->id ? 'selected' : '' }}>
                                             {{ $subject->subject_name }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('subject')
+                                @error('subject_id')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -78,9 +78,9 @@
                                     placeholder="Judul Tugas" required>
                             </div>
 
+                            <!-- Kelas -->
                             <div class="form-group">
-                                <label for="classroom_id" class="form-control-label">Kelas <span
-                                        class="text-danger">*</span></label>
+                                <label for="classroom_id">Kelas <span class="text-danger">*</span></label>
                                 <select class="form-control" id="classroom_id" name="classroom_id" required>
                                     <option value="" disabled selected>Pilih Kelas</option>
                                     @foreach ($classrooms as $classroom)
@@ -90,6 +90,7 @@
                                         </option>
                                     @endforeach
                                 </select>
+
                                 @error('classroom_id')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

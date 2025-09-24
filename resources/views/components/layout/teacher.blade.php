@@ -68,12 +68,15 @@
 
 
     <x-partials.teacher.sidebar></x-partials.teacher.sidebar>
-    <div class="main-content position-relative max-height-vh-100 h-100">
-        <div>
+    {{-- <div class="main-content position-relative max-height-vh-100 h-100"> --}}
+    <div class="main-content d-flex flex-column min-vh-100">
+        <!-- Konten utama -->
+        <div class="flex-grow-1">
             {{ $slot }}
-            <!-- Debug untuk cek -->
-            <x-partials.teacher.footer></x-partials.teacher.footer>
         </div>
+
+        <!-- Footer tetap di bawah -->
+        <x-partials.teacher.footer></x-partials.teacher.footer>
     </div>
 
     <x-partials.teacher.panel></x-partials.teacher.panel>

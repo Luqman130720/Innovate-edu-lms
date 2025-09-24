@@ -14,23 +14,62 @@ class AssignmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::guard('teacher')->user();
-        $assignments = Assignment::with(['classroom', 'subject.teacher', 'classroom'])
+
+        // Assignments milik teacher
+        $assignments = Assignment::with(['classroom', 'subject'])
             ->whereHas('subject', function ($query) use ($user) {
                 $query->where('teacher_id', $user->id);
-            })->get();
+            });
+
+        // Filter tambahan
+        if ($request->filled('classroom_id')) {
+            $assignments->where('classroom_id', $request->classroom_id);
+        }
+
+        if ($request->filled('subject_id')) {
+            $assignments->where('subject_id', $request->subject_id);
+        }
+
+        if ($request->filled('title')) {
+            $assignments->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        if ($request->filled('deadline_start')) {
+            $assignments->whereDate('deadline_date', '>=', $request->deadline_start);
+        }
+
+        if ($request->filled('deadline_end')) {
+            $assignments->whereDate('deadline_date', '<=', $request->deadline_end);
+        }
+
+        if ($request->filled('has_file')) {
+            $assignments->whereNotNull('file');
+        }
+
+        $assignments = $assignments->get();
+
+        // Ambil data classrooms yang ada assignments-nya untuk teacher ini
+        $classrooms = Classroom::whereHas('assignments.subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        })->get();
+
+        // Ambil subjects milik teacher
+        $subjects = Subject::where('teacher_id', $user->id)->get();
+
         $title = 'Tugas Siswa';
-        return view(
-            'teacher::assignments.index',
-            compact(
-                'user',
-                'assignments',
-                'title',
-            )
-        );
+        return view('teacher::assignments.index', compact(
+            'user',
+            'assignments',
+            'title',
+            'classrooms',
+            'subjects'
+        ));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -38,19 +77,30 @@ class AssignmentController extends Controller
     public function create()
     {
         $user = Auth::guard('teacher')->user();
-        $classrooms = Classroom::where('homeroom_teacher_id', $user->id)->get();
-        $subjects = Subject::where('teacher_id', $user->id)->get();
+
+        // Ambil semua subject teacher beserta kelasnya
+        $subjects = Subject::where('teacher_id', $user->id)
+            ->with('classroom')
+            ->get();
+
+        // Ambil semua classroom unik dari subject
+        $classrooms = $subjects->pluck('classroom')->unique('id')->values();
+
         $title = 'Tugas Siswa';
-        return view(
-            'teacher::assignments.create',
-            compact(
-                'user',
-                'classrooms',
-                'subjects',
-                'title',
-            )
-        );
+        return view('teacher::assignments.create', compact(
+            'user',
+            'classrooms',
+            'subjects',
+            'title'
+        ));
     }
+
+
+
+
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -58,14 +108,14 @@ class AssignmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'subject' => 'required|exists:subjects,id',
+            'subject_id' => 'required|exists:subjects,id', // ubah dari 'subject'
             'title' => 'required|string|max:255',
             'classroom_id' => 'required|exists:classrooms,id',
             'task_date' => 'required|date',
             'task_time' => 'required',
             'deadline_date' => 'required|date',
             'deadline_time' => 'required',
-            'file' => 'required|file|mimes:pdf,doc,docx,jpg,png,xlsx|max:5120', // Maks 5MB
+            'file' => 'required|file|mimes:pdf,doc,docx,jpg,png,xlsx|max:5120',
             'file_link' => 'nullable|url',
             'description' => 'nullable|string'
         ]);
@@ -77,7 +127,7 @@ class AssignmentController extends Controller
         }
 
         Assignment::create([
-            'subject_id' => $request->subject,
+            'subject_id' => $request->subject_id, // ubah dari $request->subject
             'title' => $request->title,
             'classroom_id' => $request->classroom_id,
             'task_date' => $request->task_date,

@@ -126,12 +126,11 @@ class IcebreakingController extends Controller
     {
         $title = 'Ice Breaking';
         $user = Auth::guard('student')->user();
+
         $icebreakings = Icebreaking::with(['classroom', 'subject.teacher'])
-            ->whereHas('subject', function ($query) use ($user) {
-                $query->where('teacher_id', $user->id);
-            })
+            ->where('classroom_id', $user->classroom_id)
             ->get();
-        // dd($icebreakings);
+
         return view(
             'student::icebreaker.index',
             compact(

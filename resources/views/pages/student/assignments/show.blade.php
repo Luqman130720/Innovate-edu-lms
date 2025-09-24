@@ -9,8 +9,8 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/img/team-1.jpg') }}"
-                            alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        <img src="{{ Storage::url($user->profile_picture) }}" alt="profile_image"
+                            class="w-100 border-radius-lg shadow-sm">
                     </div>
                 </div>
                 <div class="col-auto my-auto">
@@ -28,7 +28,7 @@
                         <ul class="nav nav-pills nav-fill p-1 bg-gray-300" role="tablist">
                             <li class="nav-item">
                                 <a class="btn bg-gradient-warning mb-0 px-0 py-1 d-flex align-items-center justify-content-center"
-                                    href="{{ route('student.index') }}">
+                                    href="{{ route('student.assignments.studentAssignmentsIndex') }}">
                                     <i class="ni ni-bold-left"></i>
                                     <span class="ms-2">Kembali</span>
                                 </a>

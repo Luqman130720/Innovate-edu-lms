@@ -3,15 +3,16 @@
 
     <x-partials.student.navbar :title="$title" />
 
-    <!-- Administrator Profile Section -->
+    <!-- Student Profile Section -->
     <div class="card shadow-lg mx-4 card-profile-bottom" style="margin-top: 180px">
         <div class="card-body p-3">
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/dashboard/img/team-1.jpg') }}"
-                            alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        <img src="{{ Storage::url($user->profile_picture) }}" alt="profile_image"
+                            class="w-100 border-radius-lg shadow-sm">
                     </div>
+
                 </div>
                 <div class="col-auto my-auto">
                     <div class="h-100">
@@ -40,7 +41,8 @@
 
             </div>
         </div>
-    </div><!-- Administrator Profile Section -->
+    </div>
+    <!-- Student Profile Section -->
 
     <!-- Start: Student Data Evaluations -->
     <div class="container-fluid py-4">
@@ -50,7 +52,7 @@
 
                     {{-- Header --}}
                     <div class="card-header text-white"
-                        style="background: linear-gradient(135deg, #4e73df, #6f42c1); border-bottom: 0;">
+                        style="background: linear-gradient(135deg, #3c4b65, #344767); border-bottom: 0;">
                         <h5 class="mb-0 fw-bold text-white">
                             <i class="bi bi-journal-text me-2"></i> {{ $title ?? 'Daftar Penilaian' }}
                         </h5>
@@ -63,7 +65,8 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th class="text-center">No</th>
-                                        <th class="text-start">Nama Siswa</th>
+                                        <th class="text-start">Mapel</th>
+                                        <th class="text-start">Tugas</th>
                                         <th class="text-center">Status Tugas</th>
                                         <th class="text-center">Status Penilaian</th>
                                         <th class="text-center">Aksi</th>
@@ -73,7 +76,10 @@
                                     @forelse ($submissions as $submission)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td class="text-start fw-semibold">{{ $user->full_name }}</td>
+                                            <td class="text-start fw-semibold">
+                                                {{ $submission->assignment->subject->subject_name ?? '-' }}</td>
+                                            <td class="text-start fw-semibold">
+                                                {{ $submission->assignment->title ?? 'Tugas' }}</td>
 
                                             {{-- Status Tugas --}}
                                             <td>

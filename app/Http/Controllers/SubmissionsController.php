@@ -97,7 +97,7 @@ class SubmissionsController extends Controller
     // Student Methods
     // Untuk siswa melihat semua nilai
 
-    public function evaluations()
+    public function evaluations(Submission $submission)
     {
         $user = Auth::guard('student')->user(); // langsung student
         $submissions = $user->submissions()

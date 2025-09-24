@@ -179,22 +179,23 @@ class AssignmentController extends Controller
 
 
     // Student Pages
-    //Materials
     public function studentAssignmentsIndex()
     {
         $user = Auth::guard('student')->user();
-        $assignments = Assignment::with(['classroom', 'subject', 'teacher'])->get();
-        $title = 'Daftar Tugas';
-        return view(
-            'student::assignments.index',
 
-            compact(
-                'user',
-                'assignments',
-                'title',
-            )
-        );
+        // Ambil tugas sesuai kelas siswa dan yang belum dikumpulkan
+        $assignments = Assignment::with(['classroom', 'subject', 'teacher'])
+            ->where('classroom_id', $user->classroom_id)
+            ->whereDoesntHave('submissions', function ($query) use ($user) {
+                $query->where('student_id', $user->id);
+            })
+            ->get();
+
+        $title = 'Daftar Tugas';
+        return view('student::assignments.index', compact('user', 'assignments', 'title'));
     }
+
+
     public function studentAssignmentsShow($id)
     {
         $user = Auth::guard('student')->user();

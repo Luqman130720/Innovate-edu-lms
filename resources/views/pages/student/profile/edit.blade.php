@@ -9,8 +9,8 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="{{ $student->profile_picture ? Storage::url($student->profile_picture) : asset('assets/img/team-1.jpg') }}"
-                            alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        <img src="{{ Storage::url($student->profile_picture) }}" alt="profile_image"
+                            class="w-100 border-radius-lg shadow-sm">
                     </div>
                 </div>
                 <div class="col-auto my-auto">
@@ -49,8 +49,8 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <form id="studentProfileForm" action="{{ route('student.profile.update', $student->id) }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form id="studentProfileForm" action="{{ route('student.profile.update', $student->id) }}"
+                            method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 

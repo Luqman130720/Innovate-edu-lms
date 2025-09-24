@@ -30,7 +30,7 @@ class StudentSeeder extends Seeder
             $firstName = $gender === 'L' ? $faker->firstNameMale : $faker->firstNameFemale;
             $lastName = $faker->lastName;
 
-            $profileFile = "profile_student.png"; // contoh file foto
+            $profileFile = "studentProfileDefault.png"; // contoh file foto
             $destinationPath = 'profile_pictures/' . $profileFile;
 
             // kalau ada file di public/student{i}.png, copy ke storage

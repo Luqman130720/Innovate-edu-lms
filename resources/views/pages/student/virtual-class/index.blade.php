@@ -9,8 +9,8 @@
             <div class="row gx-4">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/img/team-1.jpg') }}"
-                            alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                        <img src="{{ Storage::url($user->profile_picture) }}" alt="profile_image"
+                            class="w-100 border-radius-lg shadow-sm">
                     </div>
                 </div>
                 <div class="col-auto my-auto">
@@ -190,7 +190,8 @@
                                                                     <span
                                                                         class="badge rounded-pill bg-gradient-info text-xxs font-weight-bolder opacity-7 px-3 py-2 fs-6 mb-2">
                                                                         <a href="{{ $virtualClass->virtual_class_link }}"
-                                                                            target="_blank" class="text-white"> <i class="bi bi-box-arrow-up-right me-2"></i>
+                                                                            target="_blank" class="text-white"> <i
+                                                                                class="bi bi-box-arrow-up-right me-2"></i>
                                                                             Join
                                                                             Virtual Class
                                                                         </a>

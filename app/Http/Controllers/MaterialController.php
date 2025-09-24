@@ -150,19 +150,19 @@ class MaterialController extends Controller
     public function studentMaterialsIndex()
     {
         $user = Auth::guard('student')->user();
-        $materials = Material::with(['classroom', 'subject', 'teacher'])->get();
+
+        $materials = Material::with(['classroom', 'subject', 'teacher'])
+            ->where('classroom_id', $user->classroom_id)
+            ->get();
+
         $title = 'Materi Pelajaran';
-        // $materials = Material::with(['classroom', 'subject'])->get();
+
         return view(
             'student::materials.index',
-
-            compact(
-                'user',
-                'materials',
-                'title',
-            )
+            compact('user', 'materials', 'title')
         );
     }
+
 
     public function studentMaterialsShow($id)
     {

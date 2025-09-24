@@ -3,7 +3,7 @@
     <x-partials.student.navbar :title="$title" />
 
     <!-- Student Profile Section -->
-    <div class="card shadow-lg mx-4 card-profile-bottom">
+    <div class="card shadow-lg mx-4 card-profile-bottom" style="margin-top: 180px">
         <div class="card-body p-3">
             <div class="row gx-4">
                 <div class="col-auto">

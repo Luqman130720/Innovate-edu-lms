@@ -122,20 +122,16 @@ class VirtualClassController extends Controller
     public function studentVirtualClassIndex()
     {
         $user = Auth::guard('student')->user();
-        $virtualClasses = VirtualClass::with(['classroom', 'subject.teacher', 'classroom'])
-            ->whereHas('subject', function ($query) use ($user) {
-                $query->where('teacher_id', $user->id);
-            })->get();
+
+        $virtualClasses = VirtualClass::with(['classroom', 'subject.teacher'])
+            ->where('classroom_id', $user->classroom_id)
+            ->get();
+
         $title = 'Kelas Virtual - Online';
 
         return view(
             'student::virtual-class.index',
-
-            compact(
-                'user',
-                'virtualClasses',
-                'title',
-            )
+            compact('user', 'virtualClasses', 'title')
         );
     }
 }

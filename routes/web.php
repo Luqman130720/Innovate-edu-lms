@@ -18,6 +18,9 @@ use App\Http\Controllers\VirtualClassController;
 Route::get('/', function () {
     return view('pages.landing.index');
 });
+Route::get('/test', function () {
+    return view('pages.teacher.materials.test');
+});
 
 // Route::get('/student', function () {
 //     return view('pages.admin.student.index');

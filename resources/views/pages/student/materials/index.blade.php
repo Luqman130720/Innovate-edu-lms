@@ -49,14 +49,9 @@
                 <div class="col-md-6 col-lg-4 mb-3">
                     <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
                         <div class="position-relative">
-                            @if ($material->cover_image)
-                                <img src="{{ asset('storage/' . $material->cover_image) }}"
-                                    class="card-img-top rounded-top" alt="Sampul Materi"
-                                    style="height: 200px; object-fit: cover;">
-                            @else
-                                <img src="{{ asset('images/default_cover.jpg') }}" class="card-img-top rounded-top"
-                                    alt="Sampul Default" style="height: 200px; object-fit: cover;">
-                            @endif
+                            <img src="{{ Str::startsWith($material->cover_image, 'cover_images/') ? Storage::url($material->cover_image) : asset('storage/cover_images/default.jpg') }}"
+                                class="card-img-top rounded-top" alt="Sampul Materi"
+                                style="height: 200px; object-fit: cover;">
                             <a href="{{ route('student.materials.studentMaterialsShow', $material->id) }}"
                                 class="btn btn-sm bg-gradient-warning text-dark d-flex align-items-center justify-content-center shadow position-absolute"
                                 style="top: 12px; right: 12px; z-index: 2; border-radius: 50px; min-width: 110px; height: 36px; padding: 0 10px; font-size: 0.85rem;"

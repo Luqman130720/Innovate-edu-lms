@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Classroom;
 use App\Models\Subject;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MaterialController extends Controller
 {
@@ -16,6 +19,13 @@ class MaterialController extends Controller
     public function index()
     {
         $user = Auth::guard('teacher')->user();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
         $materials = Material::with(['classroom', 'subject.teacher', 'classroom'])
             ->whereHas('subject', function ($query) use ($user) {
                 $query->where('teacher_id', $user->id);
@@ -29,6 +39,9 @@ class MaterialController extends Controller
                 'user',
                 'materials',
                 'title',
+                'totalSubjects',
+                'totalAssignments',
+                'totalClassrooms'
             )
         );
     }
@@ -39,7 +52,13 @@ class MaterialController extends Controller
     public function create()
     {
         $user = Auth::guard('teacher')->user();
-        // $classrooms = Classroom::all();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
         $classrooms = Classroom::where('homeroom_teacher_id', $user->id)->get();
         $subjects = Subject::where('teacher_id', $user->id)->get();
         $title = 'Materi Pelajaran';
@@ -51,6 +70,9 @@ class MaterialController extends Controller
                 'classrooms',
                 'subjects',
                 'title',
+                'totalSubjects',
+                'totalAssignments',
+                'totalClassrooms'
             )
         );
     }
@@ -58,43 +80,62 @@ class MaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $user = Auth::guard('teacher')->user();
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-            'publisher' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'classroom_id' => 'required|exists:classrooms,id',
-            'subject_id' => 'required|exists:subjects,id',
-            'file' => 'nullable|file|mimes:pdf,ppt,pptx,doc,docx,xls,xlsx,jpg,jpeg,png|max:5120',
-            'link' => 'nullable|url',
-            'cover_image' => 'nullable|image|max:2048',
-        ]);
+public function store(Request $request)
+{
+    $user = Auth::guard('teacher')->user();
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'author' => 'required|string|max:255',
+        'publisher' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'classroom_id' => 'required|exists:classrooms,id',
+        'subject_id' => 'required|exists:subjects,id',
+        'file' => 'required|file|mimes:pdf,ppt,pptx,doc,docx,xls,xlsx|max:10240',
+        'link' => 'nullable|url',
+        'cover_image' => 'nullable|string',
+    ]);
 
-        $originalFileName = $request->file('file')->getClientOriginalName();
-        $fileKontenPath = $request->file('file')->storeAs('file_materials', $originalFileName, 'public');
+    $fileKontenPath = $request->file('file')->store('file_materials', 'public');
 
-        $coverImagePath = null;
-        if ($request->hasFile('cover_image')) {
-            $coverImagePath = $request->file('cover_image')->store('cover_images', 'public');
+    $coverImagePath = null;
+    $base64Image = $request->input('cover_image');
+
+    if ($base64Image) {
+        // Cek apakah data base64 adalah gambar default atau data gambar
+        if (Str::startsWith($base64Image, 'assets/')) {
+            // Jika itu path default, simpan path-nya saja
+            $coverImagePath = $base64Image;
+        } else {
+            // Jika itu data base64, proses dan simpan gambarnya
+            $base64Data = substr($base64Image, strpos($base64Image, ',') + 1);
+            $imageData = base64_decode($base64Data);
+
+            if ($imageData) {
+                $fileName = 'cover_images/' . Str::uuid() . '.jpg';
+                Storage::disk('public')->put($fileName, $imageData);
+                $coverImagePath = $fileName;
+            } else {
+                // Jika decoding gagal, gunakan gambar default
+                $coverImagePath = 'assets/dashboard/img/bg-profile.jpg';
+            }
         }
-        Material::create([
-            'title' => $request->title,
-            'author' => $request->author,
-            'publisher' => $request->publisher,
-            'description' => $request->description,
-            'classroom_id' => $request->classroom_id,
-            'subject_id' => $request->subject_id,
-            'teacher_id' => $user->id,
-            'file' => $fileKontenPath,
-            'link' => $request->link,
-            'cover_image' => $coverImagePath,
-        ]);
-
-        return redirect()->route('teacher.materials.index')->with('success', 'konten belajar berhasil disimpan.');
     }
+
+    Material::create([
+        'title' => $request->title,
+        'author' => $request->author,
+        'publisher' => $request->publisher,
+        'description' => $request->description,
+        'classroom_id' => $request->classroom_id,
+        'subject_id' => $request->subject_id,
+        'teacher_id' => $user->id,
+        'file' => $fileKontenPath,
+        'link' => $request->link,
+        'cover_image' => $coverImagePath,
+    ]);
+
+    return redirect()->route('teacher.materials.index')->with('success', 'Konten berhasil disimpan.');
+}
 
     /**
      * Display the specified resource.

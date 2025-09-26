@@ -49,15 +49,9 @@
                     <div class="row g-0">
                         <!-- Cover Image (Kiri) -->
                         <div class="col-md-5 d-flex align-items-center justify-content-center bg-light">
-                            @if ($material->cover_image)
-                                <img src="{{ asset('storage/' . $material->cover_image) }}"
-                                    class="img-fluid rounded-start" alt="Sampul Materi"
-                                    style="width:100%; height:100%; object-fit:cover; object-position:center; border-radius:0.5rem;">
-                            @else
-                                <img src="{{ asset('images/default_cover.jpg') }}" class="img-fluid rounded-start"
-                                    alt="Sampul Default"
-                                    style="width:100%; height:100%; object-fit:cover; object-position:center; border-radius:0.5rem;">
-                            @endif
+                            <img src="{{ Str::startsWith($material->cover_image, 'assets/') ? asset($material->cover_image) : Storage::url($material->cover_image) }}"
+                                class="img-fluid rounded-start" alt="Sampul Materi"
+                                style="width:100%; height:100%; object-fit:cover; object-position:center; border-radius:0.5rem;">
                         </div>
                         <!-- Informasi E-Book (Kanan) -->
                         <div class="col-md-7">

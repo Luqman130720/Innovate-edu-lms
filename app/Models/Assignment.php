@@ -38,4 +38,5 @@ class Assignment extends Model
     {
         return $this->hasMany(Submission::class);
     }
+
 }

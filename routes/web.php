@@ -28,9 +28,6 @@ Route::group(['prefix' => 'login', 'as' => 'login.', 'controller' => LoginContro
     Route::get('/portal', 'portal')->name('portal');
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/contact', 'contact')->name('contact');
-    // Route::get('/student', 'studentLoginForm')->name('student');
-    // Route::get('/operator', 'operatorLoginForm')->name('operator');
-    // Route::get('/teacher', 'teacherLoginForm')->name('teacher');
     Route::post('/operator', 'loginOperator')->name('operator.post');
     Route::post('/teacher', 'loginTeacher')->name('teacher.post');
     Route::post('/student', 'loginStudent')->name('student.post');
@@ -161,8 +158,6 @@ Route::group([
         Route::post('/store', 'store')->name('store');
         Route::get('/{id}', 'show')->name('show');
         Route::get('/{assignment}/submissions', 'showSubmissions')->name('showSubmissions');
-        // Route::get('/{id}/edit', 'edit')->name('edit');
-        // Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'destroy')->name('destroy');
     });
 

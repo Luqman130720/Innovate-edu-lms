@@ -17,6 +17,13 @@ class AssignmentController extends Controller
     public function index(Request $request)
     {
         $user = Auth::guard('teacher')->user();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
 
         // Assignments milik teacher
         $assignments = Assignment::with(['classroom', 'subject'])
@@ -65,7 +72,10 @@ class AssignmentController extends Controller
             'assignments',
             'title',
             'classrooms',
-            'subjects'
+            'subjects',
+            'totalSubjects',
+            'totalAssignments',
+            'totalClassrooms'
         ));
     }
 
@@ -77,6 +87,13 @@ class AssignmentController extends Controller
     public function create()
     {
         $user = Auth::guard('teacher')->user();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
 
         // Ambil semua subject teacher beserta kelasnya
         $subjects = Subject::where('teacher_id', $user->id)
@@ -91,16 +108,12 @@ class AssignmentController extends Controller
             'user',
             'classrooms',
             'subjects',
-            'title'
+            'title',
+            'totalSubjects',
+            'totalAssignments',
+            'totalClassrooms'
         ));
     }
-
-
-
-
-
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -148,6 +161,13 @@ class AssignmentController extends Controller
     public function show($id)
     {
         $user = Auth::guard('teacher')->user();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
         $assignment = Assignment::with([
             'classroom',
             'subject',
@@ -162,6 +182,9 @@ class AssignmentController extends Controller
                 'user',
                 'assignment',
                 'title',
+                'totalSubjects',
+                'totalAssignments',
+                'totalClassrooms'
             )
         );
     }
@@ -169,6 +192,13 @@ class AssignmentController extends Controller
     public function showSubmissions(Assignment $assignment)
     {
         $user = Auth::guard('teacher')->user();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
         $students = $assignment->classroom->students;
         $title = 'Detail Tugas Siswa';
         $submissions = Submission::where('assignment_id', $assignment->id)
@@ -185,10 +215,12 @@ class AssignmentController extends Controller
                 'submissions',
                 'title',
                 'user',
+                'totalSubjects',
+                'totalAssignments',
+                'totalClassrooms'
             )
         );
     }
-
 
 
     /**

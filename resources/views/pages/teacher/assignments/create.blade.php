@@ -2,10 +2,10 @@
 <x-layout.teacher>
     <x-partials.teacher.navbar :title="$title" />
 
-    <!-- Administrator Profile Section -->
+    <!-- Teacher Profile Section -->
     <div class="card shadow-lg mx-4" style="margin-top: 10rem">
         <div class="card-body p-3">
-            <div class="row gx-4">
+            <div class="row gx-4 align-items-center">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
                         <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/dashboard/img/team-1.jpg') }}"
@@ -15,30 +15,34 @@
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ $user->first_name }} {{ $user->last_name }}
+                            {{ $user->first_name }} {{ $user->last_name }}, {{ $user->degree }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
                             {{ $user->email }}
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                    <div class="nav-wrapper position-relative end-0">
-                        <ul class="nav nav-pills nav-fill p-1 bg-gray-200" role="tablist">
-                            <li class="nav-item">
-                                <a class="btn bg-gradient-warning mb-0 px-0 py-1 d-flex align-items-center justify-content-center"
-                                    href="{{ route('teacher.assignments.index') }}">
-                                    <i class="ni ni-bold-left"></i>
-                                    <span class="ms-2">Kembali</span>
-                                </a>
-                            </li>
-                        </ul>
+
+                <div class="col-lg-auto col-md-auto my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                    <div class="d-flex justify-content-end align-items-center gap-2">
+                        <div class="card p-2 shadow-sm text-center bg-gradient-info text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalSubjects }}</h6>
+                            <p class="text-sm text-white mb-0">Mata Pelajaran</p>
+                        </div>
+                        <div class="card p-2 shadow-sm text-center bg-gradient-success text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalClassrooms }}</h6>
+                            <p class="text-sm text-white mb-0">Kelas</p>
+                        </div>
+                        <div class="card p-2 shadow-sm text-center bg-gradient-primary text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalAssignments }}</h6>
+                            <p class="text-sm text-white mb-0">Total Tugas</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Administrator Profile Section -->
+    <!-- Teacher Profile Section -->
 
     <!-- Teacher Data Addition Form -->
     <div class="container-fluid py-4">

@@ -1,4 +1,4 @@
-{{-- Start Page: Teacher Index Matrials/Konten Belajar --}}
+{{-- Start Page: Teacher Index Materials/Konten Belajar --}}
 <x-layout.teacher>
     <x-partials.teacher.navbar :title="$title" />
 
@@ -44,7 +44,7 @@
     </div>
     <!-- Teacher Profile Section -->
 
-    <!-- E-book -->
+    <!-- Materials List -->
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
@@ -63,28 +63,22 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            No.
-                                        </th>
+                                            No.</th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Kelas
-                                        </th>
+                                            Kelas</th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                            Mata Pelajaran
-                                        </th>
+                                            Mata Pelajaran</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Judul Materi
-                                        </th>
+                                            Judul Materi</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Link & File
-                                        </th>
+                                            Link & File</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Aksi
-                                        </th>
+                                            Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -96,13 +90,11 @@
                                             <td>
                                                 <p class="text-xs font-weight-bold mb-0">
                                                     {{ $material->classroom->grade_level }} -
-                                                    {{ $material->classroom->class_name }}
-                                                </p>
+                                                    {{ $material->classroom->class_name }}</p>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $material->subject->subject_name }}
-                                                </p>
+                                                    {{ $material->subject->subject_name }}</p>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <p class="text-xs font-weight-bold mb-0">{{ $material->title }}</p>
@@ -114,13 +106,12 @@
                                                             target="_blank"
                                                             class="btn btn-sm badge bg-gradient-primary text-white me-2"
                                                             download>
-                                                            <i class="fa-solid fa-download me-1"></i> Unduh File
+                                                            <i class="fa-solid fa-download me-1"></i> Unduh
                                                         </a>
                                                     @endif
                                                     @if ($material->link)
                                                         <a href="{{ $material->link }}" target="_blank"
-                                                            class="btn btn-sm badge bg-gradient-info text-white me-2"
-                                                            title="Link Virtual Class">
+                                                            class="btn btn-sm badge bg-gradient-info text-white me-2">
                                                             <i class="fa-solid fa-link me-1"></i> Link
                                                         </a>
                                                     @endif
@@ -130,28 +121,65 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <a href="#"
-                                                    class="btn btn-sm badge bg-gradient-warning text-white me-2"
-                                                    title="Edit">
+                                                    class="btn btn-sm badge bg-gradient-warning text-white me-2">
                                                     <i class="fa-solid fa-pen-to-square me-1"></i> Edit
                                                 </a>
-                                                <form action="{{ route('teacher.materials.destroy', $material->id) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="btn btn-sm badge bg-gradient-danger text-white"
-                                                        title="Hapus"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus materi?');">
-                                                        <i class="fa-solid fa-trash-can me-1"></i> Hapus
-                                                    </button>
-                                                </form>
+                                                <!-- Trigger Modal Delete -->
+                                                <button type="button"
+                                                    class="btn btn-sm badge bg-gradient-danger text-white"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteMaterialModal{{ $material->id }}">
+                                                    <i class="fa-solid fa-trash-can me-1"></i> Hapus
+                                                </button>
                                             </td>
                                         </tr>
+
+                                        <!-- Modal Delete -->
+                                        <div class="modal fade" id="deleteMaterialModal{{ $material->id }}"
+                                            tabindex="-1" aria-labelledby="deleteMaterialLabel{{ $material->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow-lg rounded-4">
+                                                    <div class="modal-header bg-gradient-danger text-white">
+                                                        <h6 class="modal-title fw-bold"
+                                                            id="deleteMaterialLabel{{ $material->id }}">Hapus Materi
+                                                        </h6>
+                                                        <button type="button" class="btn-close btn-close-white"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body text-center p-4">
+                                                        <i class="ni ni-fat-remove text-danger"
+                                                            style="font-size: 4rem;"></i>
+                                                        <h5 class="mt-3">Yakin ingin menghapus?</h5>
+                                                        <p class="text-muted">Materi
+                                                            <strong>{{ $material->title }}</strong> akan dihapus.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center border-0 pb-4">
+                                                        <button type="button"
+                                                            class="btn btn-light shadow-sm px-4 rounded-pill"
+                                                            data-bs-dismiss="modal">Batal</button>
+                                                        <form
+                                                            action="{{ route('teacher.materials.destroy', $material->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn bg-gradient-danger text-white px-4 rounded-pill shadow-sm">Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Modal Delete -->
+
                                     @empty
                                         <tr>
                                             <td colspan="6" class="text-center py-4">
-                                                <p class="text-sm text-secondary mb-0">Belum ada materi
-                                                    yang tersedia.</p>
+                                                <i class="fa-solid fa-book-open text-secondary mb-2"
+                                                    style="font-size: 2rem;"></i>
+                                                <p class="text-sm text-secondary mb-0">Belum ada materi yang tersedia.
+                                                </p>
                                             </td>
                                         </tr>
                                     @endforelse
@@ -163,44 +191,38 @@
             </div>
         </div>
     </div>
-    <!-- End of E-book -->
 
-
-    <!-- Alert Notification for Add Class Success -->
-    <script>
-        window.onload = function() {
-            @if (session('success'))
-                var virtualClassSuccessModal = new bootstrap.Modal(document.getElementById('virtualClassSuccess'));
-                virtualClassSuccessModal.show();
-            @endif
-        };
-    </script>
-
-    <div class="modal fade" id="virtualClassSuccess" tabindex="-1" role="dialog"
-        aria-labelledby="virtualClassSuccessLabel" aria-hidden="true">
-        <div class="modal-dialog modal-success modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="virtualClassSuccessLabel">Sukses</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+    <!-- Modal Success -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-gradient-success text-white">
+                    <h6 class="modal-title fw-bold" id="successModalLabel">Sukses</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="py-3 text-center">
-                        <i class="ni ni-check-bold text-success ni-3x"></i>
-                        <h4 class="text-gradient text-success mt-4">Berhasil!</h4>
-                        <p>{{ session('success') }}</p> <!-- Menampilkan pesan sukses dari session -->
-                    </div>
+                <div class="modal-body text-center p-4">
+                    <i class="ni ni-check-bold text-success" style="font-size: 4rem;"></i>
+                    <h5 class="mt-3 text-gradient text-success">Berhasil!</h5>
+                    <p class="text-muted mb-0">{{ session('success') }}</p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-round bg-gradient-info" data-bs-dismiss="modal">Ok,
-                        Mengerti</button>
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn bg-gradient-success text-white px-4 rounded-pill shadow-sm"
+                        data-bs-dismiss="modal">Oke, Mengerti</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End of Modal Notification for Adding Class Success -->
+    <!-- End Modal Success -->
+
+    <!-- Auto Show Success Modal -->
+    <script>
+        window.onload = function() {
+            @if (session('success'))
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            @endif
+        };
+    </script>
 
 </x-layout.teacher>
-{{-- End Page: Teacher Index Matrials/Konten Belajar --}}
+{{-- End Page: Teacher Index Materials --}}

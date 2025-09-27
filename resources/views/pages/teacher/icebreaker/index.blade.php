@@ -85,7 +85,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($icebreakings as $icebreaking)
+                                    @forelse ($icebreakings as $icebreaking)
                                         <tr class="border-top">
                                             <td>
                                                 <p class="text-sm font-weight-bold mb-0 ps-3">{{ $loop->iteration }}</p>
@@ -118,22 +118,77 @@
                                             </td>
 
                                             <td class="align-middle text-center">
-                                                <form
-                                                    action="{{ route('teacher.icebreaking.destroy', $icebreaking->id) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="btn btn-sm badge bg-gradient-danger text-white me-2"
-                                                        title="Hapus Event"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus event {{ $icebreaking->event_name }}?');">
-                                                        <i class="fa-solid fa-trash-can me-1"></i> Hapus
-                                                    </button>
-                                                </form>
+                                                <!-- Tombol Trigger Modal -->
+                                                <button type="button"
+                                                    class="btn btn-sm badge bg-gradient-danger text-white me-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteIcebreakingModal{{ $icebreaking->id }}">
+                                                    <i class="fa-solid fa-trash-can me-1"></i> Hapus
+                                                </button>
                                             </td>
                                         </tr>
-                                    @endforeach
+
+                                        <!-- Modal Delete Icebreaking -->
+                                        <div class="modal fade" id="deleteIcebreakingModal{{ $icebreaking->id }}"
+                                            tabindex="-1"
+                                            aria-labelledby="deleteIcebreakingLabel{{ $icebreaking->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow-lg rounded-4">
+                                                    <div class="modal-header bg-gradient-danger text-white">
+                                                        <h6 class="modal-title fw-bold"
+                                                            id="deleteIcebreakingLabel{{ $icebreaking->id }}">
+                                                            Hapus Event
+                                                        </h6>
+                                                        <button type="button" class="btn-close btn-close-white"
+                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body text-center p-4">
+                                                        <i class="ni ni-fat-remove text-danger"
+                                                            style="font-size: 4rem;"></i>
+                                                        <h5 class="mt-3">Yakin ingin menghapus?</h5>
+                                                        <p class="text-muted">Event
+                                                            <strong>{{ $icebreaking->event_name }}</strong> akan
+                                                            dihapus.
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center border-0 pb-4">
+                                                        <button type="button"
+                                                            class="btn btn-light shadow-sm px-4 rounded-pill"
+                                                            data-bs-dismiss="modal">
+                                                            Batal
+                                                        </button>
+                                                        <form
+                                                            action="{{ route('teacher.icebreaking.destroy', $icebreaking->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn bg-gradient-danger text-white px-4 rounded-pill shadow-sm">
+                                                                Hapus
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End of Modal Delete Icebreaking -->
+
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5">
+                                                <div class="text-muted">
+                                                    <i class="fa-solid fa-cube fa-2x mb-3 text-secondary"></i>
+                                                    <p class="mb-0 fw-bold">Belum ada event icebreaking</p>
+                                                    <small class="text-muted">Klik tombol <b>Tambah Event</b> untuk
+                                                        membuat yang pertama.</small>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
+
+
                             </table>
                         </div>
                     </div>
@@ -142,7 +197,6 @@
         </div>
     </div>
     <!-- Icebreaking Data Overview -->
-
 
     <!-- Alert Notification for Add Class Success -->
     <script>
@@ -156,28 +210,28 @@
 
     <div class="modal fade" id="IceBreakingSuccess" tabindex="-1" role="dialog"
         aria-labelledby="IceBreakingSuccessLabel" aria-hidden="true">
-        <div class="modal-dialog modal-success modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="IceBreakingSuccessLabel">Sukses</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-gradient-success text-white">
+                    <h6 class="modal-title fw-bold" id="IceBreakingSuccessLabel">Sukses</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <i class="ni ni-check-bold text-success" style="font-size: 4rem;"></i>
+                    <h4 class="mt-3 text-gradient text-success">Berhasil!</h4>
+                    <p class="text-muted">{{ session('success') }}</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn bg-gradient-success text-white px-4 rounded-pill shadow-sm"
+                        data-bs-dismiss="modal">
+                        Oke, Mengerti
                     </button>
-                </div>
-                <div class="modal-body">
-                    <div class="py-3 text-center">
-                        <i class="ni ni-check-bold text-success ni-3x"></i>
-                        <h4 class="text-gradient text-success mt-4">Berhasil!</h4>
-                        <p>{{ session('success') }}</p> <!-- Menampilkan pesan sukses dari session -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-round bg-gradient-info" data-bs-dismiss="modal">Ok,
-                        Mengerti</button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- End of Modal Notification for Adding Class Success -->
 
 </x-layout.teacher>

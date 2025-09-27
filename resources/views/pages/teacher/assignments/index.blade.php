@@ -139,58 +139,46 @@
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            No.
-                                        </th>
+                                            No.</th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Kelas
-                                        </th>
+                                            Kelas</th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                            Mata Pelajaran
-                                        </th>
+                                            Mata Pelajaran</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Judul Tugas
-                                        </th>
+                                            Judul Tugas</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Tanggal & Waktu Pengumpulan
-                                        </th>
+                                            Tanggal & Waktu Pengumpulan</th>
                                         <th
                                             class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Aksi
-                                        </th>
+                                            Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($assignments as $assignment)
+                                    @forelse ($assignments as $assignment)
                                         <tr>
                                             <td>
-                                                <p class="text-xs font-weight-bold mb-0 ps-2">
-                                                    {{ $loop->iteration }}
+                                                <p class="text-xs font-weight-bold mb-0 ps-2">{{ $loop->iteration }}
                                                 </p>
                                             </td>
                                             <td>
                                                 <p class="text-xs font-weight-bold mb-0">
                                                     {{ $assignment->classroom->grade_level }} -
-                                                    {{ $assignment->classroom->class_name }}
-                                                </p>
+                                                    {{ $assignment->classroom->class_name }}</p>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $assignment->subject->subject_name }}
-                                                </p>
+                                                    {{ $assignment->subject->subject_name }}</p>
+                                            </td>
+                                            <td class="text-center">
+                                                <p class="text-xs font-weight-bold mb-0">{{ $assignment->title }}</p>
                                             </td>
                                             <td class="text-center">
                                                 <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $assignment->title }}
-                                                </p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $assignment->deadline_date }}
-                                                    {{ $assignment->deadline_time }}
+                                                    {{ $assignment->deadline_date }} {{ $assignment->deadline_time }}
                                                 </p>
                                             </td>
                                             <td class="align-middle text-center">
@@ -199,21 +187,67 @@
                                                     title="Detail Tugas">
                                                     <i class="fa-solid fa-circle-info me-1"></i> Detail
                                                 </a>
-                                                <form
-                                                    action="{{ route('teacher.assignments.destroy', $assignment->id) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="btn btn-sm badge bg-gradient-danger text-white me-2"
-                                                        title="Hapus"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus tugas ini?');">
-                                                        <i class="fa-solid fa-trash-can me-1"></i> Hapus
-                                                    </button>
-                                                </form>
+                                                <!-- Trigger Modal Delete -->
+                                                <button type="button"
+                                                    class="btn btn-sm badge bg-gradient-danger text-white me-2"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteAssignmentModal{{ $assignment->id }}">
+                                                    <i class="fa-solid fa-trash-can me-1"></i> Hapus
+                                                </button>
                                             </td>
                                         </tr>
-                                    @endforeach
+
+                                        <!-- Modal Delete Assignment -->
+                                        <div class="modal fade" id="deleteAssignmentModal{{ $assignment->id }}"
+                                            tabindex="-1"
+                                            aria-labelledby="deleteAssignmentLabel{{ $assignment->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow-lg rounded-4">
+                                                    <div class="modal-header bg-gradient-danger text-white">
+                                                        <h6 class="modal-title fw-bold"
+                                                            id="deleteAssignmentLabel{{ $assignment->id }}">Hapus
+                                                            Tugas</h6>
+                                                        <button type="button" class="btn-close btn-close-white"
+                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body text-center p-4">
+                                                        <i class="ni ni-fat-remove text-danger"
+                                                            style="font-size: 4rem;"></i>
+                                                        <h5 class="mt-3">Yakin ingin menghapus?</h5>
+                                                        <p class="text-muted">Tugas
+                                                            <strong>{{ $assignment->title }}</strong> akan dihapus.</p>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center border-0 pb-4">
+                                                        <button type="button"
+                                                            class="btn btn-light shadow-sm px-4 rounded-pill"
+                                                            data-bs-dismiss="modal">Batal</button>
+                                                        <form
+                                                            action="{{ route('teacher.assignments.destroy', $assignment->id) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="btn bg-gradient-danger text-white px-4 rounded-pill shadow-sm">Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End of Modal Delete Assignment -->
+
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5">
+                                                <div class="text-muted">
+                                                    <i class="fa-solid fa-book-open fa-2x mb-3 text-secondary"></i>
+                                                    <p class="mb-0 fw-bold">Belum ada tugas</p>
+                                                    <small class="text-muted">Klik tombol <b>Tambah Tugas</b> untuk
+                                                        membuat yang pertama.</small>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -221,43 +255,41 @@
                 </div>
             </div>
         </div>
-        <!-- End of Assignments Data Overview -->
 
-        <!-- Alert Notification for Add Class Success -->
+        <!-- Modal Notification for Success -->
         <script>
             window.onload = function() {
                 @if (session('success'))
-                    var virtualClassSuccessModal = new bootstrap.Modal(document.getElementById('virtualClassSuccess'));
-                    virtualClassSuccessModal.show();
+                    var assignmentSuccessModal = new bootstrap.Modal(document.getElementById('assignmentSuccess'));
+                    assignmentSuccessModal.show();
                 @endif
             };
         </script>
 
-        <div class="modal fade" id="virtualClassSuccess" tabindex="-1" role="dialog"
-            aria-labelledby="virtualClassSuccessLabel" aria-hidden="true">
-            <div class="modal-dialog modal-success modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h6 class="modal-title" id="virtualClassSuccessLabel">Sukses</h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
+        <div class="modal fade" id="assignmentSuccess" tabindex="-1" role="dialog"
+            aria-labelledby="assignmentSuccessLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content border-0 shadow-lg rounded-4">
+                    <div class="modal-header bg-gradient-success text-white">
+                        <h6 class="modal-title fw-bold" id="assignmentSuccessLabel">Sukses</h6>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="py-3 text-center">
-                            <i class="ni ni-check-bold text-success ni-3x"></i>
-                            <h4 class="text-gradient text-success mt-4">Berhasil!</h4>
-                            <p>{{ session('success') }}</p> <!-- Menampilkan pesan sukses dari session -->
-                        </div>
+                    <div class="modal-body text-center p-4">
+                        <i class="ni ni-check-bold text-success" style="font-size: 4rem;"></i>
+                        <h4 class="mt-3">Berhasil!</h4>
+                        <p class="text-muted">{{ session('success') }}</p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-round bg-gradient-info" data-bs-dismiss="modal">Ok,
-                            Mengerti</button>
+                    <div class="modal-footer justify-content-center border-0 pb-4">
+                        <button type="button" class="btn bg-gradient-success text-white px-4 rounded-pill shadow-sm"
+                            data-bs-dismiss="modal">Ok, Mengerti</button>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- End of Modal Notification for Adding Class Success -->
+        <!-- End of Modal Notification -->
+
+    </div>
 
 </x-layout.teacher>
 {{-- End Page: Teacher Index Assigments --}}

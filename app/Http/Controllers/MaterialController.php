@@ -182,7 +182,7 @@ public function store(Request $request)
 
         $content->delete();
 
-        return redirect()->route('teacher.materials.index')->with('success_delete', 'Konten berhasil dihapus.');
+        return redirect()->route('teacher.materials.index')->with('success', 'Konten berhasil dihapus.');
     }
 
 

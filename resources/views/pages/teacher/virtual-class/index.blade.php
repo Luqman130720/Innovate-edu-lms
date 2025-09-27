@@ -14,15 +14,10 @@
                 </div>
                 <div class="col-auto my-auto">
                     <div class="h-100">
-                        <h5 class="mb-1">
-                            {{ $user->first_name }} {{ $user->last_name }}, {{ $user->degree }}
-                        </h5>
-                        <p class="mb-0 font-weight-bold text-sm">
-                            {{ $user->email }}
-                        </p>
+                        <h5 class="mb-1">{{ $user->first_name }} {{ $user->last_name }}, {{ $user->degree }}</h5>
+                        <p class="mb-0 font-weight-bold text-sm">{{ $user->email }}</p>
                     </div>
                 </div>
-
                 <div class="col-lg-auto col-md-auto my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                     <div class="d-flex justify-content-end align-items-center gap-2">
                         <div class="card p-2 shadow-sm text-center bg-gradient-info text-white rounded-3">
@@ -44,13 +39,12 @@
     </div>
     <!-- Teacher Profile Section -->
 
-    <!-- Teacher Virtual-class list -->
+    <!-- Virtual Class List -->
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
                 <div class="card shadow-lg rounded-4">
-                    <div
-                        class="card-header pb-0 d-flex justify-content-between align-items-center bg-transparent border-0">
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center bg-transparent border-0">
                         <h6 class="mb-0 text-dark fw-bold">Kelas Virtual</h6>
                         <a href="{{ route('teacher.virtual-class.create') }}"
                             class="btn btn-sm bg-gradient-success text-white rounded-pill px-3 shadow-sm fw-bold">
@@ -58,49 +52,32 @@
                         </a>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-2">
+                        <div class="table-responsive p-4">
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            No.</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Kelas</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                            Mata Pelajaran</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Guru Mapel</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Link</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Aksi</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No.</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Kelas</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">Mata Pelajaran</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Guru Mapel</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Link</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($virtualClasses as $virtualClass)
                                         <tr>
-                                            <td><span
-                                                    class="text-xs font-weight-bold ps-2">{{ $loop->iteration }}</span>
-                                            </td>
-                                            <td><span
-                                                    class="text-xs font-weight-bold">{{ $virtualClass->classroom->grade_level }}
-                                                    - {{ $virtualClass->classroom->class_name }}</span></td>
-                                            <td class="text-center"><span
-                                                    class="text-xs font-weight-bold">{{ optional($virtualClass->subject)->subject_name }}</span>
-                                            </td>
+                                            <td><p class="text-xs font-weight-bold mb-0 ps-2">{{ $loop->iteration }}</p></td>
+                                            <td><p class="text-xs font-weight-bold mb-0">{{ $virtualClass->classroom->grade_level }} - {{ $virtualClass->classroom->class_name }}</p></td>
+                                            <td class="text-center"><p class="text-xs font-weight-bold mb-0">{{ optional($virtualClass->subject)->subject_name }}</p></td>
                                             <td class="text-center">
-                                                <span class="text-secondary text-xs font-weight-bold">
+                                                <p class="text-xs text-secondary font-weight-bold mb-0">
                                                     @if (optional($virtualClass->subject)->teacher)
                                                         {{ $virtualClass->subject->teacher->first_name . ' ' . $virtualClass->subject->teacher->last_name . ', ' . $virtualClass->subject->teacher->rank }}
                                                     @else
                                                         -
                                                     @endif
-                                                </span>
+                                                </p>
                                             </td>
                                             <td class="text-center">
                                                 <a href="{{ $virtualClass->virtual_class_link }}" target="_blank"
@@ -109,24 +86,49 @@
                                                 </a>
                                             </td>
                                             <td class="text-center">
-                                                <form
-                                                    action="{{ route('teacher.virtual-class.destroy', $virtualClass->id) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="btn btn-sm badge bg-gradient-danger text-white"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus kelas?');">
-                                                        <i class="fa-solid fa-trash-can me-1"></i> Hapus
-                                                    </button>
-                                                </form>
+                                                <!-- Trigger Delete Modal -->
+                                                <button type="button"
+                                                    class="btn btn-sm badge bg-gradient-danger text-white"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteVirtualClassModal{{ $virtualClass->id }}">
+                                                    <i class="fa-solid fa-trash-can me-1"></i> Hapus
+                                                </button>
                                             </td>
                                         </tr>
+
+                                        <!-- Modal Delete -->
+                                        <div class="modal fade" id="deleteVirtualClassModal{{ $virtualClass->id }}" tabindex="-1"
+                                            aria-labelledby="deleteVirtualClassLabel{{ $virtualClass->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow-lg rounded-4">
+                                                    <div class="modal-header bg-gradient-danger text-white">
+                                                        <h6 class="modal-title fw-bold" id="deleteVirtualClassLabel{{ $virtualClass->id }}">
+                                                            Hapus Kelas Virtual
+                                                        </h6>
+                                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body text-center p-4">
+                                                        <i class="ni ni-fat-remove text-danger" style="font-size: 4rem;"></i>
+                                                        <h5 class="mt-3">Yakin ingin menghapus?</h5>
+                                                        <p class="text-muted">Kelas virtual <strong>{{ $virtualClass->classroom->grade_level }} - {{ $virtualClass->classroom->class_name }}</strong> akan dihapus.</p>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center border-0 pb-4">
+                                                        <button type="button" class="btn btn-light shadow-sm px-4 rounded-pill" data-bs-dismiss="modal">Batal</button>
+                                                        <form action="{{ route('teacher.virtual-class.destroy', $virtualClass->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn bg-gradient-danger text-white px-4 rounded-pill shadow-sm">Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Modal Delete -->
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center py-2">
-                                                <span class="text-sm text-secondary mb-0">Belum ada kelas virtual yang
-                                                    tersedia.</span>
+                                            <td colspan="6" class="text-center py-4">
+                                                <i class="fa-solid fa-video text-secondary mb-2" style="font-size: 2rem;"></i>
+                                                <p class="text-sm text-secondary mb-0">Belum ada kelas virtual yang tersedia.</p>
                                             </td>
                                         </tr>
                                     @endforelse
@@ -138,43 +140,38 @@
             </div>
         </div>
     </div>
-    <!-- Teacher Virtual-class list -->
 
-    <!-- Alert Notification for Add Class Success -->
-    <script>
-        window.onload = function() {
-            @if (session('success'))
-                var virtualClassSuccessModal = new bootstrap.Modal(document.getElementById('virtualClassSuccess'));
-                virtualClassSuccessModal.show();
-            @endif
-        };
-    </script>
-
-    <div class="modal fade" id="virtualClassSuccess" tabindex="-1" role="dialog"
-        aria-labelledby="virtualClassSuccessLabel" aria-hidden="true">
-        <div class="modal-dialog modal-success modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="virtualClassSuccessLabel">Sukses</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+    <!-- Modal Success -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header bg-gradient-success text-white">
+                    <h6 class="modal-title fw-bold" id="successModalLabel">Sukses</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="py-3 text-center">
-                        <i class="ni ni-check-bold text-success ni-3x"></i>
-                        <h4 class="text-gradient text-success mt-4">Berhasil!</h4>
-                        <p>{{ session('success') }}</p> <!-- Menampilkan pesan sukses dari session -->
-                    </div>
+                <div class="modal-body text-center p-4">
+                    <i class="ni ni-check-bold text-success" style="font-size: 4rem;"></i>
+                    <h5 class="mt-3 text-gradient text-success">Berhasil!</h5>
+                    <p class="text-muted mb-0">{{ session('success') }}</p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-round bg-gradient-info" data-bs-dismiss="modal">Ok,
-                        Mengerti</button>
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn bg-gradient-success text-white px-4 rounded-pill shadow-sm"
+                        data-bs-dismiss="modal">Oke, Mengerti</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End of Modal Notification for Adding Class Success -->
+    <!-- End Modal Success -->
+
+    <!-- Auto Show Success Modal -->
+    <script>
+        window.onload = function() {
+            @if (session('success'))
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            @endif
+        };
+    </script>
 
 </x-layout.teacher>
 {{-- End Page: Teacher Index Virtual Class --}}

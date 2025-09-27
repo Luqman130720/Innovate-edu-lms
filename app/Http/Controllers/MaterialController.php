@@ -59,8 +59,8 @@ class MaterialController extends Controller
 
         $totalAssignments = $teacherAssignments->count();
         $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
-        $classrooms = Classroom::where('homeroom_teacher_id', $user->id)->get();
         $subjects = Subject::where('teacher_id', $user->id)->get();
+        $classrooms = $subjects->pluck('classroom')->unique('id')->values();
         $title = 'Materi Pelajaran';
         return view(
             'teacher::materials.create',

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Classroom;
 use App\Models\Subject;
+use App\Models\Assignment;
 
 class VirtualClassController extends Controller
 {
@@ -16,6 +17,13 @@ class VirtualClassController extends Controller
     public function index()
     {
         $user = Auth::guard('teacher')->user();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
         $virtualClasses = VirtualClass::with(['classroom', 'subject.teacher', 'classroom'])
             ->whereHas('subject', function ($query) use ($user) {
                 $query->where('teacher_id', $user->id);
@@ -29,6 +37,9 @@ class VirtualClassController extends Controller
                 'user',
                 'virtualClasses',
                 'title',
+                'totalSubjects',
+                'totalAssignments',
+                'totalClassrooms'
             )
         );
     }
@@ -39,8 +50,15 @@ class VirtualClassController extends Controller
     public function create()
     {
         $user = Auth::guard('teacher')->user();
-        $classrooms = Classroom::all();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
         $subjects = Subject::where('teacher_id', $user->id)->get();
+        $classrooms = $subjects->pluck('classroom')->unique('id')->values();
         $title = 'Kelas Virtual - Online';
         return view(
             'teacher::virtual-class.create',
@@ -50,6 +68,9 @@ class VirtualClassController extends Controller
                 'classrooms',
                 'subjects',
                 'title',
+                'totalSubjects',
+                'totalAssignments',
+                'totalClassrooms'
             )
         );
     }

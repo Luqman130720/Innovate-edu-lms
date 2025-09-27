@@ -2,10 +2,10 @@
 <x-layout.teacher>
     <x-partials.teacher.navbar :title="$title" />
 
-    <!-- Administrator Profile Section -->
+    <!-- Teacher Profile Section -->
     <div class="card shadow-lg mx-4" style="margin-top: 10rem">
         <div class="card-body p-3">
-            <div class="row gx-4">
+            <div class="row gx-4 align-items-center">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
                         <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/dashboard/img/team-1.jpg') }}"
@@ -15,46 +15,54 @@
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ $user->first_name }} {{ $user->last_name }}
+                            {{ $user->first_name }} {{ $user->last_name }}, {{ $user->degree }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
                             {{ $user->email }}
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                    <div class="nav-wrapper position-relative end-0">
-                        <ul class="nav nav-pills nav-fill p-1 bg-gray-300" role="tablist">
-                            <li class="nav-item">
-                                <a href="{{ route('teacher.virtual-class.create') }}"
-                                    class="btn bg-gradient-info mb-0 px-0 py-1 d-flex align-items-center justify-content-center">
-                                    <i class="ni ni-fat-add"></i>
-                                    <span class="ms-2">Tambah Kelas Virtual</span>
-                                </a>
-                            </li>
-                        </ul>
+
+                <div class="col-lg-auto col-md-auto my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                    <div class="d-flex justify-content-end align-items-center gap-2">
+                        <div class="card p-2 shadow-sm text-center bg-gradient-info text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalSubjects }}</h6>
+                            <p class="text-sm text-white mb-0">Mata Pelajaran</p>
+                        </div>
+                        <div class="card p-2 shadow-sm text-center bg-gradient-success text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalClassrooms }}</h6>
+                            <p class="text-sm text-white mb-0">Kelas</p>
+                        </div>
+                        <div class="card p-2 shadow-sm text-center bg-gradient-primary text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalAssignments }}</h6>
+                            <p class="text-sm text-white mb-0">Total Tugas</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Administrator Profile Section -->
+    <!-- Teacher Profile Section -->
 
     <!-- Teacher Virtual-class list -->
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h6>Kelas Virtual</h6>
+                <div class="card shadow-lg rounded-4">
+                    <div
+                        class="card-header pb-0 d-flex justify-content-between align-items-center bg-transparent border-0">
+                        <h6 class="mb-0 text-dark fw-bold">Kelas Virtual</h6>
+                        <a href="{{ route('teacher.virtual-class.create') }}"
+                            class="btn btn-sm bg-gradient-success text-white rounded-pill px-3 shadow-sm fw-bold">
+                            <i class="fa-solid fa-plus me-1"></i> Tambah Kelas
+                        </a>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
+                        <div class="table-responsive p-2">
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             No.</th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
@@ -74,64 +82,55 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($virtualClasses as $virtualClass)
+                                    @forelse ($virtualClasses as $virtualClass)
                                         <tr>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0 ps-2">
-                                                    {{ $loop->iteration }}
-                                                </p>
+                                            <td><span
+                                                    class="text-xs font-weight-bold ps-2">{{ $loop->iteration }}</span>
                                             </td>
-
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $virtualClass->classroom->grade_level }} -
-                                                    {{ $virtualClass->classroom->class_name }}
-                                                </p>
+                                            <td><span
+                                                    class="text-xs font-weight-bold">{{ $virtualClass->classroom->grade_level }}
+                                                    - {{ $virtualClass->classroom->class_name }}</span></td>
+                                            <td class="text-center"><span
+                                                    class="text-xs font-weight-bold">{{ optional($virtualClass->subject)->subject_name }}</span>
                                             </td>
-                                            <td class="align-middle text-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $virtualClass->subject->subject_name }}
-                                                </p>
-                                            </td>
-
                                             <td class="text-center">
                                                 <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $virtualClass->subject && $virtualClass->subject->teacher
-                                                        ? $virtualClass->subject->teacher->first_name .
-                                                            ' ' .
-                                                            $virtualClass->subject->teacher->last_name .
-                                                            ', ' .
-                                                            $virtualClass->subject->teacher->rank
-                                                        : '-' }}
+                                                    @if (optional($virtualClass->subject)->teacher)
+                                                        {{ $virtualClass->subject->teacher->first_name . ' ' . $virtualClass->subject->teacher->last_name . ', ' . $virtualClass->subject->teacher->rank }}
+                                                    @else
+                                                        -
+                                                    @endif
                                                 </span>
-
                                             </td>
-                                            <td class="align-middle text-center">
+                                            <td class="text-center">
                                                 <a href="{{ $virtualClass->virtual_class_link }}" target="_blank"
-                                                    class="btn bg-gradient-primary btn-round text-light font-weight-bold text-xs ms-2"
-                                                    data-toggle="tooltip" title="Join Virtual Class">
-                                                    Link
+                                                    class="btn btn-sm badge bg-gradient-primary text-white me-2">
+                                                    <i class="fa-solid fa-link me-1"></i> Link
                                                 </a>
                                             </td>
-
-                                            <td class="align-middle text-center">
+                                            <td class="text-center">
                                                 <form
                                                     action="{{ route('teacher.virtual-class.destroy', $virtualClass->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
-                                                        class="btn bg-gradient-danger btn-round text-light font-weight-bold text-xs ms-2"
-                                                        data-toggle="tooltip" title="Delete"
+                                                        class="btn btn-sm badge bg-gradient-danger text-white"
                                                         onclick="return confirm('Apakah Anda yakin ingin menghapus kelas?');">
-                                                        <i class="bi bi-trash3-fill"></i> Hapus
+                                                        <i class="fa-solid fa-trash-can me-1"></i> Hapus
                                                     </button>
                                                 </form>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-2">
+                                                <span class="text-sm text-secondary mb-0">Belum ada kelas virtual yang
+                                                    tersedia.</span>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
-
                             </table>
                         </div>
                     </div>

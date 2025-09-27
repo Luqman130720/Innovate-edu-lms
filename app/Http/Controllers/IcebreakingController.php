@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\Icebreaking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,13 @@ class IcebreakingController extends Controller
     {
         $title = 'Ice Breaking';
         $user = Auth::guard('teacher')->user();
+        $totalSubjects = Subject::where('teacher_id', $user->id)->count();
+        $teacherAssignments = Assignment::whereHas('subject', function ($query) use ($user) {
+            $query->where('teacher_id', $user->id);
+        });
+
+        $totalAssignments = $teacherAssignments->count();
+        $totalClassrooms = $teacherAssignments->distinct('classroom_id')->count('classroom_id');
         $icebreakings = Icebreaking::with(['classroom', 'subject.teacher'])
             ->whereHas('subject', function ($query) use ($user) {
                 $query->where('teacher_id', $user->id);
@@ -29,6 +37,9 @@ class IcebreakingController extends Controller
                 'user',
                 'title',
                 'icebreakings',
+                'totalSubjects',
+                'totalAssignments',
+                'totalClassrooms'
             )
         );
     }
@@ -40,8 +51,8 @@ class IcebreakingController extends Controller
     {
         $title = 'Ice Breaking';
         $user = Auth::guard('teacher')->user();
-        $classrooms = Classroom::where('homeroom_teacher_id', $user->id)->get();
         $subjects = Subject::where('teacher_id', $user->id)->get();
+        $classrooms = $subjects->pluck('classroom')->unique('id')->values();
         return view(
             'teacher::icebreaker.create',
             compact(

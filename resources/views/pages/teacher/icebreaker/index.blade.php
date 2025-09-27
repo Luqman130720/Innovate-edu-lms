@@ -2,108 +2,118 @@
 <x-layout.teacher>
     <x-partials.teacher.navbar :title="$title" />
 
-    <!-- Administrator Profile Section -->
+    <!-- Teacher Profile Section -->
     <div class="card shadow-lg mx-4" style="margin-top: 10rem">
         <div class="card-body p-3">
-            <div class="row gx-4">
+            <div class="row gx-4 align-items-center">
                 <div class="col-auto">
                     <div class="avatar avatar-xl position-relative">
-                        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/img/team-1.jpg') }}"
+                        <img src="{{ $user->profile_picture ? Storage::url($user->profile_picture) : asset('assets/dashboard/img/team-1.jpg') }}"
                             alt="profile_image" class="w-100 border-radius-lg shadow-sm">
                     </div>
                 </div>
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ $user->first_name }} {{ $user->last_name }}
+                            {{ $user->first_name }} {{ $user->last_name }}, {{ $user->degree }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
                             {{ $user->email }}
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-4 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                    <div class="nav-wrapper position-relative end-0">
-                        <ul class="nav nav-pills nav-fill p-1 bg-gray-300" role="tablist">
-                            <li class="nav-item">
-                                <a href="{{ route('teacher.icebreaking.create') }}"
-                                    class="btn bg-gradient-info mb-0 px-0 py-1 d-flex align-items-center justify-content-center">
-                                    <i class="ni ni-fat-add"></i>
-                                    <span class="ms-2">Tambah Ice Breaking</span>
-                                </a>
-                            </li>
-                        </ul>
+
+                <div class="col-lg-auto col-md-auto my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                    <div class="d-flex justify-content-end align-items-center gap-2">
+                        <div class="card p-2 shadow-sm text-center bg-gradient-info text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalSubjects }}</h6>
+                            <p class="text-sm text-white mb-0">Mata Pelajaran</p>
+                        </div>
+                        <div class="card p-2 shadow-sm text-center bg-gradient-success text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalClassrooms }}</h6>
+                            <p class="text-sm text-white mb-0">Kelas</p>
+                        </div>
+                        <div class="card p-2 shadow-sm text-center bg-gradient-primary text-white rounded-3">
+                            <h6 class="mb-0 fw-bold text-white">{{ $totalAssignments }}</h6>
+                            <p class="text-sm text-white mb-0">Total Tugas</p>
+                        </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
-    <!-- Administrator Profile Section -->
+    <!-- Teacher Profile Section -->
 
     <!-- Icebreaking Data Overview -->
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h6>Icebreaking Zone</h6>
+                <div class="card shadow-lg rounded-4 border-0">
+
+                    <div
+                        class="card-header pb-0 d-flex justify-content-between align-items-center bg-transparent border-0">
+                        <h6 class="mb-0 text-dark fw-bold">Daftar Icebreaking</h6>
+                        <a href="{{ route('teacher.icebreaking.create') }}"
+                            class="btn btn-sm bg-gradient-success text-white rounded-pill px-3 shadow-sm fw-bold">
+                            <i class="fa-solid fa-plus me-1"></i> Tambah Event
+                        </a>
                     </div>
-                    <div class="card-body px-2 pt-0 pb-4">
+
+                    <div class="card-body px-4 pt-0 pb-4">
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
                                         <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3 py-3">
                                             No.</th>
                                         <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 py-3">
                                             Nama Event</th>
                                         <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center py-3">
                                             Platform</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 py-3">
                                             Mata Pelajaran</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Link</th>
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 py-3">
+                                            Link Game</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 py-3">
                                             Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($icebreakings as $icebreaking)
-                                        <tr>
+                                        <tr class="border-top">
                                             <td>
-                                                <p class="text-xs font-weight-bold mb-0 ps-2">{{ $loop->iteration }}</p>
+                                                <p class="text-sm font-weight-bold mb-0 ps-3">{{ $loop->iteration }}</p>
                                             </td>
 
                                             <td>
-                                                <p class="text-xs font-weight-bold mb-0">
+                                                <p class="text-sm font-weight-bold mb-0 text-dark">
                                                     {{ $icebreaking->event_name }}
                                                 </p>
                                             </td>
+
                                             <td class="align-middle text-center">
-                                                <p class="text-xs font-weight-bold mb-0">
+                                                <span class="badge bg-gradient-info text-uppercase fw-bold shadow-sm">
                                                     {{ $icebreaking->platform }}
-                                                </p>
+                                                </span>
                                             </td>
 
                                             <td class="text-center">
-                                                <p class="text-secondary text-xs font-weight-bold">
+                                                <p class="text-secondary text-sm font-weight-normal mb-0">
                                                     {{ $icebreaking->subject ? $icebreaking->subject->subject_name : '-' }}
                                                 </p>
                                             </td>
 
                                             <td class="align-middle text-center">
                                                 <a href="{{ $icebreaking->game_link }}" target="_blank"
-                                                    class="btn bg-gradient-primary btn-round text-light font-weight-bold text-xs ms-2"
-                                                    data-toggle="tooltip" title="Join Game">
-                                                    Link
+                                                    class="btn btn-sm badge bg-gradient-info text-white me-2"
+                                                    title="Link Game">
+                                                    <i class="fa-solid fa-link me-1"></i> Link
                                                 </a>
                                             </td>
 
@@ -114,10 +124,10 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
-                                                        class="btn bg-gradient-danger btn-round text-light font-weight-bold text-xs ms-2"
-                                                        data-toggle="tooltip" title="Delete"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus event?');">
-                                                        <i class="bi bi-trash3-fill"></i> Hapus
+                                                        class="btn btn-sm badge bg-gradient-danger text-white me-2"
+                                                        title="Hapus Event"
+                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus event {{ $icebreaking->event_name }}?');">
+                                                        <i class="fa-solid fa-trash-can me-1"></i> Hapus
                                                     </button>
                                                 </form>
                                             </td>

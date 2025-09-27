@@ -44,172 +44,145 @@
     </div>
     <!-- Teacher Profile Section -->
 
-    <!-- Teacher Data Addition Form -->
+    <!-- Teacher Assignment Input Form -->
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header pb-0">
-                        <div class="d-flex align-items-center">
-                            <p class="mb-0">Formulir Input Data Tugas</p>
-                        </div>
+            <div class="col-lg-12">
+                <div class="card shadow-lg rounded-4 border-0">
+
+                    <div class="card-header bg-white rounded-top-4 px-4 py-3 border-bottom-0">
+                        <h4 class="fw-bold mb-0 text-dark">Formulir Input Data Tugas</h4>
                     </div>
-                    <div class="card-body">
+
+                    <div class="card-body px-4 py-4" style="background-color: #ffffff;">
                         <form action="{{ route('teacher.assignments.store') }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
-                            <!-- Mata Pelajaran -->
-                            <div class="form-group">
-                                <label for="subject_id">Mata Pelajaran <span class="text-danger">*</span></label>
-                                <select class="form-control" id="subject_id" name="subject_id" required>
-                                    <option value="" disabled selected>Pilih Mata Pelajaran</option>
-                                    @foreach ($subjects as $subject)
-                                        <option value="{{ $subject->id }}"
-                                            {{ old('subject_id') == $subject->id ? 'selected' : '' }}>
-                                            {{ $subject->subject_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('subject_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+                            <div class="row g-4">
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="subject_id"
+                                            class="form-label small text-uppercase fw-semibold text-muted">Mata
+                                            Pelajaran <span class="text-danger">*</span></label>
+                                        <select id="subject_id" name="subject_id"
+                                            class="form-select form-select-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                            required>
+                                            <option value="" disabled selected>Pilih Mata Pelajaran</option>
+                                            @foreach ($subjects as $subject)
+                                                <option value="{{ $subject->id }}">{{ $subject->subject_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="title"
+                                            class="form-label small text-uppercase fw-semibold text-muted">Judul
+                                            Tugas <span class="text-danger">*</span></label>
+                                        <input type="text" id="title" name="title"
+                                            class="form-control form-control-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                            placeholder="Masukkan Judul Tugas" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="classroom_id"
+                                            class="form-label small text-uppercase fw-semibold text-muted">Kelas <span
+                                                class="text-danger">*</span></label>
+                                        <select id="classroom_id" name="classroom_id"
+                                            class="form-select form-select-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                            required>
+                                            <option value="" disabled selected>Pilih Kelas</option>
+                                            @foreach ($classrooms as $classroom)
+                                                <option value="{{ $classroom->id }}">{{ $classroom->grade_level }} -
+                                                    {{ $classroom->class_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="task_date"
+                                            class="form-label small text-uppercase fw-semibold text-muted">Tanggal
+                                            Pengerjaan <span class="text-danger">*</span></label>
+                                        <input type="date" id="task_date" name="task_date"
+                                            class="form-control form-control-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                            required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="task_time"
+                                            class="form-label small text-uppercase fw-semibold text-muted">Waktu
+                                            Pengerjaan <span class="text-danger">*</span></label>
+                                        <input type="time" id="task_time" name="task_time"
+                                            class="form-control form-control-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                            required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="file"
+                                            class="form-label small text-uppercase fw-semibold text-muted">Unggah
+                                            Soal <span class="text-danger">*</span></label>
+                                        <input type="file" id="file" name="file"
+                                            class="form-control form-control-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                            accept=".pdf,.doc,.docx,.jpg,.png,.xlsx" required>
+                                        <small class="text-secondary">Format: PDF, DOC, DOCX, JPG, PNG, XLSX</small>
+                                    </div>
+                                </div>
                             </div>
 
-
-                            <div class="form-group">
-                                <label for="title">Judul Tugas <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="title" name="title"
-                                    placeholder="Judul Tugas" required>
+                            <div class="row g-4 mt-2">
+                                <h6 class="fw-bold text-dark mb-2">Atur Batas Waktu Pengumpulan</h6>
+                                <div class="col-md-6">
+                                    <label for="deadline_date"
+                                        class="form-label small text-uppercase fw-semibold text-muted">Tanggal
+                                        Pengumpulan <span class="text-danger">*</span></label>
+                                    <input type="date" id="deadline_date" name="deadline_date"
+                                        class="form-control form-control-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="deadline_time"
+                                        class="form-label small text-uppercase fw-semibold text-muted">Waktu
+                                        Pengumpulan <span class="text-danger">*</span></label>
+                                    <input type="time" id="deadline_time" name="deadline_time"
+                                        class="form-control form-control-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                        required>
+                                </div>
                             </div>
 
-                            <!-- Kelas -->
-                            <div class="form-group">
-                                <label for="classroom_id">Kelas <span class="text-danger">*</span></label>
-                                <select class="form-control" id="classroom_id" name="classroom_id" required>
-                                    <option value="" disabled selected>Pilih Kelas</option>
-                                    @foreach ($classrooms as $classroom)
-                                        <option value="{{ $classroom->id }}"
-                                            {{ old('classroom_id') == $classroom->id ? 'selected' : '' }}>
-                                            {{ $classroom->grade_level }} - {{ $classroom->class_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('classroom_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="task_date">Tanggal Pengerjaan <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="task_date" name="task_date" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="task_time">Waktu Pengerjaan <span class="text-danger">*</span></label>
-                                <input type="time" class="form-control" id="task_time" name="task_time" required>
-                            </div>
-
-                            <hr>
-
-                            <h5>Atur Batas Waktu Pengumpulan Tugas</h5>
-
-                            <div class="form-group">
-                                <label for="deadline_date">Tanggal Pengumpulan <span
-                                        class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="deadline_date" name="deadline_date"
-                                    required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="deadline_time">Waktu Pengumpulan <span class="text-danger">*</span></label>
-                                <input type="time" class="form-control" id="deadline_time" name="deadline_time"
-                                    required>
-                            </div>
-
-                            <hr>
-
-                            <div class="form-group">
-                                <label for="file">Unggah Soal <span class="text-danger">*</span></label>
-                                <input type="file" class="form-control" id="file" name="file"
-                                    accept=".pdf,.doc,.docx,.jpg,.png,.xlsx" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="file_link">Link File</label>
-                                <input type="url" class="form-control" id="file_link" name="file_link"
+                            <div class="mt-4">
+                                <label for="file_link"
+                                    class="form-label small text-uppercase fw-semibold text-muted">Link File</label>
+                                <input type="url" id="file_link" name="file_link"
+                                    class="form-control form-control-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
                                     placeholder="https://">
                             </div>
 
-                            <div class="form-group">
-                                <label for="description">Deskripsi</label>
-                                <textarea class="form-control" id="description" name="description" rows="3" placeholder="Deskripsi tugas"></textarea>
+                            <div class="mt-3">
+                                <label for="description"
+                                    class="form-label small text-uppercase fw-semibold text-muted">Deskripsi</label>
+                                <textarea id="description" name="description" rows="4"
+                                    class="form-control form-control-lg form-control-custom bg-white border-0 shadow-sm rounded-3"
+                                    placeholder="Masukkan Deskripsi Tugas"></textarea>
                             </div>
 
-                            <div class="form-group text-end mt-4">
-                                <button type="submit" class="btn bg-gradient-info btn-round">Simpan</button>
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit"
+                                    class="btn btn-sm bg-gradient-info text-white rounded-pill px-5 shadow fw-bold">
+                                    Simpan
+                                </button>
                             </div>
                         </form>
-
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-5">
-                <div class="card card-profile">
-                    <img src="{{ asset('../assets/dashboard/img/bg-profile.jpg') }}" alt="Image placeholder"
-                        class="card-img-top">
-                    <div class="row justify-content-center">
-                        <div class="col-4">
-                            <div class="mt-n4 mt-lg-n6 mb-4">
-                                <a href="javascript:;">
-                                    <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('../assets/dashboard/img/team-2.jpg') }}"
-                                        class="rounded-circle img-fluid border border-2 border-white mb-3"
-                                        alt="Profile Picture" style="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body pt-0">
-                        <div class="text-center h6 mt-2">
-                            <div>
-                                {{ $user->first_name }} {{ $user->last_name }}, {{ $user->rank }}
-                            </div>
-                            <div class="text-sm">
-                                <span class="font-weight-light">
-                                    @php
-                                        $dateOfBirth = \Carbon\Carbon::parse($user->date_of_birth);
-                                        $age = $dateOfBirth->age;
-                                    @endphp
-                                    ( {{ $age }} Tahun )</span>
-                            </div>
-                            <div class="text-sm mt-3">
-                                <i class="bi bi-geo-alt-fill"></i> {{ $user->address }}, {{ $user->city }},
-                                {{ $user->province }}, {{ $user->country }} ({{ $user->postal_code }})
-                            </div>
-                            <div class="mt-2">
-                                <i class="bi bi-file-earmark-person-fill"></i>{{ $user->about }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-column mx-4 mb-3">
-                        <a href="mailto:{{ $user->email }}" class="btn btn-info mb-2 w-100">
-                            <i class="bi bi-envelope-at-fill"></i> Email
-                        </a>
-                        <a href="https://api.whatsapp.com/send?phone={{ $user->phone_number }}"
-                            class="btn btn-success w-100">
-                            <i class="bi bi-whatsapp"></i> Whatsapp
-                        </a>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-    <!-- Teacher Data Addition Form -->
+    <!-- End Teacher Assignment Input Form -->
+
+
 
 </x-layout.teacher>
 {{-- End Page: Teacher Create Assigments --}}

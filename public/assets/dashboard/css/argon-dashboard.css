@@ -26953,5 +26953,17 @@ pre[class*="language-"] {
   }
 }
 
+        .form-control-custom {
+            height: 42px;
+            font-size: 0.95rem;
+            border-radius: 0.5rem;
+        }
 
-/*# sourceMappingURL=dashboard-free.css.map */
+        .form-control-custom:focus {
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        textarea.form-control-custom {
+            height: auto;
+        }
+

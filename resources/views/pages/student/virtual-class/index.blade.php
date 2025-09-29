@@ -46,224 +46,191 @@
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h6>Kelas Virtual</h6>
+                <div class="card shadow-lg rounded-4 border-0">
+
+                    {{-- Header --}}
+                    <div
+                        class="card-header pb-0 d-flex justify-content-between align-items-center bg-transparent border-0">
+                        <h6 class="mb-0 text-dark fw-bold">Kelas Virtual</h6>
                     </div>
+
+                    {{-- Body --}}
                     <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            No.</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Kelas</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                            Mata Pelajaran</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Guru Mapel</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Link</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($virtualClasses as $virtualClass)
+                        <div class="table-responsive p-4">
+                            @if ($virtualClasses->isEmpty())
+                                <div class="text-center py-5">
+                                    <i class="bi bi-collection fa-2x mb-3 text-secondary"></i>
+                                    <p class="mb-0 fw-bold">Belum ada kelas virtual</p>
+                                    <small class="text-muted">Guru belum membuat kelas virtual apapun.</small>
+                                </div>
+                            @else
+                                <table class="table align-items-center mb-0">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0 ps-2">
-                                                    {{ $loop->iteration }}
-                                                </p>
-                                            </td>
-
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $virtualClass->classroom->grade_level }} -
-                                                    {{ $virtualClass->classroom->class_name }}
-                                                </p>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $virtualClass->subject->subject_name }}
-                                                </p>
-                                            </td>
-
-                                            <td class="text-center">
-                                                <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $virtualClass->subject && $virtualClass->subject->teacher
-                                                        ? $virtualClass->subject->teacher->first_name .
-                                                            ' ' .
-                                                            $virtualClass->subject->teacher->last_name .
-                                                            ', ' .
-                                                            $virtualClass->subject->teacher->rank
-                                                        : '-' }}
-                                                </span>
-
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <a href="{{ $virtualClass->virtual_class_link }}" target="_blank"
-                                                    class="btn bg-gradient-primary btn-round text-light font-weight-bold text-xs ms-2"
-                                                    data-toggle="tooltip" title="Join Virtual Class">
-                                                    Link
-                                                </a>
-                                            </td>
-
-                                            <td class="text-center">
-                                                <button type="button"
-                                                    class="btn bg-gradient-info btn-round text-light font-weight-bold text-xs ms-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modalDetailVirtualClass{{ $virtualClass->id }}">
-                                                    <i class="bi bi-info-circle"></i> Detail
-                                                </button>
-                                            </td>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                No.</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-start">
+                                                Kelas</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                Mata Pelajaran</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                Guru Mapel</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                Link</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                Aksi</th>
                                         </tr>
-                                        <!-- Modal Detail Virtual Class -->
-                                        <div class="modal fade" id="modalDetailVirtualClass{{ $virtualClass->id }}"
-                                            tabindex="-1"
-                                            aria-labelledby="modalDetailVirtualClassLabel{{ $virtualClass->id }}"
-                                            aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content border-0"
-                                                    style="border-radius: 1.25rem; overflow: hidden; box-shadow: 0 8px 32px rgba(44, 62, 80, 0.15);">
-                                                    <div class="modal-header px-4 py-3"
-                                                        style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%); color: #fff; border-bottom: none;">
-                                                        <div class="d-flex align-items-center w-100">
-                                                            <div class="flex-grow-1">
-                                                                <h5 class="modal-title fw-bold"
-                                                                    id="modalDetailVirtualClassLabel{{ $virtualClass->id }}">
-                                                                    <i class="bi bi-camera-video-fill me-2"></i> Detail
-                                                                    Kelas Virtual
-                                                                </h5>
-                                                            </div>
-                                                            <button type="button" class="btn-close btn-close-white"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-body px-4 py-4"
-                                                        style="background: linear-gradient(120deg, #f8fafc 60%, #e0eafc 100%);">
-                                                        <div class="mb-3 text-center">
-                                                            <span
-                                                                class="badge rounded-pill bg-gradient-info px-3 py-2 fs-6 mb-2">
-                                                                {{ $virtualClass->classroom->grade_level }} -
-                                                                {{ $virtualClass->classroom->class_name }}
-                                                            </span>
-                                                            <span
-                                                                class="badge rounded-pill bg-gradient-primary px-3 py-2 fs-6 mb-2">
-                                                                {{ $virtualClass->subject->subject_name }}
-                                                            </span>
-                                                        </div>
-                                                        <ul class="list-unstyled mb-0" style="font-size: 1.05rem;">
-                                                            <li class="mb-2"><strong>Guru Mapel:</strong>
-                                                                <span class="text-dark">
-                                                                    {{ $virtualClass->subject && $virtualClass->subject->teacher
-                                                                        ? $virtualClass->subject->teacher->first_name .
-                                                                            ' ' .
-                                                                            $virtualClass->subject->teacher->last_name .
-                                                                            ', ' .
-                                                                            $virtualClass->subject->teacher->rank
-                                                                        : '-' }}
-                                                                </span>
-                                                            </li>
-                                                            <li class="mb-2"><strong>Agenda:</strong> <span
-                                                                    class="text-dark">{{ $virtualClass->agenda }}</span>
-                                                            </li>
-                                                            <li class="mb-2"><strong>Tanggal:</strong>
-                                                                <span
-                                                                    class="text-dark">{{ \Carbon\Carbon::parse($virtualClass->date)->format('d-m-Y') }}</span>
-                                                            </li>
-                                                            <li class="mb-2"><strong>Jam Mulai:</strong> <span
-                                                                    class="text-dark">{{ $virtualClass->start_time }}</span>
-                                                            </li>
-                                                            <li class="mb-2"><strong>Jam Selesai:</strong> <span
-                                                                    class="text-dark">{{ $virtualClass->end_time }}</span>
-                                                            </li>
-                                                            <li class="mb-2"><strong>Link Virtual:</strong>
-                                                                <div class="mb-3 text-center">
-                                                                    <span
-                                                                        class="badge rounded-pill bg-gradient-info text-xxs font-weight-bolder opacity-7 px-3 py-2 fs-6 mb-2">
-                                                                        <a href="{{ $virtualClass->virtual_class_link }}"
-                                                                            target="_blank" class="text-white"> <i
-                                                                                class="bi bi-box-arrow-up-right me-2"></i>
-                                                                            Join
-                                                                            Virtual Class
-                                                                        </a>
-                                                                    </span>
-                                                                </div>
-                                                            </li>
-                                                            <li class="mb-2"><strong>Deskripsi:</strong>
-                                                                <span
-                                                                    class="text-dark">{{ $virtualClass->description ?? '-' }}</span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="modal-footer justify-content-center px-4 py-3"
-                                                        style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%); border-top: none;">
-                                                        <button type="button"
-                                                            class="btn btn-light rounded-pill px-4 fw-bold"
-                                                            data-bs-dismiss="modal" style="color: #36d1c4;">
-                                                            <i class="bi bi-x-circle"></i> Tutup
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Modal -->
-                                    @endforeach
-                                </tbody>
-
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($virtualClasses as $virtualClass)
+                                            <tr>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-xs font-weight-bold">{{ $loop->iteration }}</span>
+                                                </td>
+                                                <td class="align-middle text-start">
+                                                    <span class="text-xs font-weight-bold">
+                                                        {{ $virtualClass->classroom->grade_level }} -
+                                                        {{ $virtualClass->classroom->class_name }}
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-xs font-weight-bold">
+                                                        {{ $virtualClass->subject->subject_name }}
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-xs font-weight-bold text-secondary">
+                                                        @if ($virtualClass->subject && $virtualClass->subject->teacher)
+                                                            {{ $virtualClass->subject->teacher->first_name . ' ' . $virtualClass->subject->teacher->last_name . ', ' . $virtualClass->subject->teacher->degree }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <a href="{{ $virtualClass->virtual_class_link }}" target="_blank"
+                                                        class="btn btn-sm badge bg-gradient-success text-white me-2"
+                                                        title="Join Virtual Class">
+                                                        Link
+                                                    </a>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <button type="button"
+                                                        class="btn btn-sm badge bg-gradient-info text-white me-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalDetailVirtualClass{{ $virtualClass->id }}">
+                                                        <i class="bi bi-info-circle me-1"></i> Detail
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-    <!-- Student Virtual-class List -->
+    {{-- Detail Modal for Virtual Class (Elegant Version) --}}
+    @foreach ($virtualClasses as $virtualClass)
+        <div class="modal fade" id="modalDetailVirtualClass{{ $virtualClass->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content rounded-4 shadow-lg border-0 overflow-hidden">
 
+                    {{-- Header --}}
+                    <div class="modal-header text-white px-4 py-3"
+                        style="background: linear-gradient(135deg, #4e73df, #6f42c1);">
+                        <h6 class="modal-title fw-bold">
+                            <i class="bi bi-person-video me-2"></i> Detail Kelas Virtual
+                        </h6>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
 
-    <!-- Alert Notification for Add Class Success -->
-    <script>
-        window.onload = function() {
-            @if (session('success'))
-                var virtualClassSuccessModal = new bootstrap.Modal(document.getElementById('virtualClassSuccess'));
-                virtualClassSuccessModal.show();
-            @endif
-        };
-    </script>
+                    {{-- Body --}}
+                    <div class="modal-body bg-light p-4">
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item d-flex align-items-center border-0 bg-transparent px-0 py-2">
+                                <i class="bi bi-book me-3 text-primary"></i>
+                                <div class="fw-bold me-2" style="width: 120px;">Mata Pelajaran:</div>
+                                <span class="text-muted">{{ $virtualClass->subject->subject_name ?? '-' }}</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center border-0 bg-transparent px-0 py-2">
+                                <i class="bi bi-person-circle me-3 text-success"></i>
+                                <div class="fw-bold me-2" style="width: 120px;">Guru Mapel:</div>
+                                <span class="text-muted">
+                                    @if ($virtualClass->subject && $virtualClass->subject->teacher)
+                                        {{ $virtualClass->subject->teacher->first_name . ' ' . $virtualClass->subject->teacher->last_name . ', ' . $virtualClass->subject->teacher->degree }}
+                                    @else
+                                        -
+                                    @endif
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center border-0 bg-transparent px-0 py-2">
+                                <i class="bi bi-building me-3 text-info"></i>
+                                <div class="fw-bold me-2" style="width: 120px;">Kelas:</div>
+                                <span class="text-muted">
+                                    {{ $virtualClass->classroom->grade_level ?? '-' }} -
+                                    {{ $virtualClass->classroom->class_name ?? '-' }}
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center border-0 bg-transparent px-0 py-2">
+                                <i class="bi bi-calendar-date me-3 text-warning"></i>
+                                <div class="fw-bold me-2" style="width: 120px;">Tanggal:</div>
+                                <span class="text-muted">
+                                    {{ \Carbon\Carbon::parse($virtualClass->date)->translatedFormat('d F Y') }}
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center border-0 bg-transparent px-0 py-2">
+                                <i class="bi bi-clock me-3 text-danger"></i>
+                                <div class="fw-bold me-2" style="width: 120px;">Waktu:</div>
+                                <span class="text-muted">
+                                    {{ \Carbon\Carbon::parse($virtualClass->start_time)->format('H:i') }} -
+                                    {{ \Carbon\Carbon::parse($virtualClass->end_time)->format('H:i') }} WIB
+                                </span>
+                            </li>
+                        </ul>
 
-    <div class="modal fade" id="virtualClassSuccess" tabindex="-1" role="dialog"
-        aria-labelledby="virtualClassSuccessLabel" aria-hidden="true">
-        <div class="modal-dialog modal-success modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="virtualClassSuccessLabel">Sukses</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="py-3 text-center">
-                        <i class="ni ni-check-bold text-success ni-3x"></i>
-                        <h4 class="text-gradient text-success mt-4">Berhasil!</h4>
-                        <p>{{ session('success') }}</p> <!-- Menampilkan pesan sukses dari session -->
+                        <div class="bg-white rounded shadow-sm p-3 mb-3">
+                            <div class="d-flex align-items-center mb-1">
+                                <i class="bi bi-list-task me-2"></i>
+                                <p class="fw-bold mb-0 text-sm">Agenda:</p>
+                            </div>
+                            <p class="mb-0 text-muted text-xs">{{ $virtualClass->agenda ?? '-' }}</p>
+                        </div>
+
+                        <div class="bg-white rounded shadow-sm p-3">
+                            <div class="d-flex align-items-center mb-1">
+                                <i class="bi bi-chat-left-text me-2"></i>
+                                <p class="fw-bold mb-0 text-sm">Deskripsi:</p>
+                            </div>
+                            <p class="mb-0 text-muted text-xs">{{ $virtualClass->description ?? '-' }}</p>
+                        </div>
+                    </div>
+
+                    {{-- Footer --}}
+                    <div class="modal-footer bg-white d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary btn-sm rounded-pill me-2"
+                            data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i> Tutup
+                        </button>
+                        <a href="{{ $virtualClass->virtual_class_link }}" target="_blank"
+                            class="btn btn-primary btn-sm rounded-pill">
+                            <i class="bi bi-link-45deg me-1"></i> Gabung Kelas
+                        </a>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-round bg-gradient-info" data-bs-dismiss="modal">Ok,
-                        Mengerti</button>
-                </div>
             </div>
         </div>
-    </div>
-    <!-- End of Modal Notification for Adding Class Success -->
+    @endforeach
 
     </x-layout.nstudent>
     {{-- Ed Page: Student Virtual-class --}}

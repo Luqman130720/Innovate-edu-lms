@@ -216,7 +216,8 @@
                                                             style="font-size: 4rem;"></i>
                                                         <h5 class="mt-3">Yakin ingin menghapus?</h5>
                                                         <p class="text-muted">Tugas
-                                                            <strong>{{ $assignment->title }}</strong> akan dihapus.</p>
+                                                            <strong>{{ $assignment->title }}</strong> akan dihapus.
+                                                        </p>
                                                     </div>
                                                     <div class="modal-footer justify-content-center border-0 pb-4">
                                                         <button type="button"
@@ -288,8 +289,8 @@
             </div>
         </div>
         <!-- End of Modal Notification -->
-
     </div>
+    <!-- End of Assignments Data Overview -->
 
 </x-layout.teacher>
 {{-- End Page: Teacher Index Assigments --}}

@@ -48,41 +48,57 @@
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card shadow-lg rounded-4 border-0">
 
                     {{-- Header --}}
-                    <div class="card-header text-white"
-                        style="background: linear-gradient(135deg, #3c4b65, #344767); border-bottom: 0;">
-                        <h5 class="mb-0 fw-bold text-white">
+                    <div
+                        class="card-header pb-0 d-flex justify-content-between align-items-center bg-transparent border-0">
+                        <h6 class="mb-0 text-dark fw-bold">
                             <i class="bi bi-journal-text me-2"></i> {{ $title ?? 'Daftar Penilaian' }}
-                        </h5>
+                        </h6>
                     </div>
 
                     {{-- Body --}}
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0 text-center">
-                                <thead class="table-light">
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-4">
+                            <table class="table align-items-center mb-0">
+                                <thead>
                                     <tr>
-                                        <th class="text-center">No</th>
-                                        <th class="text-start">Mapel</th>
-                                        <th class="text-start">Tugas</th>
-                                        <th class="text-center">Status Tugas</th>
-                                        <th class="text-center">Status Penilaian</th>
-                                        <th class="text-center">Aksi</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                            No</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-start">
+                                            Mapel</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-start">
+                                            Tugas</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                            Status Tugas</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                            Status Penilaian</th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                            Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($submissions as $submission)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td class="text-start fw-semibold">
-                                                {{ $submission->assignment->subject->subject_name ?? '-' }}</td>
-                                            <td class="text-start fw-semibold">
-                                                {{ $submission->assignment->title ?? 'Tugas' }}</td>
-
-                                            {{-- Status Tugas --}}
-                                            <td>
+                                            <td class="text-center">
+                                                <p class="text-xs font-weight-bold mb-0">{{ $loop->iteration }}</p>
+                                            </td>
+                                            <td class="text-start">
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $submission->assignment->subject->subject_name ?? '-' }}</p>
+                                            </td>
+                                            <td class="text-start">
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ $submission->assignment->title ?? 'Tugas' }}</p>
+                                            </td>
+                                            <td class="text-center">
                                                 @if (!empty($submission->submitted_at))
                                                     <span class="badge rounded-pill bg-gradient-success px-3 py-2">
                                                         <i class="bi bi-check-circle me-1"></i> Sudah
@@ -93,9 +109,7 @@
                                                     </span>
                                                 @endif
                                             </td>
-
-                                            {{-- Status Penilaian --}}
-                                            <td>
+                                            <td class="text-center">
                                                 @if ($submission->score !== null)
                                                     <span class="badge rounded-pill bg-gradient-primary px-3 py-2">
                                                         <i class="bi bi-star-fill me-1"></i> Sudah Dinilai
@@ -107,21 +121,24 @@
                                                     </span>
                                                 @endif
                                             </td>
-
-                                            {{-- Aksi --}}
-                                            <td>
-                                                <span class="badge rounded-pill text-white shadow-sm"
-                                                    style="background: linear-gradient(135deg, #36b9cc, #1cc88a); cursor:pointer;"
+                                            <td class="text-center">
+                                                <a href="#"
+                                                    class="btn btn-sm badge bg-gradient-info text-white me-2"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#submissionModal{{ $submission->id }}">
                                                     <i class="bi bi-eye me-1"></i> Info
-                                                </span>
+                                                </a>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center text-muted py-4">
-                                                <i class="bi bi-inbox me-2"></i> Belum ada data penilaian.
+                                            <td colspan="6" class="text-center py-5">
+                                                <div class="text-muted">
+                                                    <i class="bi bi-inbox fa-2x mb-3 text-secondary"></i>
+                                                    <p class="mb-0 fw-bold">Belum ada data penilaian</p>
+                                                    <small class="text-muted">Guru belum memberikan penilaian
+                                                        apapun.</small>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforelse
@@ -134,6 +151,8 @@
             </div>
         </div>
     </div>
+    <!-- End: Student Data Evaluations -->
+
 
     {{-- Detail Modal --}}
     @foreach ($submissions as $submission)
@@ -208,6 +227,7 @@
         </div>
     @endforeach
     {{-- End of Detail Modal --}}
+
     <!-- End of Student Data Evaluations -->
 
 

@@ -3,7 +3,7 @@
 
     <x-partials.student.navbar :title="$title" />
 
-    <!-- Administrator Profile Section -->
+    <!-- Student Profile Section -->
     <div class="card shadow-lg mx-4 card-profile-bottom" style="margin-top: 180px">
         <div class="card-body p-3">
             <div class="row gx-4">
@@ -12,6 +12,7 @@
                         <img src="{{ Storage::url($user->profile_picture) }}" alt="profile_image"
                             class="w-100 border-radius-lg shadow-sm">
                     </div>
+
                 </div>
                 <div class="col-auto my-auto">
                     <div class="h-100">
@@ -40,95 +41,98 @@
 
             </div>
         </div>
-    </div><!-- Administrator Profile Section -->
+    </div>
+    <!-- Student Profile Section -->
 
-    <!-- Student Assignment List -->
+    <!-- Student Assignment List (Makeover) -->
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h6>List Tugas</h6>
+                <div class="card shadow-lg rounded-4">
+                    <div
+                        class="card-header pb-0 d-flex justify-content-between align-items-center bg-transparent border-0">
+                        <h6 class="mb-0 text-dark fw-bold">List Tugas</h6>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            No.
-                                        </th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Kelas
-                                        </th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
-                                            Mata Pelajaran
-                                        </th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Judul Tugas
-                                        </th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Tanggal Pengumpulan
-                                        </th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Aksi
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($assignments as $assignment)
+                        <div class="table-responsive p-4">
+                            @if ($assignments->isEmpty())
+                                <div class="text-center py-5">
+                                    <i class="fa-solid fa-book-open fa-2x mb-3 text-secondary"></i>
+                                    <p class="mb-0 fw-bold">Belum ada tugas</p>
+                                    <small class="text-muted">Saat ini guru belum memberikan tugas apapun.</small>
+                                </div>
+                            @else
+                                <table class="table align-items-center mb-0">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0 ps-2">
-                                                    {{ $loop->iteration }}
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $assignment->classroom->grade_level }} -
-                                                    {{ $assignment->classroom->class_name }}
-                                                </p>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $assignment->subject->subject_name }}
-                                                </p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $assignment->title }}
-                                                </p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p class="text-xs font-weight-bold mb-0">
-                                                    {{ $assignment->deadline_date }} {{ $assignment->deadline_time }}
-                                                </p>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <a href="{{ route('student.assignments.Show', $assignment->id) }}"
-                                                    class="btn bg-gradient-primary btn-round text-light font-weight-bold text-xs ms-2"
-                                                    data-toggle="tooltip" title="Detail Tugas">
-                                                    Detail
-                                                </a>
-                                            </td>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                No.</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Kelas</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                                Mata Pelajaran</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Judul Tugas</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Tanggal & Waktu Pengumpulan</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Aksi</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($assignments as $assignment)
+                                            <tr>
+                                                <td>
+                                                    <p class="text-xs font-weight-bold mb-0 ps-2">{{ $loop->iteration }}
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-xs font-weight-bold mb-0">
+                                                        {{ $assignment->classroom->grade_level }} -
+                                                        {{ $assignment->classroom->class_name }}
+                                                    </p>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <p class="text-xs font-weight-bold mb-0">
+                                                        {{ $assignment->subject->subject_name }}</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-xs font-weight-bold mb-0">{{ $assignment->title }}
+                                                    </p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class="text-xs font-weight-bold mb-0">
+                                                        {{ $assignment->deadline_date }}
+                                                        {{ $assignment->deadline_time }}</p>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <a href="{{ route('student.assignments.Show', $assignment->id) }}"
+                                                        class="btn btn-sm badge bg-gradient-info text-white me-2"
+                                                        title="Detail Tugas">
+                                                        <i class="fa-solid fa-circle-info me-1"></i> Detail
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Student Assignment List -->
+    <!-- End of Student Assignment List -->
+
+
+
 
 
     <!-- Alert Notification for Add Class Success -->

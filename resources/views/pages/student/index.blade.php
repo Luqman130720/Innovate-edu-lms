@@ -464,4 +464,47 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Success Update User -->
+    <div class="modal fade" id="updateUserSuccess" tabindex="-1" aria-labelledby="updateUserSuccessLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow-sm border-0">
+                <div class="modal-header bg-gradient-success text-white">
+                    <h6 class="modal-title fw-bold" id="updateUserSuccessLabel">Sukses</h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                    <h5 class="fw-bold text-success mt-3">Berhasil!</h5>
+                    <p class="text-muted mb-0">{{ session('success') }}</p>
+                </div>
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn btn-success rounded-pill px-5 shadow-sm"
+                        data-bs-dismiss="modal">Ok, Mengerti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tampilkan modal sukses jika ada session
+        window.onload = function() {
+            @if (session('success'))
+                var updateUserSuccessModal = new bootstrap.Modal(document.getElementById('updateUserSuccess'));
+                updateUserSuccessModal.show();
+            @endif
+        };
+
+        // Fungsi untuk preview gambar
+        function previewImage(event, previewId) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById(previewId);
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+    <!-- End of Modal Success Update User -->
 </x-layout.student>

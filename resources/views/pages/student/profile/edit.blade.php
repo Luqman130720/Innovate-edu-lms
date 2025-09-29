@@ -1,4 +1,4 @@
-{{-- Start Page: Student Update Prodile --}}
+{{-- Start Page: Student Update Profile --}}
 <x-layout.student>
 
     <x-partials.student.navbar :title="$title" />
@@ -12,6 +12,7 @@
                         <img src="{{ Storage::url($student->profile_picture) }}" alt="profile_image"
                             class="w-100 border-radius-lg shadow-sm">
                     </div>
+
                 </div>
                 <div class="col-auto my-auto">
                     <div class="h-100">
@@ -42,347 +43,233 @@
         </div>
     </div>
     <!-- Student Profile Section -->
-
-    <!-- Student Profile Edit Form -->
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-header bg-white border-0 rounded-top-4">
+                        <h5 class="mb-0 fw-bold">Perbarui Data Siswa</h5>
+                        <small class="text-muted">Lengkapi informasi berikut untuk memperbarui data profil Anda</small>
+                    </div>
                     <div class="card-body">
                         <form id="studentProfileForm" action="{{ route('student.profile.update', $student->id) }}"
                             method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
-                            <div class="row">
-                                <!-- NIS -->
+                            <div class="row g-3">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="nis" class="form-control-label">NIS</label>
-                                        <input class="form-control" type="text" id="nis" name="nis"
-                                            value="{{ old('nis', $student->nis) }}" placeholder="Masukkan NIS" readonly>
-                                    </div>
+                                    <label for="nis" class="form-label fw-semibold">NIS</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="nis"
+                                        name="nis" value="{{ old('nis', $student->nis) }}"
+                                        placeholder="Masukkan NIS" readonly>
                                 </div>
-
-                                <!-- NISN -->
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="nisn" class="form-control-label">NISN</label>
-                                        <input class="form-control" type="text" id="nisn" name="nisn"
-                                            value="{{ old('nisn', $student->nisn) }}" placeholder="Masukkan NISN"
-                                            readonly>
-                                    </div>
+                                    <label for="nisn" class="form-label fw-semibold">NISN</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="nisn"
+                                        name="nisn" value="{{ old('nisn', $student->nisn) }}"
+                                        placeholder="Masukkan NISN" readonly>
                                 </div>
-
-                                <!-- Nama Lengkap -->
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="full_name" class="form-control-label">Nama Lengkap <span
-                                                style="color:red">*</span></label>
-                                        <input class="form-control" type="text" id="full_name" name="full_name"
-                                            value="{{ old('full_name', $student->full_name) }}"
-                                            placeholder="Masukkan Nama Lengkap" required>
-                                    </div>
+                                    <label for="full_name" class="form-label fw-semibold">Nama Lengkap <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="full_name"
+                                        name="full_name" value="{{ old('full_name', $student->full_name) }}" required>
                                 </div>
-
-                                <!-- Kelas -->
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="classroom_id" class="form-control-label">Kelas</label>
-                                        <!-- tampilkan nama kelas -->
-                                        <input type="text" class="form-control"
-                                            value="{{ $student->classroom ? $student->classroom->grade_level . ' ' . $student->classroom->class_name : '-' }}"
-                                            readonly>
-                                        <!-- tetap kirim classroom_id ke backend -->
-                                        <input type="hidden" name="classroom_id" value="{{ $student->classroom_id }}">
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <hr class="horizontal dark">
-                            <p class="text-uppercase text-sm">Data Pribadi</p>
-                            <div class="row">
-                                <!-- Tempat Lahir -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="place_of_birth" class="form-control-label">Tempat Lahir</label>
-                                        <input class="form-control" type="text" id="place_of_birth"
-                                            name="place_of_birth"
-                                            value="{{ old('place_of_birth', $student->place_of_birth) }}"
-                                            placeholder="Masukkan Tempat Lahir">
-                                    </div>
-                                </div>
-
-                                <!-- Tanggal Lahir -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="date_of_birth" class="form-control-label">Tanggal Lahir</label>
-                                        <input class="form-control" type="date" id="date_of_birth"
-                                            name="date_of_birth"
-                                            value="{{ old('date_of_birth', $student->date_of_birth) }}">
-                                    </div>
-                                </div>
-
-                                <!-- Jenis Kelamin -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="gender" class="form-control-label">Jenis Kelamin</label>
-                                        <select class="form-control" id="gender" name="gender">
-                                            <option value="">-- Pilih --</option>
-                                            <option value="L"
-                                                {{ old('gender', $student->gender) == 'L' ? 'selected' : '' }}>
-                                                Laki-laki</option>
-                                            <option value="P"
-                                                {{ old('gender', $student->gender) == 'P' ? 'selected' : '' }}>
-                                                Perempuan</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Agama -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="religion" class="form-control-label">Agama</label>
-                                        <input class="form-control" type="text" id="religion" name="religion"
-                                            value="{{ old('religion', $student->religion) }}"
-                                            placeholder="Masukkan Agama">
-                                    </div>
+                                    <label for="classroom_id" class="form-label fw-semibold">Kelas</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm"
+                                        value="{{ $student->classroom ? $student->classroom->grade_level . ' ' . $student->classroom->class_name : '-' }}"
+                                        readonly>
+                                    <input type="hidden" name="classroom_id" value="{{ $student->classroom_id }}">
                                 </div>
                             </div>
 
-                            <hr class="horizontal dark">
-                            <p class="text-uppercase text-sm">Kontak</p>
-                            <div class="row">
-                                <!-- Alamat -->
+                            <hr class="my-4">
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="place_of_birth" class="form-label fw-semibold">Tempat Lahir</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="place_of_birth"
+                                        name="place_of_birth"
+                                        value="{{ old('place_of_birth', $student->place_of_birth) }}"
+                                        placeholder="Masukkan Tempat Lahir">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="date_of_birth" class="form-label fw-semibold">Tanggal Lahir</label>
+                                    <input type="date" class="form-control rounded-4 shadow-sm" id="date_of_birth"
+                                        name="date_of_birth"
+                                        value="{{ old('date_of_birth', $student->date_of_birth) }}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="gender" class="form-label fw-semibold">Jenis Kelamin</label>
+                                    <select class="form-select rounded-4 shadow-sm" id="gender" name="gender">
+                                        <option value="">-- Pilih --</option>
+                                        <option value="L"
+                                            {{ old('gender', $student->gender) == 'L' ? 'selected' : '' }}>Laki-laki
+                                        </option>
+                                        <option value="P"
+                                            {{ old('gender', $student->gender) == 'P' ? 'selected' : '' }}>Perempuan
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="religion" class="form-label fw-semibold">Agama</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="religion"
+                                        name="religion" value="{{ old('religion', $student->religion) }}"
+                                        placeholder="Masukkan Agama">
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="row g-3">
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="address" class="form-control-label">Alamat</label>
-                                        <textarea class="form-control" id="address" name="address" rows="2" placeholder="Masukkan alamat">{{ old('address', $student->address) }}</textarea>
-                                    </div>
+                                    <label for="address" class="form-label fw-semibold">Alamat</label>
+                                    <textarea class="form-control rounded-4 shadow-sm" id="address" name="address" rows="2"
+                                        placeholder="Masukkan alamat">{{ old('address', $student->address) }}</textarea>
                                 </div>
-
-                                <!-- Kota -->
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="city" class="form-control-label">Kota</label>
-                                        <input class="form-control" type="text" id="city" name="city"
-                                            value="{{ old('city', $student->city) }}" placeholder="Masukkan Kota">
-                                    </div>
+                                    <label for="city" class="form-label fw-semibold">Kota</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="city"
+                                        name="city" value="{{ old('city', $student->city) }}"
+                                        placeholder="Masukkan Kota">
                                 </div>
-
-                                <!-- Provinsi -->
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="province" class="form-control-label">Provinsi</label>
-                                        <input class="form-control" type="text" id="province" name="province"
-                                            value="{{ old('province', $student->province) }}"
-                                            placeholder="Masukkan Provinsi">
-                                    </div>
+                                    <label for="province" class="form-label fw-semibold">Provinsi</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="province"
+                                        name="province" value="{{ old('province', $student->province) }}"
+                                        placeholder="Masukkan Provinsi">
                                 </div>
-
-                                <!-- Kode Pos -->
                                 <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="postal_code" class="form-control-label">Kode Pos</label>
-                                        <input class="form-control" type="text" id="postal_code"
-                                            name="postal_code"
-                                            value="{{ old('postal_code', $student->postal_code) }}"
-                                            placeholder="Masukkan Kode Pos">
-                                    </div>
+                                    <label for="postal_code" class="form-label fw-semibold">Kode Pos</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="postal_code"
+                                        name="postal_code" value="{{ old('postal_code', $student->postal_code) }}"
+                                        placeholder="Masukkan Kode Pos">
                                 </div>
-
-                                <!-- Negara -->
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="country" class="form-control-label">Negara</label>
-                                        <input class="form-control" type="text" id="country" name="country"
-                                            value="{{ old('country', $student->country) }}"
-                                            placeholder="Masukkan Negara">
-                                    </div>
+                                    <label for="country" class="form-label fw-semibold">Negara</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="country"
+                                        name="country" value="{{ old('country', $student->country) }}"
+                                        placeholder="Masukkan Negara">
                                 </div>
-
-                                <!-- Nomor Telepon -->
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="phone_number" class="form-control-label">Nomor Telepon</label>
-                                        <input class="form-control" type="text" id="phone_number"
-                                            name="phone_number"
-                                            value="{{ old('phone_number', $student->phone_number) }}"
-                                            placeholder="Masukkan Nomor Telepon">
-                                    </div>
+                                    <label for="phone_number" class="form-label fw-semibold">Nomor Telepon</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm" id="phone_number"
+                                        name="phone_number" value="{{ old('phone_number', $student->phone_number) }}"
+                                        placeholder="Masukkan Nomor Telepon">
                                 </div>
-
-                                <!-- Kontak Darurat -->
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="emergency_contact" class="form-control-label">Kontak
-                                            Darurat</label>
-                                        <input class="form-control" type="text" id="emergency_contact"
-                                            name="emergency_contact"
-                                            value="{{ old('emergency_contact', $student->emergency_contact) }}"
-                                            placeholder="Masukkan Nomor Kontak Darurat">
-                                    </div>
+                                    <label for="emergency_contact" class="form-label fw-semibold">Kontak
+                                        Darurat</label>
+                                    <input type="text" class="form-control rounded-4 shadow-sm"
+                                        id="emergency_contact" name="emergency_contact"
+                                        value="{{ old('emergency_contact', $student->emergency_contact) }}"
+                                        placeholder="Masukkan Nomor Kontak Darurat">
                                 </div>
-
-                                <!-- Email -->
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="email" class="form-control-label">Email</label>
-                                        <input class="form-control" type="email" id="email" name="email"
-                                            value="{{ old('email', $student->email) }}" placeholder="Masukkan Email">
-                                    </div>
+                                    <label for="email" class="form-label fw-semibold">Email</label>
+                                    <input type="email" class="form-control rounded-4 shadow-sm" id="email"
+                                        name="email" value="{{ old('email', $student->email) }}"
+                                        placeholder="Masukkan Email">
                                 </div>
                             </div>
 
-                            <hr class="horizontal dark">
-                            <div class="row">
-                                <label for="email" class="form-control-label">Foto Profil</label>
-                                <!-- Foto Profil -->
-                                <div class="col-md-12 text-center">
-                                    <a href="javascript:;" class="d-block">
-                                        <img src="{{ $student->profile_picture ? asset('storage/' . $student->profile_picture) : asset('../assets/dashboard/img/team-2.jpg') }}"
-                                            class="rounded-circle img-fluid border border-2 border-white mb-3"
-                                            alt="Profile Picture" style="width: 150px; height: 150px;"
-                                            id="profilePicturePreview">
-                                    </a>
-                                    <div class="form-group">
-                                        <label for="profile_picture" class="form-control-label">Foto Profil</label>
-                                        <input class="form-control" type="file" id="profile_picture"
-                                            name="profile_picture" accept="image/*"
-                                            onchange="previewImage(event, 'profilePicturePreview', '{{ $student->profile_picture ? asset('storage/' . $student->profile_picture) : asset('../assets/dashboard/img/team-2.jpg') }}')">
-                                        <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah
-                                            foto.</small>
-                                    </div>
+                            <hr class="my-4">
+
+                            <div class="text-center mb-4">
+                                <img src="{{ $student->profile_picture ? asset('storage/' . $student->profile_picture) : asset('assets/dashboard/img/team-2.jpg') }}"
+                                    class="rounded-circle border shadow-sm mb-3"
+                                    style="width: 140px; height: 140px; object-fit: cover;"
+                                    id="profilePicturePreview">
+                                <div class="mb-3">
+                                    <label for="photo" class="form-label fw-semibold">Foto Profil</label>
+                                    <input type="file" class="form-control rounded-4 shadow-sm" id="photo"
+                                        name="profile_picture" accept="image/*"
+                                        onchange="previewImage(event, 'profilePicturePreview')">
+                                    <small class="text-muted">Kosongkan jika tidak ingin mengubah foto.</small>
                                 </div>
                             </div>
 
-
-                            <!-- Hidden confirm password -->
-                            <input type="hidden" name="confirm_password" id="confirm_password_hidden">
-
-                            <div class="text-end mt-3">
-                                <button type="button" class="btn btn-round bg-gradient-info"
-                                    id="btnShowConfirmModal">
+                            <div class="text-end mt-4">
+                                <button type="button" class="btn btn-info rounded-pill px-5 shadow-sm"
+                                    data-bs-toggle="modal" data-bs-target="#confirmPasswordModal">
                                     Perbarui Data
                                 </button>
                                 <a href="{{ route('student.profile.edit') }}"
-                                    class="btn btn-round bg-gradient-danger">Batal</a>
+                                    class="btn btn-outline-secondary rounded-pill px-5 shadow-sm">Batal</a>
                             </div>
 
-                        </form>
-
-                        <!-- Modal Konfirmasi Password -->
-                        <div class="modal fade" id="confirmPasswordModal" tabindex="-1"
-                            aria-labelledby="confirmPasswordModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="confirmPasswordModalLabel">Konfirmasi Password
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Tutup"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Masukkan password Anda untuk konfirmasi pembaruan profil.</p>
-                                        <input type="password" id="confirmPasswordInput" class="form-control"
-                                            placeholder="Masukkan password Anda">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Batal</button>
-                                        <button type="button" class="btn btn-primary"
-                                            id="btnConfirmSubmit">Konfirmasi</button>
+                            <div class="modal fade" id="confirmPasswordModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content rounded-4 shadow-sm border-0">
+                                        <div class="modal-header bg-gradient-primary text-white">
+                                            <h6 class="modal-title fw-bold">Konfirmasi Password</h6>
+                                            <button type="button" class="btn-close btn-close-white"
+                                                data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body text-center p-4">
+                                            <i class="ni ni-lock-circle-open text-primary"
+                                                style="font-size: 3.5rem;"></i>
+                                            <h5 class="mt-3 fw-semibold">Masukkan Password Anda</h5>
+                                            <input type="password" name="confirm_password"
+                                                class="form-control mt-3 text-center rounded-4 shadow-sm"
+                                                placeholder="Password" required>
+                                            @error('confirm_password')
+                                                <div class="text-danger mt-2">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                        <div class="modal-footer justify-content-center border-0 pb-4">
+                                            <button type="submit"
+                                                class="btn btn-primary rounded-pill px-4 shadow-sm">Konfirmasi</button>
+                                            <button type="button" class="btn btn-outline-secondary rounded-pill px-4"
+                                                data-bs-dismiss="modal">Batal</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-
+                        </form>
                     </div>
                 </div>
             </div>
 
-            <!-- Card Samping Profil -->
-            <div class="col-lg-4 col-md-5">
-                <div class="card card-profile">
-                    <img src="{{ asset('../assets/dashboard/img/bg-profile.jpg') }}" alt="Background"
-                        class="card-img-top">
-                    <div class="row justify-content-center">
-                        <div class="col-4">
-                            <div class="mt-n4 mt-lg-n6 mb-4">
-                                <a href="javascript:;">
-                                    <img src="{{ $student->profile_picture ? asset('storage/' . $student->profile_picture) : asset('../assets/dashboard/img/team-2.jpg') }}"
-                                        class="rounded-circle img-fluid border border-2 border-white mb-3"
-                                        alt="Profile Picture">
-                                </a>
-                            </div>
+            <div class="col-lg-4 col-md-5 mt-4 mt-md-0">
+                <div class="card border-0 rounded-4 overflow-hidden shadow-sm">
+                    <img src="{{ asset('assets/dashboard/img/bg-profile.jpg') }}" class="card-img-top"
+                        alt="Background">
+                    <div class="card-body text-center">
+                        <img src="{{ $student->profile_picture ? asset('storage/' . $student->profile_picture) : asset('assets/dashboard/img/team-2.jpg') }}"
+                            class="rounded-circle border shadow-sm mb-3"
+                            style="width: 120px; height: 120px; object-fit: cover;">
+                        <h5 class="mb-0 fw-bold">{{ $student->full_name }}</h5>
+                        <p class="text-muted mb-1">{{ $student->classroom->grade_level ?? '-' }}
+                            {{ $student->classroom->class_name ?? '-' }}</p>
+                        <small class="text-secondary">
+                            @php
+                                $dateOfBirth = \Carbon\Carbon::parse($student->date_of_birth);
+                                $age = $dateOfBirth->age;
+                            @endphp
+                            ({{ $age }} Tahun)
+                        </small>
+                        <div class="mt-3 text-muted small">
+                            <i class="bi bi-geo-alt-fill me-1"></i>{{ $student->address }}, {{ $student->city }},
+                            {{ $student->province }}, {{ $student->country }} ({{ $student->postal_code }})
                         </div>
                     </div>
-                    <div class="card-body pt-0">
-                        <div class="text-center h6 mt-2">
-                            <div>{{ $student->full_name }}</div>
-                            <div class="text-sm mt-3">
-                                <i class="bi bi-geo-alt-fill"></i> {{ $student->address }}, {{ $student->city }},
-                                {{ $student->province }}, {{ $student->country }} ({{ $student->postal_code }})
-                            </div>
-                            <div class="text-sm mt-2">
-                                <i class="bi bi-telephone-fill"></i> {{ $student->phone_number }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column mx-4 mb-3">
-                        <a href="mailto:{{ $student->email }}" class="btn btn-info mb-2 w-100">
-                            <i class="bi bi-envelope-at-fill"></i> Email
+                    <div class="d-flex flex-column p-3 border-top">
+                        <a href="mailto:{{ $student->email }}" class="btn btn-outline-info mb-2 rounded-pill">
+                            <i class="bi bi-envelope-at-fill me-2"></i> Email
                         </a>
                         <a href="https://api.whatsapp.com/send?phone={{ $student->phone_number }}"
-                            class="btn btn-success w-100">
-                            <i class="bi bi-whatsapp"></i> Whatsapp
+                            class="btn btn-outline-success rounded-pill">
+                            <i class="bi bi-whatsapp me-2"></i> Whatsapp
                         </a>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
-    <!-- End Student Profile Edit Form -->
-
-
-
-    <!-- Alert Notification for Add Class Success -->
-    <script>
-        window.onload = function() {
-            @if (session('success'))
-                var virtualClassSuccessModal = new bootstrap.Modal(document.getElementById('virtualClassSuccess'));
-                virtualClassSuccessModal.show();
-            @endif
-        };
-    </script>
-
-    <div class="modal fade" id="virtualClassSuccess" tabindex="-1" role="dialog"
-        aria-labelledby="virtualClassSuccessLabel" aria-hidden="true">
-        <div class="modal-dialog modal-success modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="virtualClassSuccessLabel">Sukses</h6>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="py-3 text-center">
-                        <i class="ni ni-check-bold text-success ni-3x"></i>
-                        <h4 class="text-gradient text-success mt-4">Berhasil!</h4>
-                        <p>{{ session('success') }}</p> <!-- Menampilkan pesan sukses dari session -->
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-round bg-gradient-info" data-bs-dismiss="modal">Ok,
-                        Mengerti</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End of Modal Notification for Adding Class Success -->
-
-    </x-layout.nstudent>
-    {{-- Ed Page: Student Upadte Profile --}}
+</x-layout.student>
+{{-- End Page: Student Update Profile --}}

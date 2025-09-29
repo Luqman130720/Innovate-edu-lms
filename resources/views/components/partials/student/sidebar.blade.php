@@ -130,11 +130,10 @@
         </div>
         <a href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard" target="_blank"
             class="btn btn-dark btn-sm w-100 mb-3">Documentation</a>
-        <form action="{{ route('login.logout') }}" method="POST" class="d-inline"
-            onsubmit="return confirm('Are you sure you want to logout?');">
-            @csrf
-            <button type="submit" class="btn bg-gradient-warning btn-round btn-sm mb-0 w-100">Logout</button>
-        </form>
+        <button type="button" class="btn bg-gradient-warning btn-round btn-sm mb-0 w-100" data-bs-toggle="modal"
+            data-bs-target="#logoutModal">
+            Logout
+        </button>
 
     </div>
 </aside>

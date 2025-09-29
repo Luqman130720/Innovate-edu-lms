@@ -58,7 +58,8 @@
                                                 id="password" placeholder="Masukkan password" required
                                                 autocomplete="current-password">
                                         </div>
-                                        <button type="submit" class="btn btn-primary w-100 rounded-pill">Login Siswa</button>
+                                        <button type="submit" class="btn btn-primary w-100 rounded-pill">Login
+                                            Siswa</button>
                                     </form>
                                 </div>
 
@@ -1180,20 +1181,21 @@
     <!-- Password Success Modal -->
     <div class="modal fade" id="passwordSuccess" tabindex="-1" aria-labelledby="passwordSuccessLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-success modal-dialog-centered">
-            <div class="modal-content">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow-sm border-0">
                 <div class="modal-header bg-gradient-success text-white">
-                    <h6 class="modal-title" id="passwordSuccessLabel">Sukses</h6>
+                    <h6 class="modal-title fw-bold" id="passwordSuccessLabel">Sukses</h6>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center">
-                    <i class="ni ni-check-bold text-success ni-3x mb-3"></i>
-                    <h5>Password berhasil diperbarui!</h5>
-                    <p class="text-muted">{{ session('success') }}</p>
+                <div class="modal-body text-center py-4">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                    <h5 class="fw-bold text-success mt-3">Password berhasil diperbarui!</h5>
+                    <p class="text-muted mb-0">{{ session('success') }}</p>
                 </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Ok, Mengerti</button>
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn btn-success rounded-pill px-5 shadow-sm"
+                        data-bs-dismiss="modal">Ok, Mengerti</button>
                 </div>
             </div>
         </div>
@@ -1203,19 +1205,20 @@
     <div class="modal fade" id="logoutSuccessModal" tabindex="-1" aria-labelledby="logoutSuccessLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
+            <div class="modal-content rounded-4 shadow-sm border-0">
                 <div class="modal-header bg-gradient-success text-white">
-                    <h6 class="modal-title" id="logoutSuccessLabel">Berhasil Logout</h6>
+                    <h6 class="modal-title fw-bold" id="logoutSuccessLabel">Berhasil Logout</h6>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center">
-                    <i class="ni ni-check-bold text-success ni-3x mb-3"></i>
-                    <h5>Sampai jumpa!</h5>
-                    <p class="text-muted">{{ session('status') }}</p>
+                <div class="modal-body text-center py-4">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                    <h5 class="fw-bold text-success mt-3">Sampai jumpa!</h5>
+                    <p class="text-muted mb-0">{{ session('status') }}</p>
                 </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Ok, Mengerti</button>
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn btn-success rounded-pill px-5 shadow-sm"
+                        data-bs-dismiss="modal">Ok, Mengerti</button>
                 </div>
             </div>
         </div>
@@ -1224,13 +1227,12 @@
     <!-- ================== SCRIPT ================== -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Mapping session key -> modal ID
             const modalsMap = {
-                'success': 'passwordSuccess', // jika ada session('success') → tampilkan modal passwordSuccess
-                'status': 'logoutSuccessModal' // jika ada session('status') → tampilkan modal logoutSuccessModal
+                'success': 'passwordSuccess',
+                'logout_success': 'logoutSuccessModal'
             };
 
-            @foreach (['success', 'status'] as $key)
+            @foreach (['success', 'logout_success'] as $key)
                 @if (session($key))
                     var modalId = modalsMap['{{ $key }}'];
                     var modal = new bootstrap.Modal(document.getElementById(modalId));

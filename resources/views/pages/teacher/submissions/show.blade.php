@@ -81,10 +81,11 @@
                             </div>
                         </div>
                         <div class="ms-auto">
-                            <button class="btn btn-sm badge bg-gradient-info text-white me-2">
+                            <a href="{{ route('teacher.submissions.teacher.assignments.export', $assignment->id) }}"
+                                class="btn btn-sm badge bg-gradient-info text-white me-2">
                                 <i class="fa-solid fa-file-excel me-1"></i>
                                 Download Nilai
-                            </button>
+                            </a>
                         </div>
                     </div>
 
@@ -190,7 +191,8 @@
                                 <div class="col-md-6">
                                     <div class="p-3 bg-white rounded shadow-sm">
                                         <i class="fas fa-user text-primary me-2"></i>
-                                        <strong>Nama:</strong> {{ $student->full_name }}
+                                        <strong>Nama:</strong>
+                                        <p class="mb-0">{{ $student->full_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

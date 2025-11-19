@@ -14,6 +14,11 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\SubmissionsController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\VirtualClassController;
+use App\Models\Assignment;
+use App\Models\Student;
+use App\Models\Submission;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AssignmentScoreExport;
 
 Route::get('/', function () {
     return view('pages.landing.index');
@@ -195,6 +200,19 @@ Route::group([
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::put('/submissions/{submission}', 'updateScore')->name('updateScore');
+        Route::get('/teacher/assignments/{assignment}/export', function (Assignment $assignment) {
+
+            $students = Student::where('classroom_id', $assignment->classroom_id)->get();
+
+            $submissions = Submission::where('assignment_id', $assignment->id)
+                ->get()
+                ->keyBy('student_id');
+
+            return Excel::download(
+                new AssignmentScoreExport($assignment, $students, $submissions),
+                'nilai_' . str_replace(' ', '_', $assignment->title) . '.xlsx'
+            );
+        })->name('teacher.assignments.export');
         // Route::get('/show/{assignment}', 'show')->name('show');
         // Route::post('/store', 'store')->name('store');
         // Route::delete('/{id}', 'destroy')->name('destroy');
@@ -236,7 +254,10 @@ Route::group([
     });
 
     Route::group([
-        'prefix' => 'evaluations', 'as' => 'evaluations.', 'controller' => SubmissionsController::class], function () {
+        'prefix' => 'evaluations',
+        'as' => 'evaluations.',
+        'controller' => SubmissionsController::class
+    ], function () {
         Route::get('/', 'evaluations')->name('index');
         Route::get('/{id}', 'evaluationDetail')->name('show');
     });

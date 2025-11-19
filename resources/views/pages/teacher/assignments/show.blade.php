@@ -44,7 +44,7 @@
     </div>
     <!-- Teacher Profile Section -->
 
-    <!-- Teacher Assignment List -->
+    <!-- Teacher Assignment Detail -->
     <div class="card shadow-lg mx-4" style="margin-top: 1rem">
         <!-- Header -->
         <div class="card-header bg-gradient-info text-white py-3">
@@ -55,24 +55,32 @@
 
         <!-- Body -->
         <div class="card-body p-4">
+
             <!-- Detail Info -->
             <div class="mb-4">
                 <div class="row mb-2">
                     <div class="col-4 col-md-3 fw-bold">Mata Pelajaran</div>
-                    <div class="col-8 col-md-9 text-secondary">: {{ $assignment->subject->subject_name }}</div>
+                    <div class="col-8 col-md-9 text-secondary">
+                        : {{ $assignment->subject->subject_name }}
+                    </div>
                 </div>
+
                 <div class="row mb-2">
                     <div class="col-4 col-md-3 fw-bold">Kelas</div>
-                    <div class="col-8 col-md-9 text-secondary">: {{ $assignment->classroom->grade_level }} -
-                        {{ $assignment->classroom->class_name }}</div>
+                    <div class="col-8 col-md-9 text-secondary">
+                        : {{ $assignment->classroom->grade_level }} -
+                        {{ $assignment->classroom->class_name }}
+                    </div>
                 </div>
+
                 <div class="row mb-2">
                     <div class="col-4 col-md-3 fw-bold">Tanggal Pengerjaan</div>
-                    <div class="col-8 col-md-9 text-secondary">:
-                        {{ \Carbon\Carbon::parse($assignment->task_date)->translatedFormat('d F Y') }}
+                    <div class="col-8 col-md-9 text-secondary">
+                        : {{ \Carbon\Carbon::parse($assignment->task_date)->translatedFormat('d F Y') }}
                         {{ $assignment->task_time }}
                     </div>
                 </div>
+
                 <div class="row mb-2">
                     <div class="col-4 col-md-3 fw-bold text-danger">Deadline</div>
                     <div class="col-8 col-md-9">
@@ -83,7 +91,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Deskripsi -->
             @if ($assignment->description)
@@ -96,12 +103,14 @@
             <!-- Berkas -->
             <div class="mb-4">
                 <h6 class="fw-bold text-dark">Berkas Soal</h6>
+
                 @if ($assignment->file)
                     <a href="{{ asset('storage/' . $assignment->file) }}" target="_blank"
                         class="btn btn-sm btn-outline-primary me-2">
                         <i class="bi bi-file-earmark-arrow-down"></i> Unduh File
                     </a>
                 @endif
+
                 @if ($assignment->file_link)
                     <a href="{{ $assignment->file_link }}" target="_blank" class="btn btn-sm btn-outline-info">
                         <i class="bi bi-link-45deg"></i> Lihat Link
@@ -111,21 +120,56 @@
 
             <!-- Tombol Aksi -->
             <div class="text-end">
-                <form action="{{ route('teacher.assignments.destroy', $assignment->id) }}" method="POST"
-                    onsubmit="return confirm('Yakin ingin menghapus tugas ini?');" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger text-white">
-                        <i class="bi bi-trash3-fill me-1"></i> Hapus
-                    </button>
-                </form>
+                <button type="button" class="btn btn-danger text-white" data-bs-toggle="modal"
+                    data-bs-target="#deleteDetailModal{{ $assignment->id }}">
+                    <i class="bi bi-trash3-fill me-1"></i> Hapus
+                </button>
             </div>
         </div>
     </div>
-    <!-- Teacher Assignment List -->
 
+    <!-- Modal Delete From Detail Page -->
+    <div class="modal fade" id="deleteDetailModal{{ $assignment->id }}" tabindex="-1"
+        aria-labelledby="deleteDetailLabel{{ $assignment->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
 
+                <div class="modal-header bg-gradient-danger text-white">
+                    <h6 class="modal-title fw-bold" id="deleteDetailLabel{{ $assignment->id }}">
+                        Hapus Tugas
+                    </h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
 
+                <div class="modal-body text-center p-4">
+                    <i class="ni ni-fat-remove text-danger" style="font-size: 4rem;"></i>
+                    <h5 class="mt-3">Yakin ingin menghapus?</h5>
+                    <p class="text-muted">
+                        Tugas <strong>{{ $assignment->title }}</strong> akan dihapus secara permanen.
+                    </p>
+                </div>
+
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn btn-light shadow-sm px-4 rounded-pill"
+                        data-bs-dismiss="modal">Batal</button>
+
+                    <form action="{{ route('teacher.assignments.destroy', $assignment->id) }}" method="POST"
+                        class="d-inline">
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit" class="btn bg-gradient-danger text-white px-4 rounded-pill shadow-sm">
+                            Hapus
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Modal Delete From Detail Page -->
+    <!-- End Teacher Assignment Detail -->
 
 
     <!-- Alert Notification for Add Class Success -->

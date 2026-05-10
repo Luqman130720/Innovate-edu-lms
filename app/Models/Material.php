@@ -15,6 +15,7 @@ class Material extends Model
         'subject_id',
         'teacher_id',
         'file',
+        'original_file_name',
         'link',
         'cover_image',
     ];

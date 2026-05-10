@@ -66,9 +66,9 @@
                             <!-- Tombol File dan Link simetris di tengah -->
                             <div class="d-flex justify-content-center gap-2 mt-3">
                                 @if ($material->file)
-                                    <a href="{{ asset('storage/' . $material->file) }}" target="_blank"
-                                        class="btn btn-sm bg-gradient-primary text-light" style="min-width: 110px;"
-                                        download>
+                                    <a href="{{ route('student.materials.download', $material->id) }}"
+                                        class="btn btn-sm bg-gradient-primary text-light"
+                                        style="min-width: 110px;">
                                         <i class="bi bi-file-earmark-arrow-down"></i> File
                                     </a>
                                 @else

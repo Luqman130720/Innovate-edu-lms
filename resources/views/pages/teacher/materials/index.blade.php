@@ -100,24 +100,23 @@
                                                 <p class="text-xs font-weight-bold mb-0">{{ $material->title }}</p>
                                             </td>
                                             <td class="align-middle text-center">
-                                                @if ($material->file || $material->link)
-                                                    @if ($material->file)
-                                                        <a href="{{ asset('storage/' . $material->file) }}"
-                                                            target="_blank"
-                                                            class="btn btn-sm badge bg-gradient-primary text-white me-2"
-                                                            download>
-                                                            <i class="fa-solid fa-download me-1"></i> Unduh
-                                                        </a>
-                                                    @endif
-                                                    @if ($material->link)
-                                                        <a href="{{ $material->link }}" target="_blank"
-                                                            class="btn btn-sm badge bg-gradient-info text-white me-2">
-                                                            <i class="fa-solid fa-link me-1"></i> Link
-                                                        </a>
-                                                    @endif
-                                                @else
-                                                    <p class="text-xs font-weight-bold text-secondary mb-0">-</p>
+                                            @if ($material->file || $material->link)
+                                                @if ($material->file)
+                                                    <a href="{{ route('teacher.materials.download', $material->id) }}"
+                                                        class="btn btn-sm badge bg-gradient-primary text-white me-2">
+                                                        <i class="fa-solid fa-download me-1"></i> Unduh
+                                                    </a>
                                                 @endif
+
+                                                @if ($material->link)
+                                                    <a href="{{ $material->link }}" target="_blank"
+                                                        class="btn btn-sm badge bg-gradient-info text-white me-2">
+                                                        <i class="fa-solid fa-link me-1"></i> Link
+                                                    </a>
+                                                @endif
+                                            @else
+                                                <p class="text-xs font-weight-bold text-secondary mb-0">-</p>
+                                            @endif
                                             </td>
                                             <td class="align-middle text-center">
                                                 <a href="#"

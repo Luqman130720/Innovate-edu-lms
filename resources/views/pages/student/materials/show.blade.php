@@ -88,9 +88,8 @@
                                 </div>
                                 <div class="d-flex justify-content-center gap-3 mt-4">
                                     @if ($material->file)
-                                        <a href="{{ asset('storage/' . $material->file) }}" target="_blank"
-                                            class="btn btn-sm bg-gradient-primary text-light" style="min-width: 120px;"
-                                            download>
+                                        <a href="{{ route('student.materials.download', $material->id) }}"
+                                            class="btn btn-sm bg-gradient-primary text-light" style="min-width: 120px;">
                                             <i class="bi bi-file-earmark-arrow-down"></i> Unduh File
                                         </a>
                                     @else

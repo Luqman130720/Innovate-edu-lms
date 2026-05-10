@@ -193,6 +193,7 @@ Route::group([
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
         Route::delete('/{id}', 'destroy')->name('destroy');
+        Route::get('/download/{id}', 'download')->name('download');
     });
 
     // Submission Routes
@@ -245,6 +246,7 @@ Route::group([
     Route::group(['prefix' => 'materials', 'as' => 'materials.', 'controller' => MaterialController::class], function () {
         Route::get('/', 'studentMaterialsIndex')->name('studentMaterialsIndex');
         Route::get('/{id}', 'studentMaterialsShow')->name('studentMaterialsShow');
+        Route::get('/download/{id}', 'download')->name('download');
     });
 
     Route::group(['prefix' => 'assignments', 'as' => 'assignments.', 'controller' => AssignmentController::class], function () {

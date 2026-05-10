@@ -3,6 +3,15 @@
 
     <x-partials.student.navbar :title="$title" />
 
+    @if (session('success'))
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const modal = new bootstrap.Modal(document.getElementById('updateUserSuccess'));
+                modal.show();
+            });
+        </script>
+    @endif
+
     <!-- Student Profile Section -->
     <div class="card shadow-lg mx-4 card-profile-bottom" style="margin-top: 180px">
         <div class="card-body p-3">
@@ -178,17 +187,22 @@
                             <hr class="my-4">
 
                             <div class="text-center mb-4">
+
                                 <img src="{{ $student->profile_picture ? asset('storage/' . $student->profile_picture) : asset('assets/dashboard/img/team-2.jpg') }}"
                                     class="rounded-circle border shadow-sm mb-3"
                                     style="width: 140px; height: 140px; object-fit: cover;"
-                                    id="profilePicturePreview">
+                                    id="studentProfilePreview">
+
                                 <div class="mb-3">
-                                    <label for="photo" class="form-label fw-semibold">Foto Profil</label>
-                                    <input type="file" class="form-control rounded-4 shadow-sm" id="photo"
-                                        name="profile_picture" accept="image/*"
-                                        onchange="previewImage(event, 'profilePicturePreview')">
-                                    <small class="text-muted">Kosongkan jika tidak ingin mengubah foto.</small>
+                                    <label class="form-label fw-semibold">Foto Profil</label>
+
+                                    <input type="file" class="form-control rounded-4 shadow-sm" id="studentPhoto"
+                                        accept="image/*">
+
                                 </div>
+
+                                <input type="hidden" name="profile_picture" id="student_profile_picture_cropped">
+
                             </div>
 
                             <div class="text-end mt-4">
@@ -265,6 +279,51 @@
                             class="btn btn-outline-success rounded-pill">
                             <i class="bi bi-whatsapp me-2"></i> Whatsapp
                         </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="cropModalProfile" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Crop Foto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <img id="imageToCropProfile" style="max-width:100%">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button class="btn btn-primary" id="cropButtonProfile">Gunakan</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Success -->
+            <div class="modal fade" id="updateUserSuccess" tabindex="-1" aria-labelledby="updateUserSuccessLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content rounded-4 shadow-sm border-0">
+                        <div class="modal-header bg-gradient-success text-white">
+                            <h6 class="modal-title fw-bold" id="updateUserSuccessLabel">Sukses</h6>
+                            <button type="button" class="btn-close btn-close-white"
+                                data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body text-center py-4">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                            <h5 class="fw-bold text-success mt-3">Berhasil!</h5>
+                            <p class="text-muted mb-0">{{ session('success') }}</p>
+                        </div>
+                        <div class="modal-footer justify-content-center border-0 pb-4">
+                            <button type="button" class="btn btn-success rounded-pill px-5 shadow-sm"
+                                data-bs-dismiss="modal">Ok, Mengerti</button>
+                        </div>
                     </div>
                 </div>
             </div>

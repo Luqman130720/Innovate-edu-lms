@@ -133,17 +133,32 @@
 
                             <!-- Foto Profil -->
                             <div class="text-center mb-4">
+
+                                <!-- Preview hasil crop -->
                                 <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('../assets/dashboard/img/team-2.jpg') }}"
                                     class="rounded-circle border shadow-sm mb-3"
                                     style="width: 140px; height: 140px; object-fit: cover;"
                                     id="profilePicturePreview">
+
+                                <!-- Input file -->
                                 <div class="mb-3">
                                     <label for="photo" class="form-label fw-semibold">Foto Profil</label>
+
                                     <input type="file" class="form-control rounded-4 shadow-sm" id="photo"
-                                        name="profile_picture" accept="image/*"
-                                        onchange="previewImage(event, 'profilePicturePreview')">
-                                    <small class="text-muted">Kosongkan jika tidak ingin mengubah foto.</small>
+                                        name="profile_picture_input" accept="image/*">
+
+                                    <small class="text-muted">
+                                        Kosongkan jika tidak ingin mengubah foto.
+                                    </small>
+
+                                    @error('profile_picture')
+                                        <small class="text-danger d-block mt-1">{{ $message }}</small>
+                                    @enderror
                                 </div>
+
+                                <!-- Hidden hasil crop (INI YANG DIPAKAI BACKEND) -->
+                                <input type="hidden" name="profile_picture" id="profile_picture_cropped">
+
                             </div>
 
                             <!-- Tombol Update -->
@@ -187,6 +202,29 @@
                             </div>
 
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="cropModalProfile" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Crop Foto Profil</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="img-container">
+                                <img id="imageToCropProfile" style="max-width: 100%;">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button class="btn btn-primary" id="cropButtonProfile">Gunakan Foto</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -263,6 +301,8 @@
             @endif
         };
     </script>
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
 
 </x-layout.teacher>
 {{-- End Page: Teacher Edit Profile --}}

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
-use App\Models\Classroom;
+use Illuminate\Support\Str;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,12 +73,31 @@ class ProfileController extends Controller
             $user->password = bcrypt($request->input('password'));
         }
 
-        if ($request->hasFile('profile_picture')) {
+        if ($request->cropped_image) {
+
+            // hapus foto lama
             if ($user->profile_picture) {
                 Storage::disk('public')->delete($user->profile_picture);
             }
 
-            $user->profile_picture = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $image = $request->cropped_image;
+            $image = substr($image, strpos($image, ',') + 1);
+            $image = base64_decode($image);
+
+            $fileName = 'profile_pictures/' . Str::uuid() . '.jpg';
+
+            Storage::disk('public')->put($fileName, $image);
+
+            $user->profile_picture = $fileName;
+        } elseif ($request->hasFile('profile_picture')) {
+
+            // hapus foto lama
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            $user->profile_picture = $request->file('profile_picture')
+                ->store('profile_pictures', 'public');
         }
 
         $user->save();
@@ -121,7 +140,7 @@ class ProfileController extends Controller
             'last_name' => 'required|string|max:255',
             'degree' => 'required|string|max:10',
             'confirm_password' => 'required|string',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'profile_picture' => 'nullable|string',
         ]);
 
         $authTeacher = Auth::guard('teacher')->user();
@@ -131,11 +150,33 @@ class ProfileController extends Controller
 
         $teacher->fill($request->except(['confirm_password', 'profile_picture']));
 
-        if ($request->hasFile('profile_picture')) {
+        if ($request->profile_picture) {
+
+            // hapus file lama
             if ($teacher->profile_picture) {
                 Storage::disk('public')->delete($teacher->profile_picture);
             }
-            $teacher->profile_picture = $request->file('profile_picture')->store('teachers/profile_pictures', 'public');
+
+            $image = $request->profile_picture;
+
+            if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
+
+                $image = substr($image, strpos($image, ',') + 1);
+                $type = strtolower($type[1]);
+
+                $image = str_replace(' ', '+', $image);
+                $imageData = base64_decode($image);
+
+                if ($imageData === false) {
+                    return back()->with('error', 'Gagal memproses gambar.');
+                }
+
+                $fileName = 'teachers/profile_pictures/' . uniqid() . '.' . $type;
+
+                Storage::disk('public')->put($fileName, $imageData);
+
+                $teacher->profile_picture = $fileName;
+            }
         }
 
         $teacher->save();
@@ -166,6 +207,7 @@ class ProfileController extends Controller
     public function update_student(Request $request, $id)
     {
         $student = Student::findOrFail($id);
+
         $request->validate([
             'nis' => 'nullable|string|max:50|unique:students,nis,' . $student->id,
             'nisn' => 'nullable|string|max:50|unique:students,nisn,' . $student->id,
@@ -183,11 +225,10 @@ class ProfileController extends Controller
             'emergency_contact' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
             'religion' => 'nullable|string|max:50',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'confirm_password' => 'required|string', // hanya untuk konfirmasi
+            'profile_picture' => 'nullable|string',
+            'confirm_password' => 'required|string',
         ]);
 
-        // pastikan yang update adalah siswa yang sedang login
         $authStudent = Auth::guard('student')->user();
 
         if (!Hash::check($request->confirm_password, $authStudent->password)) {
@@ -196,20 +237,40 @@ class ProfileController extends Controller
             ]);
         }
 
-        // update profil (tanpa ubah password)
         $student->fill($request->except(['confirm_password', 'profile_picture']));
 
-        if ($request->hasFile('profile_picture')) {
+        // 🔥 HANDLE CROPPED IMAGE (BASE64)
+        if ($request->profile_picture) {
+
             if ($student->profile_picture) {
                 Storage::disk('public')->delete($student->profile_picture);
             }
-            $student->profile_picture = $request->file('profile_picture')
-                ->store('students/profile_pictures', 'public');
+
+            $image = $request->profile_picture;
+
+            if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
+
+                $image = substr($image, strpos($image, ',') + 1);
+                $type = strtolower($type[1]);
+
+                $image = str_replace(' ', '+', $image);
+                $imageData = base64_decode($image);
+
+                if ($imageData === false) {
+                    return back()->with('error', 'Gagal memproses gambar.');
+                }
+
+                $fileName = 'students/profile_pictures/' . uniqid() . '.' . $type;
+
+                Storage::disk('public')->put($fileName, $imageData);
+
+                $student->profile_picture = $fileName;
+            }
         }
 
         $student->save();
 
-        return redirect()->route('student.index')
+        return redirect()->route('student.profile.edit', $student->id)
             ->with('success', 'Profil siswa berhasil diperbarui.');
     }
 }
